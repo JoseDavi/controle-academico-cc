@@ -1,4 +1,4 @@
-# Controle Academico de Computação
+# Controle Acadêmico de Computação
 
 ## Descrição do Projeto
 
@@ -8,7 +8,7 @@ O controle academico é uma versão simplificada do controle academico online da
 
 ### Aluno
 
-Um aluno pode...
+**Um aluno pode...**
 
 Se matricular em disciplinas (montar sua grade do semestre). Cada disciplina possui pre-requisitos, sendo possível a matrícula em uma disciplina se somente se os pre-requisitos desta forem satisfeitos.
 
@@ -24,7 +24,7 @@ Solicitar o trancamento do curso.
 
 ### Professor
 
-Um professor pode ...
+**Um professor pode ...**
 
 
 Atualizar  o número de faltas e notas dos três estágios dos seus alunos.
@@ -34,6 +34,7 @@ Fechar uma disciplina.
 
 ### Coordenador
 
+**Um joão pode ...**
 
 Criar a lista de disciplinas que serão ofertadas no próximo semestre.
 
