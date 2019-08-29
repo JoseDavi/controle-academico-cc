@@ -7,7 +7,7 @@ Desenvolver uma versão simplificada do controle academico online da UFCG em tr�
 
 ## Descrição do Projeto
 
-O controle acadêmico, feito para gerenciar a vida academica dos alunos do curso de computação da UFCG,  possui três tipos de usuários: alunos, professores e coordenador. --obs: mudar depois...
+O controle acadêmico, feito para gerenciar a vida academica dos alunos do curso de computação da UFCG,  possui três tipos de usuários: alunos, professores e coordenador. --obs: melhorar a descrição...
 
 
 ## Requisitos Funcionais
@@ -40,7 +40,7 @@ Fechar uma disciplina.
 
 ### Coordenador
 
-**Um joão pode ...**
+**Um coordenador pode ...**
 
 Criar a lista de disciplinas que serão ofertadas no próximo semestre.
 
