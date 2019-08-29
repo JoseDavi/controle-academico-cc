@@ -17,7 +17,7 @@ Acadêmico UFCG, onde os usuários (alunos, professores e coordenador) podem rea
 
 **Um aluno pode...**
 
-Se matricular em disciplinas (montar sua grade do semestre). Cada disciplina possui pre-requisitos, sendo possível a matrícula em uma disciplina se somente se os pre-requisitos desta forem satisfeitos.
+Se matricular em disciplinas (montar sua grade do semestre). Cada disciplina possui pre-requisitos, sendo possível a matrícula em uma disciplina somente se os pre-requisitos desta forem satisfeitos.
 
 Visualizar seu histórico: uma lista de disciplinas e suas respectivas notas, informações sobre o aluno e seu cra. 
 
@@ -34,7 +34,7 @@ Solicitar o trancamento do curso.
 **Um professor pode ...**
 
 
-Atualizar  o número de faltas e notas dos três estágios dos seus alunos.
+Atualizar o número de faltas e notas dos três estágios dos seus alunos.
 
 Fechar uma disciplina.
 
