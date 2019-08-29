@@ -1,10 +1,16 @@
 # Controle Acadêmico de Computação
 
+
+## Objetivo
+
+Desenvolver uma versão simplificada do controle academico online da UFCG em três paradigmas de programação diferentes: imperativa (C), funcional (haskell) e lógica (prolog).
+
 ## Descrição do Projeto
 
+O controle acadêmico, feito para gerenciar a vida academica dos alunos do curso de computação da UFCG,  possui três tipos de usuários: alunos, professores e coordenador. --obs: mudar depois...
 
-O controle academico é uma versão simplificada do controle academico online da UFCG. Possui três ipos de usuários: alunos, professores e coordenador.
 
+## Requisitos Funcionais
 
 ### Aluno
 
@@ -41,6 +47,3 @@ Criar a lista de disciplinas que serão ofertadas no próximo semestre.
 Analizar solicitações de trancamento de curso ou de disciplinas.
 
 Cadastrar Alunos e Professores.
-
-
-
