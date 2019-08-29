@@ -7,7 +7,8 @@ Desenvolver uma versão simplificada do controle academico online da UFCG em tr�
 
 ## Descrição do Projeto
 
-O controle acadêmico, feito para gerenciar a vida academica dos alunos do curso de computação da UFCG,  possui três tipos de usuários: alunos, professores e coordenador. --obs: melhorar a descrição...
+O Controle Acadêmico CC consiste em uma versão simplificada do Controle 
+Acadêmico UFCG, onde os usuários (alunos, professores e coordenador) podem realizar funcionalidades básicas, como: se matricular em disciplinas, cadastrar alunos, atualizar faltas de uma turma, solicitar trancamento e etc.
 
 
 ## Requisitos Funcionais
