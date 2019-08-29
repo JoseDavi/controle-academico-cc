@@ -41,7 +41,7 @@ Fechar uma disciplina.
 
 ### Coordenador
 
-**Um coordenador pode ...**
+**O coordenador pode ...**
 
 Criar a lista de disciplinas que serão ofertadas no próximo semestre.
 
