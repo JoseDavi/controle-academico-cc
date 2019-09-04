@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include <string.h>
+#include<string.h>
 
 enum estado {matricula = 1, emcurso = 2, fimdeperiodo = 3};
 
@@ -127,7 +127,6 @@ void mainmenu() {
         command = 0; // remover depois
     }
 }
-
 
 
 void main() {
