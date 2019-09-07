@@ -1,99 +1,47 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
+#include <map>
+
+using namespace std;
 
 enum estado {matricula = 1, emcurso = 2, fimdeperiodo = 3};
 
-struct aluno {
-    char username[100];
-    char password[16];
-    int desvinculado;
-};
+void mainmenu();
+void menuinicial();
+void menualuno();
+void menuprofessor();
+void menucoordenador();
+bool validausuario(string username, string password);
+void menulogin();
 
 
-struct professor {
-    char username[100];
-    char password[16];
-};
+int main() {
+    // TODO  Implementar o código que carrega todos os dados cadastrados no CSV;
+    // a ideia é de otimizar a permanencia de dados, mas inves de manipular arquivos diretamente(processo
+    // altamente custoso), fazemos isso apenas duas vezes: no início e final da execução do programa.
+    
+    // TODO issue #5 (carregar disciplinas)
 
+    mainmenu();
 
-struct coordenador {
-    char username[100];
-    char password[16];
-};
-
-
-struct disciplina {
-    char name[100];
-    int id;
-    int numerodealunos;
-    int prerequisitos[];
-};
-
-
-struct usuario {
-    char username[100];
-    char password[16];
-    int tipo; //{aluno = 1, professor = 2, coordenador = 3};
-};
-
-
-int menuinicial() {
-    printf("\n| ------------ Controle Academico CC ------------ |\n\n");
-    printf("1) Logar \n");
-    printf("2) Sair\n");
-    printf("\n| ----------------------------------------------- |\n");
-    int entrada;
-    scanf("%d", &entrada);
-    return entrada;
+    // TODO  Implementar o código que armazena/atualiza os dados da estrutura de dados no arquivo CSV;
+    return 0;
 }
 
+int usrtipo = 1; // alterar para 0 depois
+string username;
+string password;
 
-struct usuario menulogin() {
-    struct usuario usr;
-    printf("username: \n");
-    scanf("%s", usr.username);
-    printf("password: \n");
-    scanf("%s", usr.password);
-
-    // TODO 01 - implementar uma subrotina que valide o username e password do arquivo usuarios.csv,
-    // se for válido colocar o tipo de usuario (1 - aluno, 2 - professor, 3 - coordenador), se for invalido
-    // colocar -1 para indicar que o usuário não está cadastrado no sistema.
-
-    usr.tipo = 1;
-    return usr;
-}
-
-
-// TODO 02 - implementar o menu que lida com o aluno, deve conter as seguintes funcionalidades: 
-// realizar Matrícula, trancar Disciplina, trancar Curso, ver Disciplina, ver Histórico
-void menualuno() {
-    printf("TODO: show the aluno menu\n");
-}
-
-
-// TODO 03 - implementar o menu que lida com o professor, deve conter as seguintes funcionalidades: 
-// fazer Chamada , fechar Disciplina
-void menuprofessor() {
-    printf("TODO: show the professor menu\n");
-}
-
-
-// TODO 04 - implementar o menu que lida com o coordenador, deve conter as seguintes funcionalidades: 
-// cadastrar Aluno, cadastrar Professor, aceitar Trancamento, recusar Trancamento
-void menucoordenador() {
-    printf("TODO: show the coordenador menu\n");
-}
-
+int command = 0;
 
 void mainmenu() {
-    int command = menuinicial();
-    while (1) {
-
-        //printf("command: %d\n", command);
+    menuinicial();
+    while (true) {
 
         if (command == 0) {
-            command = menuinicial();
+            menuinicial();
         }
 
         if (command == 2) {
@@ -102,41 +50,145 @@ void mainmenu() {
         } 
         
         if (command == 1) {
-            struct usuario usr = menulogin();
-            int tipo = usr.tipo;
-
-            printf("name: %s\n", usr.username);
-            printf("pass: %s\n", usr.password);
-            printf("tipo: %d\n", usr.tipo);
-
-            if (tipo == 1) {
+            menulogin();
+            if (usrtipo == 1) {
                 menualuno();
-            } else if (tipo == 2) {
+            } else if (usrtipo == 2) {
                 menuprofessor();
-            } else if (tipo == 3) {
+            } else if (usrtipo == 3) {
                 menucoordenador();
             } else {
                 // command = 0; // vai para tela inicial...
             }
         }
-
-        if (command < 1 || command > 2) {
-            printf("insert a valid command...\n");
-        }
-        command = 0; // remover depois
+        
+        command = 0; 
     }
 }
 
 
-int main() {
-    // TODO 05 - Implementar o código que carrega todos os dados cadastrados no CSV;
-    // a ideia é de otimizar a permanencia de dados, mas inves de manipular arquivos diretamente(processo
-    // altamente custoso), fazemos isso apenas duas vezes: no início e final da execução do programa.
-    
-    mainmenu();
-
-    // TODO 06 - Implementar o código que armazena/atualiza os dados da estrutura de dados no arquivo CSV;
-    return 0;
+void menuinicial() {
+    printf("\n| ------------ Controle Academico CC ------------ |\n\n");
+    printf("1) Entrar \n");
+    printf("2) Sair\n");
+    printf("\n| ----------------------------------------------- |\n");
+    scanf("%d", &command);
 }
 
 
+void menulogin() {
+
+    if (!username.empty() && !password.empty()){
+        return; // o usuário já esta logado.
+    }
+
+    string usr;
+    printf("username: \n");
+    cin >> usr;
+    username = usr;
+
+    string psw;
+    printf("password: \n");
+    cin >> psw;
+    password = psw;
+
+    if (!validausuario(username,password)) {
+        username = "";
+        password = "";
+        return;
+    }
+
+    atualizatipodeusuario();
+}
+
+
+bool validausuario(string username, string password) {
+    // TODO issue #1
+    return true;
+}
+
+
+void atualizatipodeusuario() {
+    // TODO issue #6
+}
+
+
+void menualuno() {
+
+    if (username.empty() || password.empty()) {
+        printf("INVALID USER !");
+        return;
+    }
+
+    while (true) {
+        printf("\n| ------------ Controle Academico CC ------------ |\n");
+        printf("aluno...\n\n");
+        printf("1) Fazer Matrícula\n");
+        printf("2) Trancar Disciplina\n");
+        printf("3) Trancar Curso\n");
+        printf("4) Ver Disciplina\n");
+        printf("5) Ver Histórico\n");
+        printf("6) Voltar...\n");
+        printf("\n| ----------------------------------------------- |\n");
+        scanf("%d", &command);
+
+        if (command == 6) {
+            break;
+        }
+
+        // TODO issue #2
+    }
+    
+}
+
+
+void menuprofessor() {
+    
+    if (username.empty() || password.empty()) {
+        printf("INVALID USER !");
+        return;
+    }
+
+    while (true) {
+        printf("\n| ------------ Controle Academico CC ------------ |\n");
+        printf("professor...\n\n");
+        printf("1) Fazer Chamada\n");
+        printf("2) Fechar Disciplina\n");
+        printf("3) Inserir Notas\n");
+        printf("4) Voltar...\n");
+        printf("\n| ----------------------------------------------- |\n");
+        scanf("%d", &command);
+
+        if (command == 4) {
+            break;
+        }
+
+        // TODO issue #3
+    }
+}
+
+
+void menucoordenador() {
+    
+    if (username.empty() || password.empty()) {
+        printf("INVALID USER !");
+        return;
+    }
+
+    while (true) {
+        printf("\n| ------------ Controle Academico CC ------------ |\n");
+        printf("coordenador...\n\n");
+        printf("1) Cadastrar Aluno\n");
+        printf("2) Cadastrar Professor\n");
+        printf("3) Analisar Trancamenos\n");
+        printf("4) Voltar...\n");
+        printf("\n| ----------------------------------------------- |\n");
+        scanf("%d", &command);
+
+        if (command == 4) {
+            break;
+        }
+
+        // TODO issue #4
+    }
+}
