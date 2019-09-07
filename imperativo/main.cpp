@@ -5,13 +5,14 @@
 #include <map>
 #include <fstream>
 
+#include "users.h"
+
 using namespace std;
 
 enum Estado {matricula = 1, emcurso = 2, fimdeperiodo = 3};
 enum ComandoPrincipais {MENU_INICIAL, LOGAR, SAIR, FECHAR_SISTEMA};
 enum TipoUsuario {ALUNO = 1, PROFESSOR = 2, COORDENADOR = 3};
 enum ComandoCoordenador {CADASTRA_ALUNO = 1, CADASTRA_PROFESSOR = 2, ANALISA_TRANCAMENTO = 3};
-
 
 // Menus dos funcionários
 void main_menu();
@@ -23,10 +24,6 @@ void menu_login();
 
 bool valida_usuario(string username, string password);
 void atualiza_tipo_de_usuario(string username);
-
-void salvarUsuarios();
-void esvaziarArquivo(string nomeArquivo);
-void lerUsuarios();
 
 void cadastra_aluno();
 void cadastra_professor();
@@ -60,8 +57,7 @@ int command = MENU_INICIAL;
 
 void main_menu() {
 
-    lerUsuarios();
-    salvarUsuarios();
+    usuarios = lerUsuarios();
 
     menu_inicial();
     while (true) {
@@ -103,7 +99,7 @@ void main_menu() {
     }
 }
 
-// Estranho, mas é padrão: http://www.cplusplus.com/articles/4z18T05o/
+// Padrão para limpar tela em terminal: http://www.cplusplus.com/articles/4z18T05o/
 void limparTela() {
   int n;
   for (n = 0; n < 10; n++) {
@@ -122,7 +118,7 @@ void menu_inicial() {
     cin >> command;
 }
 
-// Checa se o usuário está logado
+
 bool esta_logado () {
   return !username.empty() && !password.empty();
 }
@@ -176,6 +172,7 @@ void atualiza_tipo_de_usuario(string username) {
         usrtipo = COORDENADOR;
     }
 }
+
 
 void menu_aluno() {
 
@@ -269,7 +266,7 @@ void menu_coordenador() {
         }
 
         switch (command) {
-            
+
             case CADASTRA_ALUNO:
                 cadastra_aluno();
                 break;
@@ -287,6 +284,7 @@ void menu_coordenador() {
     }
 
 }
+
 
 void cadastra_aluno() {
     string name, op, pswd;
@@ -322,7 +320,7 @@ void cadastra_aluno() {
         }
 
     }
-    
+
 }
 
 void cadastra_professor() {
@@ -362,60 +360,11 @@ void cadastra_professor() {
 
 }
 
-//ainda vou finalizar
+// ainda vou finalizar
 void analisa_trancamento() {
 
     if (!esta_logado) {
         cout << "Usuário não está logado!";
         return;
     }
-}
-
-
-void salvarUsuarios() {
-  // Ponteiro para arquivo
-  fstream fout;
-
-  // Esvaziar conteúdo do arquivo de usuário antes de preenchê-lo novamente
-  esvaziarArquivo("usuarios.csv");
-
-  // Abre um arquivo .csv ou cria um se necessário
-  fout.open("usuarios.csv", ios::out | ios::app);
-
-  map<string, array<string, 2>>::iterator it;
-
-  for(it = usuarios.begin(); it != usuarios.end(); it++){
-    fout << it->first << ","
-         << it->second[0] << ","
-         << it->second[1] << "\n";
-  }
-}
-
-// Esvazia qualquer arquivo .csv
-void esvaziarArquivo(string nomeArquivo) {
-  ofstream ofs;
-  ofs.open(nomeArquivo, std::ofstream::out | std::ofstream::trunc);
-  ofs.close();
-}
-
-void lerUsuarios() {
-
-  // Ponteiro para o arquivo
-  ifstream file;
-
-  // Abrir arquivo existente
-  file.open("usuarios.csv");
-
-  string username, password, type;
-
-  while (file.peek() != EOF) {
-    getline(file, username, ',');
-    getline(file, password, ',');
-    getline(file, type, '\n');
-
-    usuarios.insert(pair<string, array<string, 2>>(username, {password, type}));
-  }
-
-  file.close();
-
 }
