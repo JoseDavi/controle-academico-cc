@@ -29,16 +29,15 @@ void cadastra_aluno();
 void cadastra_professor();
 void analisa_trancamento();
 
+
+map<string, array<string, 2>> usuarios;
+
+
 int main() {
-    // TODO  Implementar o código que carrega todos os dados cadastrados no CSV;
-    // a ideia é de otimizar a permanencia de dados, mas inves de manipular arquivos diretamente(processo
-    // altamente custoso), fazemos isso apenas duas vezes: no início e final da execução do programa.
-
     // TODO issue #5 (carregar disciplinas)
-
+    usuarios = lerUsuarios();
     main_menu();
-
-    // TODO  Implementar o código que armazena/atualiza os dados da estrutura de dados no arquivo CSV;
+    salvarUsuarios(usuarios);
     return 0;
 }
 
@@ -46,21 +45,13 @@ int usrtipo = 0;
 string username = "";
 string password = "";
 
-//Users é um array de arrays, onde os arrays mais internos tem 3 posições, nome, senha e tipo, mas o plano é
-//guardar também matricula, e talvez um array com as cadeiras que ele já pagou, ou um apontador pra elas.
-//Inicie ele com poucas posições para testar, mas a gente pode aumentar ou diminur se necessário.
-//Lembrando que estou utilizando username como identificador, talvez seja melhor identificar o user por outro meio.
-
-map<string, array<string, 2>> usuarios;
-
 int command = MENU_INICIAL;
 
 void main_menu() {
 
-    usuarios = lerUsuarios();
-
     menu_inicial();
-    while (true) {
+    bool exit = false;
+    while (!exit) {
         switch(command) {
           case MENU_INICIAL:
             menu_inicial();
@@ -90,12 +81,12 @@ void main_menu() {
             break;
           case FECHAR_SISTEMA:
             cout << "saindo...\n";
-            exit(0);
+            exit = true;
           default:
             cout << "Opção inválida";
             command = MENU_INICIAL;
         }
-        fflush(stdin);
+        //fflush(stdin);
     }
 }
 
@@ -182,7 +173,6 @@ void menu_aluno() {
     }
 
     while (true) {
-        int command;
 
         limparTela();
         cout << "\n| ------------ Controle Academico CC ------------ |\n";
