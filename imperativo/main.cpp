@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <string>
 #include <map>
-#include <vector>
-  
+#include <fstream>
+
 using namespace std;
 
 enum Estado {matricula = 1, emcurso = 2, fimdeperiodo = 3};
@@ -21,6 +21,10 @@ void menu_login();
 
 bool valida_usuario(string username, string password);
 void atualiza_tipo_de_usuario(string username);
+
+void salvarUsuarios();
+void esvaziarArquivo(string nomeArquivo);
+void lerUsuarios();
 
 int main() {
     // TODO  Implementar o código que carrega todos os dados cadastrados no CSV;
@@ -44,23 +48,14 @@ string password = "";
 //Inicie ele com poucas posições para testar, mas a gente pode aumentar ou diminur se necessário.
 //Lembrando que estou utilizando username como identificador, talvez seja melhor identificar o user por outro meio.
 
-/* Penso que seja melhor usarmos um vector (array dinâmico) para guardar os usuários,
-   sendo mais eficiente para memória e retirando limites de tamanho de arrays */
-// vector <array<string, 3>> users = {
-//   {"joao", "123", "coordenador"},
-//   {"jose", "321", "professor"},
-//   {"jonas", "456", "aluno"}
-// };
-
 map<string, array<string, 2>> usuarios;
 
 int command = MENU_INICIAL;
 
 void main_menu() {
-    
-    usuarios.insert(pair<string, array<string, 2>>("joao", {"123", "coordenador"}));
-    usuarios.insert(pair<string, array<string, 2>>("jorge", {"321", "professor"}));
-    usuarios.insert(pair<string, array<string, 2>>("jonas", {"456", "aluno"}));
+
+    lerUsuarios();
+    salvarUsuarios();
 
     menu_inicial();
     while (true) {
@@ -268,4 +263,52 @@ void menu_coordenador() {
 
         // TODO issue #4
     }
+}
+
+void salvarUsuarios() {
+  // Ponteiro para arquivo
+  fstream fout;
+
+  // Esvaziar conteúdo do arquivo de usuário antes de preenchê-lo novamente
+  esvaziarArquivo("usuarios.csv");
+
+  // Abre um arquivo .csv ou cria um se necessário
+  fout.open("usuarios.csv", ios::out | ios::app);
+
+  map<string, array<string, 2>>::iterator it;
+
+  for(it = usuarios.begin(); it != usuarios.end(); it++){
+    fout << it->first << ","
+         << it->second[0] << ","
+         << it->second[1] << "\n";
+  }
+}
+
+// Esvazia qualquer arquivo .csv
+void esvaziarArquivo(string nomeArquivo) {
+  ofstream ofs;
+  ofs.open(nomeArquivo, std::ofstream::out | std::ofstream::trunc);
+  ofs.close();
+}
+
+void lerUsuarios() {
+
+  // Ponteiro para o arquivo
+  ifstream file;
+
+  // Abrir arquivo existente
+  file.open("usuarios.csv");
+
+  string username, password, type;
+
+  while (file.peek() != EOF) {
+    getline(file, username, ',');
+    getline(file, password, ',');
+    getline(file, type, '\n');
+
+    usuarios.insert(pair<string, array<string, 2>>(username, {password, type}));
+  }
+
+  file.close();
+
 }
