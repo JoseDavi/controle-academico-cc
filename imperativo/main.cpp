@@ -138,6 +138,7 @@ void menu_login() {
     if (!valida_usuario(username,password)) {
         username = "";
         password = "";
+        usrtipo = 0;
         return;
     }
 
