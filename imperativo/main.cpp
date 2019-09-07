@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 #include <vector>
-
+  
 using namespace std;
 
 enum Estado {matricula = 1, emcurso = 2, fimdeperiodo = 3};
@@ -46,15 +46,21 @@ string password = "";
 
 /* Penso que seja melhor usarmos um vector (array dinâmico) para guardar os usuários,
    sendo mais eficiente para memória e retirando limites de tamanho de arrays */
-vector <array<string, 3>> users = {
-  {"joao", "123", "coordenador"},
-  {"jose", "321", "professor"},
-  {"jonas", "456", "aluno"}
-};
+// vector <array<string, 3>> users = {
+//   {"joao", "123", "coordenador"},
+//   {"jose", "321", "professor"},
+//   {"jonas", "456", "aluno"}
+// };
+
+map<string, array<string, 2>> usuarios;
 
 int command = MENU_INICIAL;
 
 void main_menu() {
+    
+    usuarios.insert(pair<string, array<string, 2>>("joao", {"123", "coordenador"}));
+    usuarios.insert(pair<string, array<string, 2>>("jorge", {"321", "professor"}));
+    usuarios.insert(pair<string, array<string, 2>>("jonas", {"456", "aluno"}));
 
     menu_inicial();
     while (true) {
@@ -146,37 +152,27 @@ void menu_login() {
 
 }
 
-//Bem simples, só checando se o usuario existe no array de usuarios, e se ele existir, checando se a senha corresponde.
 bool valida_usuario(string username, string password) {
-    for(vector<array<string, 3>>::size_type i = 0; i != users.size(); i++){
-        if(users[i][0].compare(username)==0){
-            if(users[i][1].compare(password)==0){
-                return true;
-            }else{
-                cout << "Senha inválida.";
-                return false;
-            }
-        }
+    array<string, 2> user = usuarios[username];
+    if (user[0].compare(password)== 0) {
+        return true;
+    } else{
+        cout << "Senha inválida.";
+        return false;
     }
-    return false;
 }
 
-//Bem simplificado, somente a checagem do tipo em string e atribuindo o usrtipo ao numero equivalente.
 void atualiza_tipo_de_usuario(string username) {
-   for(vector<array<string, 3>>::size_type i = 0; i != users.size(); i++){
-      if(users[i][0].compare(username) == 0) {
-          if(users[i][2].compare("aluno") == 0){
-              usrtipo = ALUNO;
-          }
-          else if(users[i][2].compare("professor") == 0){
-              usrtipo = PROFESSOR;
-          }
-          else if(users[i][2].compare("coordenador") == 0){
-              usrtipo = COORDENADOR;
-          }
-          return;
-      }
-  }
+    array<string, 2> user = usuarios[username];
+    if(user[1].compare("aluno") == 0){
+        usrtipo = ALUNO;
+    }
+    else if(user[1].compare("professor") == 0){
+        usrtipo = PROFESSOR;
+    }
+    else if(user[1].compare("coordenador") == 0){
+        usrtipo = COORDENADOR;
+    }
 }
 
 void menu_aluno() {
