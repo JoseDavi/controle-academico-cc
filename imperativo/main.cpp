@@ -7,7 +7,9 @@
 
 using namespace std;
 
-enum estado {matricula = 1, emcurso = 2, fimdeperiodo = 3};
+enum Estado {matricula = 1, emcurso = 2, fimdeperiodo = 3};
+enum ComandoPrincipais {MENU_INICIAL, LOGAR, SAIR};
+enum TipoUsuario {ALUNO = 1, PROFESSOR = 2, COORDENADOR = 3};
 
 // Menus dos funcionários
 void main_menu();
@@ -34,8 +36,8 @@ int main() {
 }
 
 int usrtipo = 0; // alterar para 0 depois
-string username;
-string password;
+string username = "";
+string password = "";
 
 //Users é um array de arrays, onde os arrays mais internos tem 3 posições, nome, senha e tipo, mas o plano é
 //guardar também matricula, e talvez um array com as cadeiras que ele já pagou, ou um apontador pra elas.
@@ -50,61 +52,78 @@ vector <array<string, 3>> users = {
   {"jonas", "456", "aluno"}
 };
 
-int command = 0;
+int command = MENU_INICIAL;
 
 void main_menu() {
 
     menu_inicial();
     while (true) {
-        if(command == 0){
-          menu_inicial();
-        }
-
-        if (command == 2) {
-            printf("quit...\n");
-            exit(0);
-        }
-
-        if (command == 1) {
+        switch(command) {
+          case MENU_INICIAL:
+            menu_inicial();
+            break;
+          case LOGAR:
             menu_login();
-            if (usrtipo == 1) {
+            switch (usrtipo) {
+              case ALUNO:
                 menu_aluno();
-            } else if (usrtipo == 2) {
+                break;
+              case PROFESSOR:
                 menu_professor();
-            } else if (usrtipo == 3) {
+                break;
+              case COORDENADOR:
                 menu_coordenador();
-            } else {
-                // command = 0; // vai para tela inicial...
+                break;
+              default:
+                cout << "Usuário inválido! " << usrtipo;
             }
+            break;
+          case SAIR:
+            cout << "saindo...\n";
+            exit(0);
+          default:
+            cout << "Opção inválida";
         }
         fflush(stdin);
-        command = 0;
+        command = MENU_INICIAL;
     }
 }
 
-
-void menu_inicial() {
-    printf("\n| ------------ Controle Academico CC ------------ |\n\n");
-    printf("1) Entrar \n");
-    printf("2) Sair\n");
-    printf("\n| ----------------------------------------------- |\n");
-    scanf("%d", &command);
+// Estranho, mas é padrão: http://www.cplusplus.com/articles/4z18T05o/
+void limparTela() {
+  int n;
+  for (n = 0; n < 10; n++) {
+    cout << "\n\n\n\n\n\n\n\n\n\n";
+  }
 }
 
+void menu_inicial() {
+    limparTela();
+    cout << "\n| ------------ Controle Academico CC ------------ |\n\n";
+    cout << "1) Entrar \n";
+    cout << "2) Sair\n";
+    cout << "\n| ----------------------------------------------- |\n";
+    cin >> command;
+}
+
+// Checa se o usuário está logado
+bool esta_logado () {
+  return !username.empty() && !password.empty();
+}
 
 void menu_login() {
 
-    if (!username.empty() && !password.empty()){
+    if (esta_logado()){
         return; // o usuário já esta logado.
     }
 
     string usr;
-    printf("username: \n");
+    cout << "Login: ";
     cin >> usr;
     username = usr;
 
     string psw;
-    printf("password: \n");
+    cout << "Senha: ";
     cin >> psw;
     password = psw;
 
@@ -113,13 +132,14 @@ void menu_login() {
         password = "";
         return;
     }
+
     atualiza_tipo_de_usuario(username);
 
 }
 
 //Bem simples, só checando se o usuario existe no array de usuarios, e se ele existir, checando se a senha corresponde.
 bool valida_usuario(string username, string password) {
-    for(int i = 0; i < 100;i++){
+    for(vector<array<string, 3>>::size_type i = 0; i != users.size(); i++){
         if(users[i][0].compare(username)==0){
             if(users[i][1].compare(password)==0){
                 return true;
@@ -134,42 +154,44 @@ bool valida_usuario(string username, string password) {
 
 //Bem simplificado, somente a checagem do tipo em string e atribuindo o usrtipo ao numero equivalente.
 void atualiza_tipo_de_usuario(string username) {
-     for(int i = 0; i < 100;i++){
-        if(users[i][0].compare(username)==0){
-            if(users[i][2].compare("aluno")==0){
-                usrtipo = 1;
-            }
-            else if(users[i][2].compare("professor")==0){
-                usrtipo = 2;
-            }
-            else if(users[i][2].compare("coordenador") == 0){
-                usrtipo = 3;
-            }
-            return;
-        }
+   for(vector<array<string, 3>>::size_type i = 0; i != users.size(); i++){
+      if(users[i][0].compare(username) == 0) {
+          if(users[i][2].compare("aluno") == 0){
+              usrtipo = ALUNO;
+          }
+          else if(users[i][2].compare("professor") == 0){
+              usrtipo = PROFESSOR;
+          }
+          else if(users[i][2].compare("coordenador") == 0){
+              usrtipo = COORDENADOR;
+          }
+          return;
+      }
+  }
 }
-}
-
 
 void menu_aluno() {
 
-    if (username.empty() || password.empty()) {
-        printf("INVALID USER !");
+    if (!esta_logado) {
+        cout << "Usuário não está logado!";
         return;
     }
 
     while (true) {
         int command;
-        printf("\n| ------------ Controle Academico CC ------------ |\n");
-        printf("aluno...\n\n");
-        printf("1) Fazer Matrícula\n");
-        printf("2) Trancar Disciplina\n");
-        printf("3) Trancar Curso\n");
-        printf("4) Ver Disciplina\n");
-        printf("5) Ver Histórico\n");
-        printf("6) Voltar...\n");
-        printf("\n| ----------------------------------------------- |\n");
-        scanf("%d", &command);
+
+        limparTela();
+        cout << "\n| ------------ Controle Academico CC ------------ |\n";
+        cout << "aluno...\n\n";
+        cout << "1) Fazer Matrícula\n";
+        cout << "2) Trancar Disciplina\n";
+        cout << "3) Trancar Curso\n";
+        cout << "4) Ver Disciplina\n";
+        cout << "5) Ver Histórico\n";
+        cout << "6) Voltar...\n";
+        cout << "\n| ----------------------------------------------- |\n";
+
+        cin >> command;
 
         if (command == 6) {
             username = "";
@@ -182,23 +204,25 @@ void menu_aluno() {
     return;
 }
 
-
 void menu_professor() {
 
-    if (username.empty() || password.empty()) {
-        printf("INVALID USER !");
+    if (!esta_logado) {
+        cout << "Usuário não está logado!";
         return;
     }
 
     while (true) {
-        printf("\n| ------------ Controle Academico CC ------------ |\n");
-        printf("professor...\n\n");
-        printf("1) Fazer Chamada\n");
-        printf("2) Fechar Disciplina\n");
-        printf("3) Inserir Notas\n");
-        printf("4) Voltar...\n");
-        printf("\n| ----------------------------------------------- |\n");
-        scanf("%d", &command);
+
+        limparTela();
+        cout << "\n| ------------ Controle Academico CC ------------ |\n";
+        cout << "professor...\n\n";
+        cout << "1) Fazer Chamada\n";
+        cout << "2) Fechar Disciplina\n";
+        cout << "3) Inserir Notas\n";
+        cout << "4) Voltar...\n";
+        cout << "\n| ----------------------------------------------- |\n";
+
+        cin >> command;
 
         if (command == 4) {
             username = "";
@@ -211,23 +235,25 @@ void menu_professor() {
     return;
 }
 
-
 void menu_coordenador() {
 
-    if (username.empty() || password.empty()) {
-        printf("INVALID USER !");
+    if (!esta_logado) {
+        cout << "Usuário não está logado!";
         return;
     }
 
     while (true) {
-        printf("\n| ------------ Controle Academico CC ------------ |\n");
-        printf("coordenador...\n\n");
-        printf("1) Cadastrar Aluno\n");
-        printf("2) Cadastrar Professor\n");
-        printf("3) Analisar Trancamenos\n");
-        printf("4) Voltar...\n");
-        printf("\n| ----------------------------------------------- |\n");
-        scanf("%d", &command);
+
+        limparTela();
+        cout << "\n| ------------ Controle Academico CC ------------ |\n";
+        cout << "coordenador...\n\n";
+        cout << "1) Cadastrar Aluno\n";
+        cout << "2) Cadastrar Professor\n";
+        cout << "3) Analisar Trancamenos\n";
+        cout << "4) Voltar...\n";
+        cout << "\n| ----------------------------------------------- |\n";
+
+        cin >> command;
 
         if (command == 4) {
             username = "";
