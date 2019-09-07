@@ -8,7 +8,7 @@
 using namespace std;
 
 enum Estado {matricula = 1, emcurso = 2, fimdeperiodo = 3};
-enum ComandoPrincipais {MENU_INICIAL, LOGAR, SAIR};
+enum ComandoPrincipais {MENU_INICIAL, LOGAR, SAIR, FECHAR_SISTEMA};
 enum TipoUsuario {ALUNO = 1, PROFESSOR = 2, COORDENADOR = 3};
 
 // Menus dos funcionários
@@ -35,7 +35,7 @@ int main() {
     return 0;
 }
 
-int usrtipo = 0; // alterar para 0 depois
+int usrtipo = 0;
 string username = "";
 string password = "";
 
@@ -75,17 +75,23 @@ void main_menu() {
                 menu_coordenador();
                 break;
               default:
-                cout << "Usuário inválido! " << usrtipo;
+                cout << "Usuário inválido! " << usrtipo << endl;
             }
             break;
           case SAIR:
+            cout << "saindo da conta...\n";
+            username = "";
+            password = "";
+            command = MENU_INICIAL;
+            break;
+          case FECHAR_SISTEMA:
             cout << "saindo...\n";
             exit(0);
           default:
             cout << "Opção inválida";
+            command = MENU_INICIAL;
         }
         fflush(stdin);
-        command = MENU_INICIAL;
     }
 }
 
@@ -102,7 +108,9 @@ void menu_inicial() {
     cout << "\n| ------------ Controle Academico CC ------------ |\n\n";
     cout << "1) Entrar \n";
     cout << "2) Sair\n";
+    cout << "3) Fechar sistema\n";
     cout << "\n| ----------------------------------------------- |\n";
+    cout << "> ";
     cin >> command;
 }
 
@@ -194,8 +202,8 @@ void menu_aluno() {
         cin >> command;
 
         if (command == 6) {
-            username = "";
-            password = "";
+            //username = "";
+            //password = "";
             break;
         }
 
@@ -225,8 +233,8 @@ void menu_professor() {
         cin >> command;
 
         if (command == 4) {
-            username = "";
-            password = "";
+            //username = "";
+            //password = "";
             break;
         }
 
@@ -256,8 +264,8 @@ void menu_coordenador() {
         cin >> command;
 
         if (command == 4) {
-            username = "";
-            password = "";
+            //username = "";
+            //password = "";
             break;
         }
 
