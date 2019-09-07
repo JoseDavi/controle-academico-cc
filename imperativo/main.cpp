@@ -10,6 +10,8 @@ using namespace std;
 enum Estado {matricula = 1, emcurso = 2, fimdeperiodo = 3};
 enum ComandoPrincipais {MENU_INICIAL, LOGAR, SAIR, FECHAR_SISTEMA};
 enum TipoUsuario {ALUNO = 1, PROFESSOR = 2, COORDENADOR = 3};
+enum ComandoCoordenador {CADASTRA_ALUNO = 1, CADASTRA_PROFESSOR = 2, ANALISA_TRANCAMENTO = 3};
+
 
 // Menus dos funcionários
 void main_menu();
@@ -25,6 +27,10 @@ void atualiza_tipo_de_usuario(string username);
 void salvarUsuarios();
 void esvaziarArquivo(string nomeArquivo);
 void lerUsuarios();
+
+void cadastra_aluno();
+void cadastra_professor();
+void analisa_trancamento();
 
 int main() {
     // TODO  Implementar o código que carrega todos os dados cadastrados no CSV;
@@ -77,6 +83,7 @@ void main_menu() {
                 break;
               default:
                 cout << "Usuário inválido! " << usrtipo << endl;
+                break;
             }
             break;
           case SAIR:
@@ -261,9 +268,109 @@ void menu_coordenador() {
             break;
         }
 
-        // TODO issue #4
+        switch (command) {
+            
+            case CADASTRA_ALUNO:
+                cadastra_aluno();
+                break;
+            case CADASTRA_PROFESSOR:
+                cadastra_professor();
+                break;
+            case ANALISA_TRANCAMENTO:
+                analisa_trancamento();
+                break;
+            default:
+                cout << "Opção inválida!" << endl;
+                break;
+        }
+
+    }
+
+}
+
+void cadastra_aluno() {
+    string name, op, pswd;
+
+    if (!esta_logado) {
+        cout << "Usuário não está logado!";
+        return;
+    }
+
+    while (true) {
+        limparTela();
+
+        cout << "Nome do aluno: ";
+        cin >> name;
+
+        cout << "\nSenha do aluno: ";
+        cin >> pswd;
+
+        if (usuarios.count(name) == 0) {
+            usuarios[name] = {pswd,"aluno"};
+
+        } else {
+            cout << "\n\nCadastro negado. Aluno já consta no sistema!\n" << endl;
+        }
+
+        cout << "Deseja cadastrar mais um aluno? s/n" << endl;
+        cin >> op;
+
+        if (op == "n") {
+            //username = "";
+            //password = "";
+            break;
+        }
+
+    }
+    
+}
+
+void cadastra_professor() {
+    string name, pswd, op;
+
+    if (!esta_logado) {
+        cout << "Usuário não está logado!";
+        return;
+    }
+
+    while (true) {
+        limparTela();
+
+        cout << "Nome do professor: ";
+        cin >> name;
+
+        cout << "\nSenha do professor: ";
+        cin >> pswd;
+
+        if (usuarios.count(name) == 0) {
+            usuarios[name] = {pswd,"professor"};
+
+        } else {
+            cout << "\n\nCadastro negado. Professor já consta no sistema!\n" << endl;
+        }
+
+        cout << "Deseja cadastrar mais um professor? s/n" << endl;
+        cin >> op;
+
+        if (op == "n") {
+            //username = "";
+            //password = "";
+            break;
+        }
+
+    }
+
+}
+
+//ainda vou finalizar
+void analisa_trancamento() {
+
+    if (!esta_logado) {
+        cout << "Usuário não está logado!";
+        return;
     }
 }
+
 
 void salvarUsuarios() {
   // Ponteiro para arquivo
