@@ -7,7 +7,6 @@
 using namespace std;
 
 enum estado {matricula = 1, emcurso = 2, fimdeperiodo = 3};
-
 void mainmenu();
 void menuinicial();
 void menualuno();
@@ -15,6 +14,7 @@ void menuprofessor();
 void menucoordenador();
 bool validausuario(string username, string password);
 void menulogin();
+void atualizatipodeusuario(string username);
 
 
 int main() {
@@ -30,18 +30,36 @@ int main() {
     return 0;
 }
 
-int usrtipo = 1; // alterar para 0 depois
+int usrtipo = 0; // alterar para 0 depois
 string username;
 string password;
-
+//Users é um array de arrays, onde os arrays mais internos tem 3 posições, nome, senha e tipo, mas o plano é
+//guardar também matricula, e talvez um array com as cadeiras que ele já pagou, ou um apontador pra elas.
+//Inicie ele com poucas posições para testar, mas a gente pode aumentar ou diminur se necessário.
+//Lembrando que estou utilizando username como identificador, talvez seja melhor identificar o user por outro meio.
+string users[100][3];
 int command = 0;
-
 void mainmenu() {
+//Coloquei aqui dentro do metodo de validação somente para testar a implementação, não pensei num jeito
+//de puxar os users lá do main sem ficar sempre mandando o array, o que achei que não ia ficar muito legal.
+
+// user teste 1, joao com senha 123, coordenador.
+users[0][0] = "joao";
+users[0][1] = "123";
+users[0][2] = "coordenador";
+// user teste 2, jose com senha 321, professor.
+users[1][0] = "jose";
+users[1][1] = "321";
+users[1][2] = "professor";
+//user teste 3, jonas com senha 456, aluno.
+users[2][0] = "jonas";
+users[2][1] = "456";
+users[2][2] = "aluno";
+
     menuinicial();
     while (true) {
-
-        if (command == 0) {
-            menuinicial();
+        if(command == 0){
+        menuinicial();
         }
 
         if (command == 2) {
@@ -61,7 +79,7 @@ void mainmenu() {
                 // command = 0; // vai para tela inicial...
             }
         }
-        
+        fflush(stdin);
         command = 0; 
     }
 }
@@ -97,19 +115,41 @@ void menulogin() {
         password = "";
         return;
     }
+    atualizatipodeusuario(username);
 
-    atualizatipodeusuario();
 }
 
-
+//Bem simples, só checando se o usuario existe no array de usuarios, e se ele existir, checando se a senha corresponde.
 bool validausuario(string username, string password) {
-    // TODO issue #1
-    return true;
+    for(int i = 0; i < 100;i++){
+        if(users[i][0].compare(username)==0){
+            if(users[i][1].compare(password)==0){
+                return true;
+            }else{
+                cout << "Senha inválida.";
+                return false;
+        }   
+        }
+    }
+    return false;
 }
 
-
-void atualizatipodeusuario() {
-    // TODO issue #6
+//Bem simplificado, somente a checagem do tipo em string e atribuindo o usrtipo ao numero equivalente.
+void atualizatipodeusuario(string username) {
+     for(int i = 0; i < 100;i++){
+        if(users[i][0].compare(username)==0){
+            if(users[i][2].compare("aluno")==0){
+                usrtipo = 1;
+            }
+            else if(users[i][2].compare("professor")==0){
+                usrtipo = 2;
+            }
+            else if(users[i][2].compare("coordenador") == 0){
+                usrtipo = 3;
+            }
+            return;
+        }
+}
 }
 
 
@@ -121,6 +161,7 @@ void menualuno() {
     }
 
     while (true) {
+        int command;
         printf("\n| ------------ Controle Academico CC ------------ |\n");
         printf("aluno...\n\n");
         printf("1) Fazer Matrícula\n");
@@ -133,12 +174,14 @@ void menualuno() {
         scanf("%d", &command);
 
         if (command == 6) {
+            username = "";
+            password = "";
             break;
         }
 
         // TODO issue #2
     }
-    
+    return;
 }
 
 
@@ -160,11 +203,14 @@ void menuprofessor() {
         scanf("%d", &command);
 
         if (command == 4) {
+            username = "";
+            password = "";
             break;
         }
 
         // TODO issue #3
     }
+    return;
 }
 
 
@@ -186,6 +232,8 @@ void menucoordenador() {
         scanf("%d", &command);
 
         if (command == 4) {
+            username = "";
+            password = "";
             break;
         }
 
