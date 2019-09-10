@@ -5,7 +5,7 @@
 #include <map>
 #include <fstream>
 
-#include "users.h"
+#include "files.h"
 #include "util.h"
 
 using namespace std;
@@ -56,11 +56,17 @@ map<string, string> disciplinas;
 // Comandos principais do sistema
 int command = MENU_INICIAL;
 
+
 int main() {
-  // TODO issue #5 (carregar disciplinas)
+
   usuarios = lerUsuarios();
+  disciplinas = lerDisciplinas();
+
   main_menu();
+
+  salvarDisciplinas(disciplinas);
   salvarUsuarios(usuarios);
+
   return 0;
 }
 
