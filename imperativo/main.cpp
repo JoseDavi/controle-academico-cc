@@ -17,23 +17,23 @@ enum TipoUsuario         {NONE = 0, ALUNO = 1, PROFESSOR = 2, COORDENADOR = 3};
 enum ComandoCoordenador  {CADASTRA_ALUNO = 1, CADASTRA_PROFESSOR = 2, ANALISA_TRANCAMENTO = 3};
 
 // Definição do estado de um aluno em uma disciplina
-struct estadoDoAlunoEmDisciplina {
+typedef struct EstadoDoAluno {
   int faltas = 0;
   int notas[3];
 
   // estado (em curso, concluída, trancada)
   string estado = "";
-};
+} EstadoDoAluno;
 
 // Definição do tipo aluno
-struct aluno {
+typedef struct Aluno {
   string matricula = "";
   string nome = "";
   bool esta_desvinculado = 0;
 
   // Codigo de disciplina - struct do estado do aluno
-  map<string, estadoDoAlunoEmDisciplina> historico;
-};
+  map<string, EstadoDoAluno> historico;
+} Aluno;
 
 // Definição de protótipos dos menus do sistema
 void main_menu();
@@ -73,7 +73,7 @@ map<string, array<string, 2>> usuarios;
 map<string, string> disciplinas;
 
 // Alunos no sistema ( matrícula --> aluno )
-map<string, aluno> alunos;
+map<string, Aluno> alunos;
 
 // Comandos principais do sistema
 int command = MENU_INICIAL;
