@@ -51,8 +51,8 @@ string password = "";
 // Usuários do sistema ( nome --> senha, tipo )
 map<string, array<string, 2>> usuarios;
 
-// Disciplinas no sistema ( codigo --> nome )
-map<string, string> disciplinas;
+// Disciplinas no sistema ( codigo --> Disciplina )
+map<string, Disciplina> disciplinas;
 
 // Alunos no sistema ( matrícula --> aluno )
 map<string, Aluno> alunos;
@@ -101,10 +101,10 @@ int main() {
   // alunos["11911919"] = test;
 
   salvarAlunos(alunos);
-
   main_menu();
 
   salvarDisciplinas(disciplinas);
+
   salvarUsuarios(usuarios);
 
   return 0;
@@ -358,10 +358,10 @@ void menu_coordenador() {
 
 
 void imprime_disciplinas_disponiveis(map<string, DisciplinaEmAluno> historico) {
-  map<string, string>::iterator it;
+  map<string, Disciplina>::iterator it;
   for(it = disciplinas.begin(); it != disciplinas.end(); it++){
     if (!historico.count(it->first)){     // key not exists
-        cout << it->first << ") " <<  it->second << endl;
+        cout << it->first << ") " <<  it->second.nome << endl;
     }
   }
 }
@@ -391,7 +391,7 @@ void realizar_matricula() {
 
   disciplina.codigo = codigo;
   disciplina.estado = "em curso";
-  disciplina.nome = disciplinas.find(codigo)->second;
+  disciplina.nome = disciplinas.find(codigo)->second.nome;
 
   if (aluno.disciplinas_matriculadas < 6) {
     // TODO - vefiricar se o aluno já pagou todos os pre-requisitos
