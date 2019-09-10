@@ -428,8 +428,35 @@ void ver_disciplina() {
       cout << "Disciplina inválida." << endl;
   }
 }
+
+
+float calcula_media(double array[3]){
+    return (array[0] + array[1] + array[2]) / 3;
+}
+
 void ver_historico() {
-  // To do
+  string matricula = username; 
+  double media;
+
+  map<string, DisciplinaEmAluno> historico = alunos.find(matricula)->second.historico;
+
+  map<string, DisciplinaEmAluno>::iterator it;
+
+   cout << "ID | NOME | MEDIA | SITUAÇÃO" << endl;
+   for(it = historico.begin(); it != historico.end(); it++){
+     if (it->second.estado == "em curso") {
+        cout << it->first + " | " <<  it->second.nome << " | - | " << "em curso" << endl;
+     } else {
+        string situacao;
+        media = calcula_media(it->second.notas);
+        if (media >= 7) {
+            situacao = "APROVADO";
+        } else {
+            situacao = "REPROVADO";
+        }
+        cout << it->first + " | " <<  it->second.nome << " | " << to_string(media) + " | " << situacao << endl;
+     }
+   }
 }
 
 /* Seção onde se gerencia os professores */
