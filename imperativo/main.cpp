@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <fstream>
+#include <limits>
 
 #include "users.h"
 
@@ -98,6 +99,20 @@ void limparTela() {
   }
 }
 
+// Verifica se o cin está em estado de falha e o recupera descartando os
+// caracteres indesejados.
+void testa_falha_cin() {
+  if (cin.fail()){
+     // get rid of failure state
+     cin.clear();
+     // discard 'bad' character(s)
+     cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+     // Error message
+     cout << "Entrada inválida, por favor escolha um item do menu.";
+     getchar();
+  }
+}
+
 void menu_inicial() {
     limparTela();
     cout << "\n| ------------ Controle Academico CC ------------ |\n\n";
@@ -106,7 +121,9 @@ void menu_inicial() {
     cout << "3) Fechar sistema\n";
     cout << "\n| ----------------------------------------------- |\n";
     cout << "> ";
+
     cin >> command;
+    testa_falha_cin();
 }
 
 
@@ -186,6 +203,7 @@ void menu_aluno() {
         cout << "\n| ----------------------------------------------- |\n";
 
         cin >> command;
+        testa_falha_cin();
 
         if (command == 6) {
             //username = "";
@@ -217,6 +235,7 @@ void menu_professor() {
         cout << "\n| ----------------------------------------------- |\n";
 
         cin >> command;
+        testa_falha_cin();
 
         if (command == 4) {
             //username = "";
@@ -248,6 +267,7 @@ void menu_coordenador() {
         cout << "\n| ----------------------------------------------- |\n";
 
         cin >> command;
+        testa_falha_cin();
 
         if (command == 4) {
             //username = "";
