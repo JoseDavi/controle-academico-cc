@@ -57,66 +57,66 @@ map<string, string> disciplinas;
 int command = MENU_INICIAL;
 
 int main() {
-    // TODO issue #5 (carregar disciplinas)
-    usuarios = lerUsuarios();
-    main_menu();
-    salvarUsuarios(usuarios);
-    return 0;
+  // TODO issue #5 (carregar disciplinas)
+  usuarios = lerUsuarios();
+  main_menu();
+  salvarUsuarios(usuarios);
+  return 0;
 }
 
 void main_menu() {
 
-    menu_inicial();
-    bool exit = false;
-    while (!exit) {
-        switch(command) {
-          case MENU_INICIAL:
-            menu_inicial();
-            break;
-          case LOGAR:
-            menu_login();
-            switch (usrtipo) {
-              case ALUNO:
-                menu_aluno();
-                break;
-              case PROFESSOR:
-                menu_professor();
-                break;
-              case COORDENADOR:
-                menu_coordenador();
-                break;
-              default:
-                cout << "Usuário inválido! " << usrtipo << endl;
-                break;
-            }
-            break;
-          case SAIR:
-            cout << "saindo da conta...\n";
-            username = "";
-            password = "";
-            command = MENU_INICIAL;
-            break;
-          case FECHAR_SISTEMA:
-            cout << "saindo...\n";
-            exit = true;
+  menu_inicial();
+  bool exit = false;
+  while (!exit) {
+    switch(command) {
+      case MENU_INICIAL:
+        menu_inicial();
+      break;
+      case LOGAR:
+        menu_login();
+        switch (usrtipo) {
+          case ALUNO:
+            menu_aluno();
+          break;
+          case PROFESSOR:
+            menu_professor();
+          break;
+          case COORDENADOR:
+            menu_coordenador();
+          break;
           default:
-            cout << "Opção inválida";
-            command = MENU_INICIAL;
+            cout << "Usuário inválido! " << usrtipo << endl;
+          break;
         }
+      break;
+      case SAIR:
+        cout << "saindo da conta...\n";
+        username = "";
+        password = "";
+        command = MENU_INICIAL;
+      break;
+      case FECHAR_SISTEMA:
+        cout << "saindo...\n";
+        exit = true;
+      default:
+        cout << "Opção inválida";
+        command = MENU_INICIAL;
     }
+  }
 }
 
 void menu_inicial() {
-    limparTela();
-    cout << "\n| ------------ Controle Academico CC ------------ |\n\n";
-    cout << "1) Entrar \n";
-    cout << "2) Sair\n";
-    cout << "3) Fechar sistema\n";
-    cout << "\n| ----------------------------------------------- |\n";
-    cout << "> ";
+  limparTela();
+  cout << "\n| ------------ Controle Academico CC ------------ |\n\n";
+  cout << "1) Entrar \n";
+  cout << "2) Sair\n";
+  cout << "3) Fechar sistema\n";
+  cout << "\n| ----------------------------------------------- |\n";
+  cout << "> ";
 
-    cin >> command;
-    testa_falha_cin();
+  cin >> command;
+  testa_falha_cin();
 }
 
 
@@ -126,165 +126,165 @@ bool usuario_esta_logado () {
 
 void menu_login() {
 
-    if (usuario_esta_logado()){
-        return; // o usuário já esta logado.
-    }
+  if (usuario_esta_logado()){
+    return; // o usuário já esta logado.
+  }
 
-    string usr;
-    cout << "Login: ";
-    cin >> usr;
-    username = usr;
+  string usr;
+  cout << "Login: ";
+  cin >> usr;
+  username = usr;
 
-    string psw;
-    cout << "Senha: ";
-    cin >> psw;
-    password = psw;
+  string psw;
+  cout << "Senha: ";
+  cin >> psw;
+  password = psw;
 
-    if (!valida_usuario(username,password)) {
-        username = "";
-        password = "";
-        usrtipo = NONE;
-        return;
-    }
+  if (!valida_usuario(username,password)) {
+    username = "";
+    password = "";
+    usrtipo = NONE;
+    return;
+  }
 
-    atualiza_tipo_de_usuario(username);
+  atualiza_tipo_de_usuario(username);
 
 }
 
 bool valida_usuario(string username, string password) {
-    array<string, 2> user = usuarios[username];
-    if (user[0].compare(password)== 0) {
-        return true;
-    } else{
-        cout << "Senha inválida.";
-        return false;
-    }
+  array<string, 2> user = usuarios[username];
+  if (user[0].compare(password)== 0) {
+    return true;
+  } else{
+    cout << "Senha inválida.";
+    return false;
+  }
 }
 
 void atualiza_tipo_de_usuario(string username) {
-    array<string, 2> user = usuarios[username];
-    if(user[1].compare("aluno") == 0){
-        usrtipo = ALUNO;
-    }
-    else if(user[1].compare("professor") == 0){
-        usrtipo = PROFESSOR;
-    }
-    else if(user[1].compare("coordenador") == 0){
-        usrtipo = COORDENADOR;
-    }
+  array<string, 2> user = usuarios[username];
+  if(user[1].compare("aluno") == 0){
+    usrtipo = ALUNO;
+  }
+  else if(user[1].compare("professor") == 0){
+    usrtipo = PROFESSOR;
+  }
+  else if(user[1].compare("coordenador") == 0){
+    usrtipo = COORDENADOR;
+  }
 }
 
 
 void menu_aluno() {
 
-    if (!usuario_esta_logado()) {
-        cout << "Usuário não está logado!";
-        return;
-    }
-
-    while (true) {
-
-        limparTela();
-        cout << "\n| ------------ Controle Academico CC ------------ |\n";
-        cout << "aluno...\n\n";
-        cout << "1) Fazer Matrícula\n";
-        cout << "2) Trancar Disciplina\n";
-        cout << "3) Trancar Curso\n";
-        cout << "4) Ver Disciplina\n";
-        cout << "5) Ver Histórico\n";
-        cout << "6) Voltar...\n";
-        cout << "\n| ----------------------------------------------- |\n";
-
-        cin >> command;
-        testa_falha_cin();
-
-        if (command == 6) {
-            //username = "";
-            //password = "";
-            break;
-        }
-
-        // TODO issue #2
-    }
+  if (!usuario_esta_logado()) {
+    cout << "Usuário não está logado!";
     return;
+  }
+
+  while (true) {
+
+    limparTela();
+    cout << "\n| ------------ Controle Academico CC ------------ |\n";
+    cout << "aluno...\n\n";
+    cout << "1) Fazer Matrícula\n";
+    cout << "2) Trancar Disciplina\n";
+    cout << "3) Trancar Curso\n";
+    cout << "4) Ver Disciplina\n";
+    cout << "5) Ver Histórico\n";
+    cout << "6) Voltar...\n";
+    cout << "\n| ----------------------------------------------- |\n";
+
+    cin >> command;
+    testa_falha_cin();
+
+    if (command == 6) {
+      //username = "";
+      //password = "";
+      break;
+    }
+
+    // TODO issue #2
+  }
+  return;
 }
 
 void menu_professor() {
 
-    if (!usuario_esta_logado()) {
-        cout << "Usuário não está logado!";
-        return;
-    }
-
-    while (true) {
-
-        limparTela();
-        cout << "\n| ------------ Controle Academico CC ------------ |\n";
-        cout << "professor...\n\n";
-        cout << "1) Fazer Chamada\n";
-        cout << "2) Fechar Disciplina\n";
-        cout << "3) Inserir Notas\n";
-        cout << "4) Voltar...\n";
-        cout << "\n| ----------------------------------------------- |\n";
-
-        cin >> command;
-        testa_falha_cin();
-
-        if (command == 4) {
-            //username = "";
-            //password = "";
-            break;
-        }
-
-        // TODO issue #3
-    }
+  if (!usuario_esta_logado()) {
+    cout << "Usuário não está logado!";
     return;
+  }
+
+  while (true) {
+
+    limparTela();
+    cout << "\n| ------------ Controle Academico CC ------------ |\n";
+    cout << "professor...\n\n";
+    cout << "1) Fazer Chamada\n";
+    cout << "2) Fechar Disciplina\n";
+    cout << "3) Inserir Notas\n";
+    cout << "4) Voltar...\n";
+    cout << "\n| ----------------------------------------------- |\n";
+
+    cin >> command;
+    testa_falha_cin();
+
+    if (command == 4) {
+      //username = "";
+      //password = "";
+      break;
+    }
+
+    // TODO issue #3
+  }
+  return;
 }
 
 void menu_coordenador() {
 
-    if (!usuario_esta_logado()) {
-        cout << "Usuário não está logado!";
-        return;
+  if (!usuario_esta_logado()) {
+    cout << "Usuário não está logado!";
+    return;
+  }
+
+  while (true) {
+
+    limparTela();
+    cout << "\n| ------------ Controle Academico CC ------------ |\n";
+    cout << "coordenador...\n\n";
+    cout << "1) Cadastrar Aluno\n";
+    cout << "2) Cadastrar Professor\n";
+    cout << "3) Analisar Trancamenos\n";
+    cout << "4) Voltar...\n";
+    cout << "\n| ----------------------------------------------- |\n";
+
+    cin >> command;
+    testa_falha_cin();
+
+    if (command == 4) {
+      //username = "";
+      //password = "";
+      break;
     }
 
-    while (true) {
+    switch (command) {
 
-        limparTela();
-        cout << "\n| ------------ Controle Academico CC ------------ |\n";
-        cout << "coordenador...\n\n";
-        cout << "1) Cadastrar Aluno\n";
-        cout << "2) Cadastrar Professor\n";
-        cout << "3) Analisar Trancamenos\n";
-        cout << "4) Voltar...\n";
-        cout << "\n| ----------------------------------------------- |\n";
-
-        cin >> command;
-        testa_falha_cin();
-
-        if (command == 4) {
-            //username = "";
-            //password = "";
-            break;
-        }
-
-        switch (command) {
-
-            case CADASTRA_ALUNO:
-                cadastra_aluno();
-                break;
-            case CADASTRA_PROFESSOR:
-                cadastra_professor();
-                break;
-            case ANALISA_TRANCAMENTO:
-                analisa_trancamento();
-                break;
-            default:
-                cout << "Opção inválida!" << endl;
-                break;
-        }
-
+      case CADASTRA_ALUNO:
+      cadastra_aluno();
+      break;
+      case CADASTRA_PROFESSOR:
+      cadastra_professor();
+      break;
+      case ANALISA_TRANCAMENTO:
+      analisa_trancamento();
+      break;
+      default:
+      cout << "Opção inválida!" << endl;
+      break;
     }
+
+  }
 
 }
 
@@ -299,12 +299,12 @@ struct estadoDoAlunoEmDisciplina {
 };
 
 struct aluno {
-    string matricula = "";
-    string nome = "";
-    bool esta_desvinculado = 0;
+  string matricula = "";
+  string nome = "";
+  bool esta_desvinculado = 0;
 
-    // Codigo de disciplina - struct do estado do aluno
-    map<string, estadoDoAlunoEmDisciplina> historico;
+  // Codigo de disciplina - struct do estado do aluno
+  map<string, estadoDoAlunoEmDisciplina> historico;
 };
 
 void realizar_matricula() {
@@ -339,85 +339,84 @@ void atualiza_aluno() {
 
 // Análise de trancamento po parte do coordenador
 void analisa_trancamento() {
-    // ainda vou finalizar
-    if (!usuario_esta_logado()) {
-        cout << "Usuário não está logado!";
-        return;
-    }
+  // ainda vou finalizar
+  if (!usuario_esta_logado()) {
+    cout << "Usuário não está logado!";
+    return;
+  }
 }
 
 // Cadastramento de aluno por parte do coordenador
 void cadastra_aluno() {
-    string name, op, pswd;
+  string name, op, pswd;
 
-    if (!usuario_esta_logado()) {
-        cout << "Usuário não está logado!";
-        return;
+  if (!usuario_esta_logado()) {
+    cout << "Usuário não está logado!";
+    return;
+  }
+
+  while (true) {
+    limparTela();
+
+    cout << "Nome do aluno: ";
+    cin >> name;
+
+    cout << "\nSenha do aluno: ";
+    cin >> pswd;
+
+    if (usuarios.count(name) == 0) {
+      usuarios[name] = {pswd,"aluno"};
+    } else {
+      cout << "\n\nCadastro negado. Aluno já consta no sistema!\n" << endl;
     }
 
-    while (true) {
-        limparTela();
+    cout << "Deseja cadastrar mais um aluno? s/n" << endl;
+    cin >> op;
 
-        cout << "Nome do aluno: ";
-        cin >> name;
-
-        cout << "\nSenha do aluno: ";
-        cin >> pswd;
-
-        if (usuarios.count(name) == 0) {
-            usuarios[name] = {pswd,"aluno"};
-
-        } else {
-            cout << "\n\nCadastro negado. Aluno já consta no sistema!\n" << endl;
-        }
-
-        cout << "Deseja cadastrar mais um aluno? s/n" << endl;
-        cin >> op;
-
-        if (op == "n") {
-            //username = "";
-            //password = "";
-            break;
-        }
-
+    if (op == "n") {
+      //username = "";
+      //password = "";
+      break;
     }
+
+  }
 
 }
 
 // Cadastramento de professor por parte do coordenador
 void cadastra_professor() {
-    string name, pswd, op;
+  string name, pswd, op;
 
-    if (!usuario_esta_logado()) {
-        cout << "Usuário não está logado!";
-        return;
+  if (!usuario_esta_logado()) {
+    cout << "Usuário não está logado!";
+    return;
+  }
+
+  while (true) {
+    limparTela();
+
+    cout << "Nome do professor: ";
+    cin >> name;
+
+    cout << "\nSenha do professor: ";
+    cin >> pswd;
+
+    if (usuarios.count(name) == 0) {
+      usuarios[name] = {pswd,"professor"};
+
+    } else {
+      cout << "\n\nCadastro negado. Professor já consta no sistema!\n" << endl;
     }
 
-    while (true) {
-        limparTela();
+    cout << "Deseja cadastrar mais um professor? s/n" << endl;
+    cin >> op;
 
-        cout << "Nome do professor: ";
-        cin >> name;
-
-        cout << "\nSenha do professor: ";
-        cin >> pswd;
-
-        if (usuarios.count(name) == 0) {
-            usuarios[name] = {pswd,"professor"};
-
-        } else {
-            cout << "\n\nCadastro negado. Professor já consta no sistema!\n" << endl;
-        }
-
-        cout << "Deseja cadastrar mais um professor? s/n" << endl;
-        cin >> op;
-
-        if (op == "n") {
-            //username = "";
-            //password = "";
-            break;
-        }
-
+    if (op == "n") {
+      //username = "";
+      //password = "";
+      break;
     }
+
+  }
 
 }
