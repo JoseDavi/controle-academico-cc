@@ -43,12 +43,15 @@ void cadastra_aluno();
 void cadastra_professor();
 void analisa_trancamento();
 
-// Usuários do sistema ( nome --> senha, tipo )
-map<string, array<string, 2>> usuarios;
-
 int usrtipo = NONE; // Tipo do usuário operante
 string username = "";
 string password = "";
+
+// Usuários do sistema ( nome --> senha, tipo )
+map<string, array<string, 2>> usuarios;
+
+// Disciplinas no sistema (codigo --> nome)
+map<string, string> disciplinas;
 
 // Comandos principais do sistema
 int command = MENU_INICIAL;
@@ -284,13 +287,6 @@ void menu_coordenador() {
     }
 
 }
-
-/* Definição de disciplina */
-
-struct disciplina {
-  int codigo;
-  string nome;
-};
 
 /* Seção onde se gerencia os alunos */
 
