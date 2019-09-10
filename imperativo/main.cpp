@@ -177,7 +177,7 @@ void menu_login() {
   }
 
   string usr;
-  cout << "Login: ";
+  cout << "Matricula: ";
   cin >> usr;
   username = usr;
 
@@ -484,7 +484,7 @@ void analisa_trancamento() {
 
 // Cadastramento de aluno por parte do coordenador
 void cadastra_aluno() {
-  string name, op, pswd;
+  string nome, op, pswd, matricula;
 
   if (!usuario_esta_logado()) {
     cout << "Usuário não está logado!";
@@ -494,14 +494,21 @@ void cadastra_aluno() {
   while (true) {
     limparTela();
 
-    cout << "Nome do aluno: ";
-    cin >> name;
+    cout << "Matricula: ";
+    cin >> matricula;
+
+    cout << "Nome: ";
+    cin >> nome;
 
     cout << "\nSenha do aluno: ";
     cin >> pswd;
 
-    if (usuarios.count(name) == 0) {
-      usuarios[name] = {pswd,"aluno"};
+    if (usuarios.count(nome) == 0) {
+      usuarios[matricula] = {pswd,"aluno"};
+      struct Aluno aluno;
+      aluno.nome = nome;
+      aluno.matricula = matricula;
+      alunos.insert(pair<string, Aluno>(matricula, aluno));
     } else {
       cout << "\n\nCadastro negado. Aluno já consta no sistema!\n" << endl;
     }
