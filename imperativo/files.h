@@ -12,6 +12,8 @@ map<string, string> lerDisciplinas();
 
 // Definição do estado de um aluno em uma disciplina
 typedef struct DisciplinaEmAluno {
+  string codigo;
+  string nome;
   int faltas = 0;
   double notas[3];
   // estado (em curso, concluída, trancada)
@@ -22,6 +24,7 @@ typedef struct DisciplinaEmAluno {
 typedef struct Aluno {
   string matricula = "";
   string nome = "";
+  int disciplinas_matriculadas = 0;
   bool esta_desvinculado = 0;
   // Codigo de disciplina - struct do estado do aluno
   map<string, DisciplinaEmAluno> historico;

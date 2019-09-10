@@ -15,6 +15,7 @@ enum Estado              {MATRICULA = 1, EM_CURSO = 2, FIM_DE_PERIODO = 3};
 enum ComandosPrincipais  {MENU_INICIAL, LOGAR, SAIR, FECHAR_SISTEMA};
 enum TipoUsuario         {NONE = 0, ALUNO = 1, PROFESSOR = 2, COORDENADOR = 3};
 enum ComandoCoordenador  {CADASTRA_ALUNO = 1, CADASTRA_PROFESSOR = 2, ANALISA_TRANCAMENTO = 3};
+enum ComandoAluno        {FAZER_MATRICULA = 1, TRANCAR_DISCIPLINA = 2, TRANCAR_CURSO = 3, VER_DISCIPLINA = 4, VER_HISTORICO = 5};
 
 // Definição de protótipos dos menus do sistema
 void main_menu();
@@ -58,13 +59,16 @@ map<string, Aluno> alunos;
 
 // Comandos principais do sistema
 int command = MENU_INICIAL;
+int estado;
+
 
 int main() {
 
   usuarios = lerUsuarios();
   disciplinas = lerDisciplinas();
-
   alunos = lerAlunos();
+
+  estado = MATRICULA;
 
   // Se quiserem testar, fçam o seguinte: Vejam o csv de alunos, depois
   // descomentem essa seção que cadastra mais usuários e depois rodem o
@@ -238,7 +242,27 @@ void menu_aluno() {
       break;
     }
 
-    // TODO issue #2
+  switch (command) {
+    case FAZER_MATRICULA:
+      realizar_matricula();
+      break;
+    case TRANCAR_DISCIPLINA:
+      trancar_disciplina();
+      break;
+    case TRANCAR_CURSO:
+      trancar_curso();
+      break;
+    case VER_DISCIPLINA:
+      ver_disciplina();
+      break;
+    case VER_HISTORICO:
+      ver_historico();
+      break;
+    
+    default:
+      cout << "Opção inválida!" << endl;
+      break;
+    }
   }
   return;
 }
@@ -324,9 +348,52 @@ void menu_coordenador() {
 
 /* Seção onde se gerencia os alunos */
 
-void realizar_matricula() {
-  // To do
+
+void imprime_disciplinas_disponiveis(map<string, DisciplinaEmAluno> historico) {
+  map<string, string>::iterator it;
+  for(it = disciplinas.begin(); it != disciplinas.end(); it++){
+    if (!historico.count(it->first)){     // key not exists
+        cout << it->first << ") " <<  it->second << endl;
+    }
+  }
 }
+
+void realizar_matricula() {
+  if (estado != MATRICULA) {
+      cout << "O tempo de realização de matrícula foi esgotado." << endl;
+      return;
+  }
+
+  string matricula = username;
+  Aluno aluno =  alunos.find(matricula)->second;
+  map<string, DisciplinaEmAluno> novohistorico = alunos.find(matricula)->second.historico;
+
+  imprime_disciplinas_disponiveis(novohistorico);
+
+  string codigo;
+  cout << "Código da disciplina: " << endl;
+  cin >> codigo;
+
+  if (!disciplinas.count(codigo)) {
+    cout << "Código de disciplina inválido" <<  endl;
+    return;
+  }
+
+  struct DisciplinaEmAluno disciplina;
+
+  disciplina.codigo = codigo;
+  disciplina.estado = "em curso";
+  disciplina.nome = disciplinas.find(codigo)->second;
+
+  if (aluno.disciplinas_matriculadas < 6) {
+    novohistorico.insert(pair<string,DisciplinaEmAluno>(codigo, disciplina));
+    alunos.find(matricula)->second.historico = novohistorico;
+    alunos.find(matricula)->second.disciplinas_matriculadas++;
+  } else {
+    cout << "Matricula não permitida. O aluno já esá matriculado em 6 cadeiras." <<  endl;
+  }
+}
+
 void trancar_disciplina() {
   // To do
 }
