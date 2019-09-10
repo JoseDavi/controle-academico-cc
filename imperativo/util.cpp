@@ -1,5 +1,8 @@
 #include <limits>
 #include <iostream>
+#include <vector>
+#include <sstream>
+
 #include "util.h"
 
 using namespace std;
@@ -24,4 +27,15 @@ void testa_falha_cin() {
      cout << "Entrada inválida, por favor escolha um item do menu.";
      getchar();
   }
+}
+
+vector<string> split(const string& s, char delimiter) {
+   vector<string> tokens;
+   string token;
+   istringstream tokenStream(s);
+   while (getline(tokenStream, token, delimiter))
+   {
+      tokens.push_back(token);
+   }
+   return tokens;
 }

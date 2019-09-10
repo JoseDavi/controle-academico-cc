@@ -28,3 +28,4 @@ typedef struct Aluno {
 } Aluno;
 
 void salvarAlunos(map<string, Aluno> alunos);
+map<string, Aluno> lerAlunos();

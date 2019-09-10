@@ -1,6 +1,9 @@
 #include <fstream>
+#include <iostream>
+#include <algorithm>
 
 #include "files.h"
+#include "util.h"
 
 void esvaziarArquivo(string nomeArquivo) {
   ofstream ofs;
@@ -128,4 +131,67 @@ void salvarAlunos(map<string, Aluno> alunos) {
     }
     fout << "]\n";
   }
+}
+
+map<string, Aluno> lerAlunos() {
+
+    // Disciplinas que serão lidas
+    map<string, Aluno> alunos;
+
+    // Ponteiro para o arquivo
+    ifstream file;
+
+    // Abrir arquivo existente
+    file.open("resources/alunos.csv");
+
+    string matricula, nome, esta_desvinculado;
+    string disciplina, codDisciplina, estado;
+    int faltas;
+    double notas[3];
+
+    Aluno al;
+    DisciplinaEmAluno disc;
+
+    while (file.peek() != EOF) {
+      getline(file, matricula, ',');
+      getline(file, nome, ',');
+      getline(file, esta_desvinculado, ',');
+      getline(file, disciplina, '\n');
+
+      // Modificando primeiros atributos de aluno
+      al.matricula = matricula;
+      al.nome = nome;
+      al.esta_desvinculado = (esta_desvinculado == "1");
+
+      // Processando a string de disciplinas
+      disciplina.erase(std::remove(disciplina.begin(), disciplina.end(), '['), disciplina.end());
+      disciplina.erase(std::remove(disciplina.begin(), disciplina.end(), ']'), disciplina.end());
+
+      map <string, DisciplinaEmAluno> historico;
+
+      vector<string> disciplinas = split(disciplina, '+');
+
+      for(std::size_t i=0; i<disciplinas.size(); i++) {
+        vector<string> disciplinaInfo = split(disciplinas[i], ';');
+
+        disc.faltas = std::stoi(disciplinaInfo[1]);
+        disc.notas[0] = std::stod(disciplinaInfo[2]);
+        disc.notas[1] = std::stod(disciplinaInfo[3]);
+        disc.notas[2] = std::stod(disciplinaInfo[4]);
+        disc.estado = disciplinaInfo[5];
+
+        historico[disciplinaInfo[0]] = disc;
+      }
+
+      al.historico = historico;
+
+      // Limpando o histórico para o próximo aluno
+      historico.clear();
+
+      alunos.insert({matricula, al});
+    }
+
+    file.close();
+
+    return alunos;
 }

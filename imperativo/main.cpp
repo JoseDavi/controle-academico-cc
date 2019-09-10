@@ -64,6 +64,12 @@ int main() {
   usuarios = lerUsuarios();
   disciplinas = lerDisciplinas();
 
+  alunos = lerAlunos();
+
+  // Se quiserem testar, fçam o seguinte: Vejam o csv de alunos, depois
+  // descomentem essa seção que cadastra mais usuários e depois rodem o
+  // programa e vejam o alunos.csv denovo
+
   // Aluno test;
   // test.matricula = "118110188";
   // test.nome = "wesley";
@@ -81,8 +87,8 @@ int main() {
   //
   // alunos.insert({test.matricula, test});
   // alunos.insert({"11911919", test});
-  //
-  // salvarAlunos(alunos);
+
+  salvarAlunos(alunos);
 
   main_menu();
 
