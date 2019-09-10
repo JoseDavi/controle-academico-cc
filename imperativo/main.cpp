@@ -16,6 +16,25 @@ enum ComandosPrincipais  {MENU_INICIAL, LOGAR, SAIR, FECHAR_SISTEMA};
 enum TipoUsuario         {NONE = 0, ALUNO = 1, PROFESSOR = 2, COORDENADOR = 3};
 enum ComandoCoordenador  {CADASTRA_ALUNO = 1, CADASTRA_PROFESSOR = 2, ANALISA_TRANCAMENTO = 3};
 
+// Definição do estado de um aluno em uma disciplina
+struct estadoDoAlunoEmDisciplina {
+  int faltas = 0;
+  int notas[3];
+
+  // estado (em curso, concluída, trancada)
+  string estado = "";
+};
+
+// Definição do tipo aluno
+struct aluno {
+  string matricula = "";
+  string nome = "";
+  bool esta_desvinculado = 0;
+
+  // Codigo de disciplina - struct do estado do aluno
+  map<string, estadoDoAlunoEmDisciplina> historico;
+};
+
 // Definição de protótipos dos menus do sistema
 void main_menu();
 void menu_inicial();
@@ -50,12 +69,14 @@ string password = "";
 // Usuários do sistema ( nome --> senha, tipo )
 map<string, array<string, 2>> usuarios;
 
-// Disciplinas no sistema (codigo --> nome)
+// Disciplinas no sistema ( codigo --> nome )
 map<string, string> disciplinas;
+
+// Alunos no sistema ( matrícula --> aluno )
+map<string, aluno> alunos;
 
 // Comandos principais do sistema
 int command = MENU_INICIAL;
-
 
 int main() {
 
@@ -295,23 +316,6 @@ void menu_coordenador() {
 }
 
 /* Seção onde se gerencia os alunos */
-
-struct estadoDoAlunoEmDisciplina {
-  int faltas = 0;
-  int notas[3];
-
-  // estado (em curso, concluída, trancada)
-  string estado = "";
-};
-
-struct aluno {
-  string matricula = "";
-  string nome = "";
-  bool esta_desvinculado = 0;
-
-  // Codigo de disciplina - struct do estado do aluno
-  map<string, estadoDoAlunoEmDisciplina> historico;
-};
 
 void realizar_matricula() {
   // To do
