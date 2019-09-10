@@ -394,6 +394,7 @@ void realizar_matricula() {
   disciplina.nome = disciplinas.find(codigo)->second;
 
   if (aluno.disciplinas_matriculadas < 6) {
+    // TODO - vefiricar se o aluno já pagou todos os pre-requisitos
     novohistorico.insert(pair<string,DisciplinaEmAluno>(codigo, disciplina));
     alunos.find(matricula)->second.historico = novohistorico;
     alunos.find(matricula)->second.disciplinas_matriculadas++;
@@ -409,7 +410,23 @@ void trancar_curso() {
   // To do
 }
 void ver_disciplina() {
-  // To do
+  string matricula = username;
+  map<string, DisciplinaEmAluno> historico = alunos.find(matricula)->second.historico;
+
+  string codigo;
+  cout << "Código da disciplina: " << endl;
+  cin >> codigo;
+
+  if (historico.count(codigo)) {
+      cout << "" << endl;
+      cout << "Nome: " + historico.find(codigo)->second.nome << endl;
+      cout << "Estado: " + historico.find(codigo)->second.estado << endl;
+      cout << "1° estágio: " + to_string(historico.find(codigo)->second.notas[0])<< endl;
+      cout << "2° estágio: " + to_string(historico.find(codigo)->second.notas[1])<< endl;
+      cout << "3° estágio: " + to_string(historico.find(codigo)->second.notas[2])<< endl;
+  } else {
+      cout << "Disciplina inválida." << endl;
+  }
 }
 void ver_historico() {
   // To do
