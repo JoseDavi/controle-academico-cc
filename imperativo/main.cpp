@@ -16,25 +16,6 @@ enum ComandosPrincipais  {MENU_INICIAL, LOGAR, SAIR, FECHAR_SISTEMA};
 enum TipoUsuario         {NONE = 0, ALUNO = 1, PROFESSOR = 2, COORDENADOR = 3};
 enum ComandoCoordenador  {CADASTRA_ALUNO = 1, CADASTRA_PROFESSOR = 2, ANALISA_TRANCAMENTO = 3};
 
-// Definição do estado de um aluno em uma disciplina
-typedef struct EstadoDoAluno {
-  int faltas = 0;
-  int notas[3];
-
-  // estado (em curso, concluída, trancada)
-  string estado = "";
-} EstadoDoAluno;
-
-// Definição do tipo aluno
-typedef struct Aluno {
-  string matricula = "";
-  string nome = "";
-  bool esta_desvinculado = 0;
-
-  // Codigo de disciplina - struct do estado do aluno
-  map<string, EstadoDoAluno> historico;
-} Aluno;
-
 // Definição de protótipos dos menus do sistema
 void main_menu();
 void menu_inicial();
@@ -82,6 +63,26 @@ int main() {
 
   usuarios = lerUsuarios();
   disciplinas = lerDisciplinas();
+
+  // Aluno test;
+  // test.matricula = "118110188";
+  // test.nome = "wesley";
+  // test.esta_desvinculado=0;
+  //
+  // DisciplinaEmAluno disciplina;
+  // disciplina.faltas = 2;
+  // disciplina.notas[0] = 9.3;
+  // disciplina.notas[1] = 8.2;
+  // disciplina.notas[2] = 7.1;
+  // disciplina.estado = "concluida";
+  //
+  // test.historico["120"] = disciplina;
+  // test.historico["110"] = disciplina;
+  //
+  // alunos.insert({test.matricula, test});
+  // alunos.insert({"11911919", test});
+  //
+  // salvarAlunos(alunos);
 
   main_menu();
 

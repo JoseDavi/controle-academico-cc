@@ -26,7 +26,6 @@ void salvarUsuarios(map<string, array<string, 2>> usuarios) {
          << it->second[1] << "\n";
   }
 }
-
 map<string, array<string, 2>> lerUsuarios() {
 
   // Usuários que serão lidos
@@ -70,7 +69,6 @@ void salvarDisciplinas(map<string, string> disciplinas) {
          << it->second << "\n";
   }
 }
-
 map<string, string> lerDisciplinas() {
 
   // Disciplinas que serão lidas
@@ -94,4 +92,40 @@ map<string, string> lerDisciplinas() {
   file.close();
 
   return disciplinas;
+}
+
+void salvarAlunos(map<string, Aluno> alunos) {
+  // Ponteiro para arquivo
+  fstream fout;
+
+  // Esvaziar conteúdo do arquivo de alunos antes de preenchê-lo novamente
+  esvaziarArquivo("alunos.csv");
+
+  // Abre um arquivo .csv ou cria um se necessário
+  fout.open("resources/alunos.csv", ios::out | ios::app);
+
+  map<string, Aluno>::iterator it;
+
+  for(it = alunos.begin(); it != alunos.end(); it++){
+    fout << it->first << ","
+         << it->second.nome << ","
+         << it->second.esta_desvinculado << ",";
+
+    map<string, DisciplinaEmAluno> historico = it->second.historico;
+    map<string, DisciplinaEmAluno>::iterator itHist;
+
+    fout << "[";
+    for (itHist = historico.begin(); itHist != historico.end(); itHist++) {
+      fout << itHist->first << ";"
+           << itHist->second.faltas << ";"
+           << itHist->second.notas[0] << ";"
+           << itHist->second.notas[1] << ";"
+           << itHist->second.notas[2] << ";"
+           << itHist->second.estado;
+           if (next(itHist) != historico.end()) {
+             fout << "+";
+           }
+    }
+    fout << "]\n";
+  }
 }
