@@ -76,8 +76,8 @@ int main() {
 
   // Aluno test;
   // test.matricula = "118110188";
-  // test.nome = "wesley";
-  // test.esta_desvinculado=0;
+  // test.nome = "wizar matteus";
+  // test.esta_desvinculado = 2;
   //
   // DisciplinaEmAluno disciplina;
   // disciplina.faltas = 2;
@@ -85,12 +85,20 @@ int main() {
   // disciplina.notas[1] = 8.2;
   // disciplina.notas[2] = 7.1;
   // disciplina.estado = "concluida";
+  // disciplina.estado = "trancada";
+  //
+  // DisciplinaEmAluno disciplina2;
+  // disciplina2.estado = "trancada";
+  // disciplina2.faltas = 10;
+  // disciplina2.notas[0] = 2.3;
+  // disciplina2.notas[1] = 2.345678;
+  //
   //
   // test.historico["120"] = disciplina;
-  // test.historico["110"] = disciplina;
+  // test.historico["110"] = disciplina2;
   //
-  // alunos.insert({test.matricula, test});
-  // alunos.insert({"11911919", test});
+  // alunos[test.matricula] = test;
+  // alunos["11911919"] = test;
 
   salvarAlunos(alunos);
 
