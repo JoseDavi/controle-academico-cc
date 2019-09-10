@@ -7,10 +7,10 @@ void salvarUsuarios(map<string, array<string, 2>> usuarios) {
   fstream fout;
 
   // Esvaziar conteúdo do arquivo de usuário antes de preenchê-lo novamente
-  esvaziarArquivo("usuarios.csv");
+  esvaziarArquivo("resources/usuarios.csv");
 
   // Abre um arquivo .csv ou cria um se necessário
-  fout.open("usuarios.csv", ios::out | ios::app);
+  fout.open("resources/usuarios.csv", ios::out | ios::app);
 
   map<string, array<string, 2>>::iterator it;
 
@@ -23,7 +23,7 @@ void salvarUsuarios(map<string, array<string, 2>> usuarios) {
 
 void esvaziarArquivo(string nomeArquivo) {
   ofstream ofs;
-  ofs.open(nomeArquivo, std::ofstream::out | std::ofstream::trunc);
+  ofs.open("resources/" + nomeArquivo, std::ofstream::out | std::ofstream::trunc);
   ofs.close();
 }
 
@@ -36,7 +36,7 @@ map<string, array<string, 2>> lerUsuarios() {
   ifstream file;
 
   // Abrir arquivo existente
-  file.open("usuarios.csv");
+  file.open("resources/usuarios.csv");
 
   string username, password, type;
 
