@@ -55,7 +55,7 @@ map<string, array<string, 2>> lerUsuarios() {
   return usuarios;
 }
 
-void salvarDisciplinas(map<string, string> disciplinas) {
+void salvarDisciplinas(map<string, Disciplina> disciplinas) {
   // Ponteiro para arquivo
   fstream fout;
 
@@ -65,17 +65,20 @@ void salvarDisciplinas(map<string, string> disciplinas) {
   // Abre um arquivo .csv ou cria um se necessário
   fout.open("resources/disciplinas.csv", ios::out | ios::app);
 
-  map<string, string>::iterator it;
+  map<string, Disciplina>::iterator it;
 
   for(it = disciplinas.begin(); it != disciplinas.end(); it++){
     fout << it->first << ","
-         << it->second << "\n";
+         << it->second.nome << ","
+         << to_string(it->second.vagas) << ","
+         << it->second.codigo_prerequisitos[0] << ","
+         << it->second.codigo_prerequisitos[1] << "\n";
   }
 }
-map<string, string> lerDisciplinas() {
+map<string, Disciplina> lerDisciplinas() {
 
   // Disciplinas que serão lidas
-  map<string, string> disciplinas;
+  map<string, Disciplina> disciplinas;
 
   // Ponteiro para o arquivo
   ifstream file;
@@ -83,13 +86,23 @@ map<string, string> lerDisciplinas() {
   // Abrir arquivo existente
   file.open("resources/disciplinas.csv");
 
-  string code, name;
-
+  string code, name, vagas, prerequisito1, prerequisito2;
+  printf("oiiiii");
   while (file.peek() != EOF) {
     getline(file, code, ',');
-    getline(file, name, '\n');
+    getline(file, name, ',');
+    getline(file, vagas, ',');
+    getline(file, prerequisito1, ',');
+    getline(file, prerequisito2, '\n');
 
-    disciplinas.insert(pair<string, string>(code, name));
+    struct Disciplina disciplina;
+    disciplina.codigo = code.c_str();
+    disciplina.nome = name.c_str();
+    disciplina.vagas = stoi(vagas.c_str());
+    disciplina.codigo_prerequisitos[0] = prerequisito1;
+    disciplina.codigo_prerequisitos[1] = prerequisito2.c_str();
+
+    disciplinas.insert(pair<string, Disciplina>(code, disciplina));
   }
 
   file.close();
@@ -120,6 +133,8 @@ void salvarAlunos(map<string, Aluno> alunos) {
     fout << "[";
     for (itHist = historico.begin(); itHist != historico.end(); itHist++) {
       fout << itHist->first << ";"
+           << itHist->second.codigo << ";"
+           << itHist->second.nome << ";"
            << itHist->second.faltas << ";"
            << itHist->second.notas[0] << ";"
            << itHist->second.notas[1] << ";"
@@ -174,11 +189,13 @@ map<string, Aluno> lerAlunos() {
       for(std::size_t i=0; i<disciplinas.size(); i++) {
         vector<string> disciplinaInfo = split(disciplinas[i], ';');
 
-        disc.faltas = std::stoi(disciplinaInfo[1]);
-        disc.notas[0] = std::stod(disciplinaInfo[2]);
-        disc.notas[1] = std::stod(disciplinaInfo[3]);
-        disc.notas[2] = std::stod(disciplinaInfo[4]);
-        disc.estado = disciplinaInfo[5];
+        disc.codigo = std::stoi(disciplinaInfo[1]);
+        disc.nome = std::stoi(disciplinaInfo[2]);
+        disc.faltas = std::stoi(disciplinaInfo[3]);
+        disc.notas[0] = std::stod(disciplinaInfo[4]);
+        disc.notas[1] = std::stod(disciplinaInfo[5]);
+        disc.notas[2] = std::stod(disciplinaInfo[6]);
+        disc.estado = disciplinaInfo[7];
 
         historico[disciplinaInfo[0]] = disc;
       }

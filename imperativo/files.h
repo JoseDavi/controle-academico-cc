@@ -2,13 +2,21 @@
 
 using namespace std;
 
+// Definição de uma disciplina
+typedef struct Disciplina {
+  string codigo;
+  string nome;
+  int vagas = 0;
+  string codigo_prerequisitos[2];
+} Disciplina;
+
 void esvaziarArquivo(string nomeArquivo);
 
 void salvarUsuarios(map<string, array<string, 2>> usuarios);
 map<string, array<string, 2>> lerUsuarios();
 
-void salvarDisciplinas(map<string, string> disciplinas);
-map<string, string> lerDisciplinas();
+void salvarDisciplinas(map<string, Disciplina> disciplinas);
+map<string, Disciplina> lerDisciplinas();
 
 // Definição do estado de um aluno em uma disciplina
 typedef struct DisciplinaEmAluno {
