@@ -11,7 +11,7 @@ void esvaziarArquivo(string nomeArquivo) {
   ofs.close();
 }
 
-void salvarUsuarios(map<string, array<string, 2>> usuarios) {
+void salvarUsuarios(map<string, array<string, 3>> usuarios) {
   // Ponteiro para arquivo
   fstream fout;
 
@@ -21,18 +21,19 @@ void salvarUsuarios(map<string, array<string, 2>> usuarios) {
   // Abre um arquivo .csv ou cria um se necessário
   fout.open("resources/usuarios.csv", ios::out | ios::app);
 
-  map<string, array<string, 2>>::iterator it;
+  map<string, array<string, 3>>::iterator it;
 
   for(it = usuarios.begin(); it != usuarios.end(); it++){
     fout << it->first << ","
          << it->second[0] << ","
-         << it->second[1] << "\n";
+         << it->second[1] << ","
+         << it->second[2] << "\n";
   }
 }
-map<string, array<string, 2>> lerUsuarios() {
+map<string, array<string, 3>> lerUsuarios() {
 
   // Usuários que serão lidos
-  map<string, array<string, 2>> usuarios;
+  map<string, array<string, 3>> usuarios;
 
   // Ponteiro para o arquivo
   ifstream file;
@@ -40,14 +41,15 @@ map<string, array<string, 2>> lerUsuarios() {
   // Abrir arquivo existente
   file.open("resources/usuarios.csv");
 
-  string username, password, type;
+  string username, password, type, name;
 
   while (file.peek() != EOF) {
     getline(file, username, ',');
     getline(file, password, ',');
+    getline(file, name, ',');
     getline(file, type, '\n');
 
-    usuarios.insert(pair<string, array<string, 2>>(username, {password, type}));
+    usuarios.insert(pair<string, array<string, 3>>(username, {password, type, name}));
   }
 
   file.close();
@@ -147,7 +149,6 @@ void salvarAlunos(map<string, Aluno> alunos) {
     fout << "]\n";
   }
 }
-
 map<string, Aluno> lerAlunos() {
 
     // Disciplinas que serão lidas

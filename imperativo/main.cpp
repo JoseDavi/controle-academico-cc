@@ -48,8 +48,8 @@ int usrtipo = NONE; // Tipo do usuário operante
 string username = "";
 string password = "";
 
-// Usuários do sistema ( nome --> senha, tipo )
-map<string, array<string, 2>> usuarios;
+// Usuários do sistema ( matricula --> senha, nome )
+map<string, array<string, 3>> usuarios;
 
 // Disciplinas no sistema ( codigo --> Disciplina )
 map<string, Disciplina> disciplinas;
@@ -65,6 +65,8 @@ int estado;
 int main() {
 
   usuarios = lerUsuarios();
+  salvarUsuarios(usuarios);
+
   disciplinas = lerDisciplinas();
   alunos = lerAlunos();
 
@@ -198,7 +200,7 @@ void menu_login() {
 }
 
 bool valida_usuario(string username, string password) {
-  array<string, 2> user = usuarios[username];
+  array<string, 3> user = usuarios[username];
   if (user[0].compare(password)== 0) {
     return true;
   } else{
@@ -208,7 +210,7 @@ bool valida_usuario(string username, string password) {
 }
 
 void atualiza_tipo_de_usuario(string username) {
-  array<string, 2> user = usuarios[username];
+  array<string, 3> user = usuarios[username];
   if(user[1].compare("aluno") == 0){
     usrtipo = ALUNO;
   }
@@ -266,7 +268,7 @@ void menu_aluno() {
     case VER_HISTORICO:
       ver_historico();
       break;
-    
+
     default:
       cout << "Opção inválida!" << endl;
       break;
@@ -435,7 +437,7 @@ float calcula_media(double array[3]){
 }
 
 void ver_historico() {
-  string matricula = username; 
+  string matricula = username;
   double media;
 
   map<string, DisciplinaEmAluno> historico = alunos.find(matricula)->second.historico;

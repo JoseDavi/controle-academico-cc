@@ -10,14 +10,6 @@ typedef struct Disciplina {
   string codigo_prerequisitos[2];
 } Disciplina;
 
-void esvaziarArquivo(string nomeArquivo);
-
-void salvarUsuarios(map<string, array<string, 2>> usuarios);
-map<string, array<string, 2>> lerUsuarios();
-
-void salvarDisciplinas(map<string, Disciplina> disciplinas);
-map<string, Disciplina> lerDisciplinas();
-
 // Definição do estado de um aluno em uma disciplina
 typedef struct DisciplinaEmAluno {
   string codigo;
@@ -37,6 +29,14 @@ typedef struct Aluno {
   // Codigo de disciplina - struct do estado do aluno
   map<string, DisciplinaEmAluno> historico;
 } Aluno;
+
+void esvaziarArquivo(string nomeArquivo);
+
+void salvarUsuarios(map<string, array<string, 3>> usuarios);
+map<string, array<string, 3>> lerUsuarios();
+
+void salvarDisciplinas(map<string, Disciplina> disciplinas);
+map<string, Disciplina> lerDisciplinas();
 
 void salvarAlunos(map<string, Aluno> alunos);
 map<string, Aluno> lerAlunos();
