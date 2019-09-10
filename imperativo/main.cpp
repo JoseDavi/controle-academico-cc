@@ -4,18 +4,19 @@
 #include <string>
 #include <map>
 #include <fstream>
-#include <limits>
 
 #include "users.h"
+#include "util.h"
 
 using namespace std;
 
-enum Estado {matricula = 1, emcurso = 2, fimdeperiodo = 3};
-enum ComandoPrincipais {MENU_INICIAL, LOGAR, SAIR, FECHAR_SISTEMA};
-enum TipoUsuario {ALUNO = 1, PROFESSOR = 2, COORDENADOR = 3};
-enum ComandoCoordenador {CADASTRA_ALUNO = 1, CADASTRA_PROFESSOR = 2, ANALISA_TRANCAMENTO = 3};
+// Constante do sistema
+enum Estado              {MATRICULA = 1, EM_CURSO = 2, FIM_DE_PERIODO = 3};
+enum ComandosPrincipais  {MENU_INICIAL, LOGAR, SAIR, FECHAR_SISTEMA};
+enum TipoUsuario         {NONE = 0, ALUNO = 1, PROFESSOR = 2, COORDENADOR = 3};
+enum ComandoCoordenador  {CADASTRA_ALUNO = 1, CADASTRA_PROFESSOR = 2, ANALISA_TRANCAMENTO = 3};
 
-// Menus dos funcionários
+// Definição de protótipos dos menus do sistema
 void main_menu();
 void menu_inicial();
 void menu_aluno();
@@ -23,16 +24,34 @@ void menu_professor();
 void menu_coordenador();
 void menu_login();
 
+void realizar_matricula();
+void trancar_disciplina();
+void trancar_curso();
+void ver_disciplina();
+void ver_historico();
+
+void fazer_chamada();
+void fechar_disciplina();
+void atualiza_aluno();
+
+// Funções auxiliares de autenticação e atualização de usuário operante
 bool valida_usuario(string username, string password);
 void atualiza_tipo_de_usuario(string username);
 
+// Funções de gerencia de pessoal por parte do usuário coordenador
 void cadastra_aluno();
 void cadastra_professor();
 void analisa_trancamento();
 
-
+// Usuários do sistema ( nome --> senha, tipo )
 map<string, array<string, 2>> usuarios;
 
+int usrtipo = NONE; // Tipo do usuário operante
+string username = "";
+string password = "";
+
+// Comandos principais do sistema
+int command = MENU_INICIAL;
 
 int main() {
     // TODO issue #5 (carregar disciplinas)
@@ -41,12 +60,6 @@ int main() {
     salvarUsuarios(usuarios);
     return 0;
 }
-
-int usrtipo = 0;
-string username = "";
-string password = "";
-
-int command = MENU_INICIAL;
 
 void main_menu() {
 
@@ -87,30 +100,7 @@ void main_menu() {
             cout << "Opção inválida";
             command = MENU_INICIAL;
         }
-        //fflush(stdin);
     }
-}
-
-// Padrão para limpar tela em terminal: http://www.cplusplus.com/articles/4z18T05o/
-void limparTela() {
-  int n;
-  for (n = 0; n < 10; n++) {
-    cout << "\n\n\n\n\n\n\n\n\n\n";
-  }
-}
-
-// Verifica se o cin está em estado de falha e o recupera descartando os
-// caracteres indesejados.
-void testa_falha_cin() {
-  if (cin.fail()){
-     // get rid of failure state
-     cin.clear();
-     // discard 'bad' character(s)
-     cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-     // Error message
-     cout << "Entrada inválida, por favor escolha um item do menu.";
-     getchar();
-  }
 }
 
 void menu_inicial() {
@@ -127,13 +117,13 @@ void menu_inicial() {
 }
 
 
-bool esta_logado () {
+bool usuario_esta_logado () {
   return !username.empty() && !password.empty();
 }
 
 void menu_login() {
 
-    if (esta_logado()){
+    if (usuario_esta_logado()){
         return; // o usuário já esta logado.
     }
 
@@ -150,7 +140,7 @@ void menu_login() {
     if (!valida_usuario(username,password)) {
         username = "";
         password = "";
-        usrtipo = 0;
+        usrtipo = NONE;
         return;
     }
 
@@ -184,7 +174,7 @@ void atualiza_tipo_de_usuario(string username) {
 
 void menu_aluno() {
 
-    if (!esta_logado) {
+    if (!usuario_esta_logado()) {
         cout << "Usuário não está logado!";
         return;
     }
@@ -218,7 +208,7 @@ void menu_aluno() {
 
 void menu_professor() {
 
-    if (!esta_logado) {
+    if (!usuario_esta_logado()) {
         cout << "Usuário não está logado!";
         return;
     }
@@ -250,7 +240,7 @@ void menu_professor() {
 
 void menu_coordenador() {
 
-    if (!esta_logado) {
+    if (!usuario_esta_logado()) {
         cout << "Usuário não está logado!";
         return;
     }
@@ -295,11 +285,76 @@ void menu_coordenador() {
 
 }
 
+/* Definição de disciplina */
 
+struct disciplina {
+  int codigo;
+  string nome;
+};
+
+/* Seção onde se gerencia os alunos */
+
+struct estadoDoAlunoEmDisciplina {
+  int faltas = 0;
+  int notas[3];
+
+  // estado (em curso, concluída, trancada)
+  string estado = "";
+};
+
+struct aluno {
+    string matricula = "";
+    string nome = "";
+    bool esta_desvinculado = 0;
+
+    // Codigo de disciplina - struct do estado do aluno
+    map<string, estadoDoAlunoEmDisciplina> historico;
+};
+
+void realizar_matricula() {
+  // To do
+}
+void trancar_disciplina() {
+  // To do
+}
+void trancar_curso() {
+  // To do
+}
+void ver_disciplina() {
+  // To do
+}
+void ver_historico() {
+  // To do
+}
+
+/* Seção onde se gerencia os professores */
+
+void fazer_chamada() {
+  // To do
+}
+void fechar_disciplina() {
+  // To do
+}
+void atualiza_aluno() {
+  // To do
+}
+
+/* Seção onde se gerencia o coordenador */
+
+// Análise de trancamento po parte do coordenador
+void analisa_trancamento() {
+    // ainda vou finalizar
+    if (!usuario_esta_logado()) {
+        cout << "Usuário não está logado!";
+        return;
+    }
+}
+
+// Cadastramento de aluno por parte do coordenador
 void cadastra_aluno() {
     string name, op, pswd;
 
-    if (!esta_logado) {
+    if (!usuario_esta_logado()) {
         cout << "Usuário não está logado!";
         return;
     }
@@ -333,10 +388,11 @@ void cadastra_aluno() {
 
 }
 
+// Cadastramento de professor por parte do coordenador
 void cadastra_professor() {
     string name, pswd, op;
 
-    if (!esta_logado) {
+    if (!usuario_esta_logado()) {
         cout << "Usuário não está logado!";
         return;
     }
@@ -368,13 +424,4 @@ void cadastra_professor() {
 
     }
 
-}
-
-// ainda vou finalizar
-void analisa_trancamento() {
-
-    if (!esta_logado) {
-        cout << "Usuário não está logado!";
-        return;
-    }
 }
