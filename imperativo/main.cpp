@@ -69,8 +69,6 @@ int estado;
 int main() {
 
   usuarios = lerUsuarios();
-  salvarUsuarios(usuarios);
-
   disciplinas = lerDisciplinas();
   alunos = lerAlunos();
 
@@ -93,26 +91,16 @@ int main() {
   // disciplina.estado = "concluida";
   // disciplina.estado = "trancada";
   //
-  // DisciplinaEmAluno disciplina2;
-  // disciplina2.estado = "trancada";
-  // disciplina2.faltas = 10;
-  // disciplina2.notas[0] = 2.3;
-  // disciplina2.notas[1] = 2.345678;
-  //
-  //
   // test.historico["120"] = disciplina;
-  // test.historico["110"] = disciplina2;
   //
   // alunos[test.matricula] = test;
   // alunos["11911919"] = test;
 
-  salvarAlunos(alunos);
   main_menu();
 
+  salvarAlunos(alunos);
   salvarDisciplinas(disciplinas);
-
   salvarUsuarios(usuarios);
-
   salvarTrancamentos(trancamentos);
 
   return 0;
@@ -153,6 +141,7 @@ void main_menu() {
       case FECHAR_SISTEMA:
         cout << "saindo...\n";
         exit = true;
+      break;
       default:
         cout << "Opção inválida";
         command = MENU_INICIAL;
