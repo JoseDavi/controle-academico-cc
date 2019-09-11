@@ -34,7 +34,7 @@ void ver_historico();
 
 void fazer_chamada();
 void fechar_disciplina();
-void atualiza_aluno();
+void notas_aluno();
 
 // Funções auxiliares de autenticação e atualização de usuário operante
 bool valida_usuario(string username, string password);
@@ -79,10 +79,10 @@ int main() {
   // programa e vejam o alunos.csv denovo
 
   // Aluno test;
-  // test.matricula = "118110188";
+  // test.matricula = "22222222";
   // test.nome = "wizar matteus";
   // test.esta_desvinculado = 2;
-  //
+  
   // DisciplinaEmAluno disciplina;
   // disciplina.faltas = 2;
   // disciplina.notas[0] = 9.3;
@@ -90,9 +90,9 @@ int main() {
   // disciplina.notas[2] = 7.1;
   // disciplina.estado = "concluida";
   // disciplina.estado = "trancada";
-  //
+  
   // test.historico["120"] = disciplina;
-  //
+  
   // alunos[test.matricula] = test;
   // alunos["11911919"] = test;
 
@@ -308,7 +308,7 @@ void menu_professor() {
       fechar_disciplina();
       break;
       case INSERIR_NOTAS:
-      atualiza_aluno();
+      notas_aluno();
       break;
       default:
       cout << "Opção inválida!" << endl;
@@ -410,31 +410,43 @@ void realizar_matricula() {
     alunos.find(matricula)->second.historico = novohistorico;
     alunos.find(matricula)->second.disciplinas_matriculadas++;
   } else {
-    cout << "Matricula não permitida. O aluno já esá matriculado em 6 cadeiras." <<  endl;
+    cout << "Matricula não permitida. O aluno já está matriculado em 6 cadeiras." <<  endl;
   }
 }
 
 void trancar_disciplina() {
   string op;
+  
+    Aluno aluno =  alunos.find(username)->second;
 
-  do {
-    limparTela();
-    cout << "\nDigite o ID da disciplina que deseja trancar: \n";
-    cin >> op;
-    limparTela();
-
-    if (alunos[username].historico.count(op) > 0) {
-      trancamentos.push_back({op, username});
-      cout << "Solicitação enviada com sucesso!\n";
-
+    if (aluno.disciplinas_matriculadas <= 4) {
+      cout << "Para solicitar o trancamento, é necessário estar matriculado em mais de 4 disciplinas. Pressione qlqr tecla pra voltar." << endl;
+      cin >> op;
     } else {
-      cout << "Aluno não matriculado nessa disciplina!\n" << endl;
+
+      do {
+        limparTela();
+        cout << "\nDigite o ID da disciplina que deseja trancar: \n";
+        cin >> op;
+        limparTela();
+
+        if (aluno.historico.count(op) > 0) {
+          trancamentos.push_back({op, username});
+          cout << "Solicitação enviada com sucesso!\n";
+
+        } else {
+          cout << "Aluno não matriculado nessa disciplina!\n" << endl;
+        }
+
+        cout << "Deseja solicitar o trancamento de mais uma disciplina? s/n\n" << endl;
+        cin >> op;
+
+      } while (op == "s");
+      
     }
+    
 
-    cout << "Deseja solicitar o trancamento de mais uma disciplina? s/n\n" << endl;
-    cin >> op;
-
-  } while (op == "s");
+    
 
 
 }
@@ -512,7 +524,7 @@ void fazer_chamada() {
 void fechar_disciplina() {
   // To do
 }
-void atualiza_aluno() {
+void notas_aluno() {
   // To do
 }
 
@@ -520,11 +532,42 @@ void atualiza_aluno() {
 
 // Análise de trancamento po parte do coordenador
 void analisa_trancamento() {
-  // ainda vou finalizar
   if (!usuario_esta_logado()) {
     cout << "Usuário não está logado!";
     return;
   }
+
+  int op, op2;
+
+  while (true) { 
+    limparTela();
+    for (int i = 0; i < trancamentos.size(); i++) {
+      cout << i+1 << ")" << "Aluno de matricula: " << trancamentos[i][1] << " solicita trancamento de:  " << trancamentos[i][0] << endl;
+    }
+
+    cout << "Digite o número da solicitação que deseja analisar ou digite 0 para sair." << endl;
+    cin >> op;
+
+    if (op == 0) {
+      break;
+    }
+
+    cout << "1) Aceitar solicitação" << endl;
+    cout << "2) Recusar solicitação" << endl;
+    cin >> op2;
+
+    if (op2 == 1) {
+      if (trancamentos[op-1][0] == "curso") {
+        alunos.find(trancamentos[op-1][1])->second.esta_desvinculado = 1;
+
+      } else {
+        alunos.find(trancamentos[op-1][1])->second.historico[trancamentos[op-1][0]].estado = "trancada";
+        alunos.find(trancamentos[op-1][1])->second.disciplinas_matriculadas--;
+      }
+    }
+  }
+  
+
 }
 
 // Cadastramento de aluno por parte do coordenador
