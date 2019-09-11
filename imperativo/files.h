@@ -1,4 +1,5 @@
 #include <map>
+#include <vector>
 
 using namespace std;
 
@@ -40,3 +41,6 @@ map<string, Disciplina> lerDisciplinas();
 
 void salvarAlunos(map<string, Aluno> alunos);
 map<string, Aluno> lerAlunos();
+
+void salvarTrancamentos(vector<array<string, 2>> trancamentos);
+vector<array <string, 2>> lerTrancamentos();

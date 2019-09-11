@@ -1,7 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
-
+#include <vector>
 #include "files.h"
 #include "util.h"
 
@@ -212,4 +212,44 @@ map<string, Aluno> lerAlunos() {
     file.close();
 
     return alunos;
+}
+
+void salvarTrancamentos(vector<array <string, 2>> trancamentos) {
+  // Ponteiro para arquivo
+  fstream fout;
+
+  // Esvaziar conteúdo do arquivo de trancamentos antes de preenchê-lo novamente
+  esvaziarArquivo("trancamentos.csv");
+
+  // Abre um arquivo .csv ou cria um se necessário
+  fout.open("resources/trancamentos.csv", ios::out | ios::app);
+
+  for(auto i = 0; i != trancamentos.size(); i++){
+    fout << trancamentos[i][0] << ","
+         << trancamentos[i][1] << "\n";
+  }
+}
+
+vector<array<string,2>> lerTrancamentos() {
+
+  // Trancamentos que serão lidas
+  vector<array <string, 2>> trancamentos;
+
+  // Ponteiro para o arquivo
+  ifstream file;
+
+  // Abrir arquivo existente
+  file.open("resources/trancamentos.csv");
+
+  string codDisciplina, matricula;
+  while (file.peek() != EOF) {
+    getline(file, codDisciplina, ',');
+    getline(file, matricula, '\n');
+    trancamentos.push_back({codDisciplina.c_str(), matricula.c_str()});
+
+  }
+
+  file.close();
+
+  return trancamentos;
 }

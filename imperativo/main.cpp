@@ -16,6 +16,7 @@ enum ComandosPrincipais  {MENU_INICIAL, LOGAR, SAIR, FECHAR_SISTEMA};
 enum TipoUsuario         {NONE = 0, ALUNO = 1, PROFESSOR = 2, COORDENADOR = 3};
 enum ComandoCoordenador  {CADASTRA_ALUNO = 1, CADASTRA_PROFESSOR = 2, ANALISA_TRANCAMENTO = 3};
 enum ComandoAluno        {FAZER_MATRICULA = 1, TRANCAR_DISCIPLINA = 2, TRANCAR_CURSO = 3, VER_DISCIPLINA = 4, VER_HISTORICO = 5};
+enum ComandoProfessor    {FAZER_CHAMADA = 1, FECHAR_DISCIPLINA = 2, INSERIR_NOTAS = 3};
 
 // Definição de protótipos dos menus do sistema
 void main_menu();
@@ -56,6 +57,9 @@ map<string, Disciplina> disciplinas;
 
 // Alunos no sistema ( matrícula --> aluno )
 map<string, Aluno> alunos;
+
+//Solicitacoes de trancamento
+vector<array <string, 2>> trancamentos;
 
 // Comandos principais do sistema
 int command = MENU_INICIAL;
@@ -108,6 +112,8 @@ int main() {
   salvarDisciplinas(disciplinas);
 
   salvarUsuarios(usuarios);
+
+  salvarTrancamentos(trancamentos);
 
   return 0;
 }
@@ -304,9 +310,23 @@ void menu_professor() {
       break;
     }
 
-    // TODO issue #3
+    switch (command) {
+
+      case FAZER_CHAMADA:
+      fazer_chamada();
+      break;
+      case FECHAR_DISCIPLINA:
+      fechar_disciplina();
+      break;
+      case INSERIR_NOTAS:
+      atualiza_aluno();
+      break;
+      default:
+      cout << "Opção inválida!" << endl;
+      break;
+    }
   }
-  return;
+
 }
 
 void menu_coordenador() {
@@ -406,11 +426,45 @@ void realizar_matricula() {
 }
 
 void trancar_disciplina() {
-  // To do
+  string op;
+
+  do {
+    limparTela();
+    cout << "\nDigite o ID da disciplina que deseja trancar: \n";
+    cin >> op;
+    limparTela();
+
+    if (alunos[username].historico.count(op) > 0) {
+      trancamentos.push_back({op, username});
+      cout << "Solicitação enviada com sucesso!\n";
+
+    } else {
+      cout << "Aluno não matriculado nessa disciplina!\n" << endl;
+    }
+
+    cout << "Deseja solicitar o trancamento de mais uma disciplina? s/n\n" << endl;
+    cin >> op;
+
+  } while (op == "s");
+
+
 }
+
 void trancar_curso() {
-  // To do
+  string op;
+
+  limparTela();
+  cout << "Deseja solicitar o trancamento total do curso? s/n";
+  cin >> op;
+
+  if (op == "s") {
+    trancamentos.push_back({"curso", username});
+    cout << "Solicitação enviada com sucesso!";
+
+  }
+
 }
+
 void ver_disciplina() {
   string matricula = username;
   map<string, DisciplinaEmAluno> historico = alunos.find(matricula)->second.historico;
@@ -464,7 +518,7 @@ void ver_historico() {
 /* Seção onde se gerencia os professores */
 
 void fazer_chamada() {
-  // To do
+
 }
 void fechar_disciplina() {
   // To do
