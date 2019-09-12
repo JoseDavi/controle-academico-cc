@@ -592,7 +592,7 @@ void cadastra_aluno() {
     cin >> pswd;
 
     if (usuarios.count(nome) == 0) {
-      usuarios[matricula] = {pswd,"aluno"};
+      usuarios[matricula] = {pswd,"aluno", nome};
       struct Aluno aluno;
       aluno.nome = nome;
       aluno.matricula = matricula;
