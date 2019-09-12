@@ -49,7 +49,7 @@ int usrtipo = NONE; // Tipo do usuário operante
 string username = "";
 string password = "";
 
-// Usuários do sistema ( matricula --> senha, nome )
+// Usuários do sistema ( matricula --> senha, tipo, nome )
 map<string, array<string, 3>> usuarios;
 
 // Disciplinas no sistema ( codigo --> Disciplina )
