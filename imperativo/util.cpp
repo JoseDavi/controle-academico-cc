@@ -39,3 +39,8 @@ vector<string> split(const string& s, char delimiter) {
    }
    return tokens;
 }
+
+void press_any_key() {
+  cin.get();
+  cin.ignore();
+}

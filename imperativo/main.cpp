@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <fstream>
+#include <iomanip>
 
 #include "files.h"
 #include "util.h"
@@ -211,13 +212,13 @@ bool valida_usuario(string username, string password) {
 
 void atualiza_tipo_de_usuario(string username) {
   array<string, 3> user = usuarios[username];
-  if(user[1].compare("aluno") == 0){
+  if(user[2].compare("aluno") == 0){
     usrtipo = ALUNO;
   }
-  else if(user[1].compare("professor") == 0){
+  else if(user[2].compare("professor") == 0){
     usrtipo = PROFESSOR;
   }
-  else if(user[1].compare("coordenador") == 0){
+  else if(user[2].compare("coordenador") == 0){
     usrtipo = COORDENADOR;
   }
 }
@@ -242,6 +243,7 @@ void menu_aluno() {
     cout << "5) Ver Histórico\n";
     cout << "6) Voltar...\n";
     cout << "\n| ----------------------------------------------- |\n";
+    cout << "> ";
 
     cin >> command;
     testa_falha_cin();
@@ -267,8 +269,8 @@ void menu_aluno() {
       break;
     case VER_HISTORICO:
       ver_historico();
+      press_any_key();
       break;
-
     default:
       cout << "Opção inválida!" << endl;
       break;
@@ -294,6 +296,7 @@ void menu_professor() {
     cout << "3) Inserir Notas\n";
     cout << "4) Voltar...\n";
     cout << "\n| ----------------------------------------------- |\n";
+    cout << "> ";
 
     cin >> command;
     testa_falha_cin();
@@ -340,6 +343,7 @@ void menu_coordenador() {
     cout << "3) Analisar Trancamenos\n";
     cout << "4) Voltar...\n";
     cout << "\n| ----------------------------------------------- |\n";
+    cout << "> ";
 
     cin >> command;
     testa_falha_cin();
@@ -506,10 +510,10 @@ void ver_historico() {
 
   map<string, DisciplinaEmAluno>::iterator it;
 
-   cout << "ID | NOME | MEDIA | SITUAÇÃO" << endl;
+   cout << "\n| ID | NOME | MEDIA | SITUAÇÃO |" << endl;
    for(it = historico.begin(); it != historico.end(); it++){
      if (it->second.estado == "em curso") {
-        cout << it->first + " | " <<  it->second.nome << " | - | " << "em curso" << endl;
+        cout << "| " << it->first + " | " <<  it->second.nome << " | - | " << "em curso |" << endl;
      } else {
         string situacao;
         media = calcula_media(it->second.notas);
@@ -518,7 +522,7 @@ void ver_historico() {
         } else {
             situacao = "REPROVADO";
         }
-        cout << it->first + " | " <<  it->second.nome << " | " << to_string(media) + " | " << situacao << endl;
+        cout << "| " << it->first + " | " <<  it->second.nome << " | " << setprecision(3) << media << " | " << situacao << " |" << endl;
         if (it->second.estado == "concluida") {
           cra += media;
           disciplinas_concluidas++;

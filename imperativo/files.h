@@ -5,18 +5,18 @@ using namespace std;
 
 // Definição de uma disciplina
 typedef struct Disciplina {
-  string codigo;
-  string nome;
+  string codigo = "";
+  string nome = "";
   int vagas = 0;
-  string codigo_prerequisitos[2];
+  string codigo_prerequisitos[2] = {"",""};
 } Disciplina;
 
 // Definição do estado de um aluno em uma disciplina
 typedef struct DisciplinaEmAluno {
-  string codigo;
-  string nome;
+  string codigo = "";
+  string nome = "";
   int faltas = 0;
-  double notas[3];
+  double notas[3] = {0.0,0.0,0.0};
   // estado (em curso, concluída, trancada)
   string estado = "";
 } DisciplinaEmAluno;
