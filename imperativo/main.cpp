@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <string>
 #include <map>
 #include <fstream>
@@ -179,15 +179,11 @@ void menu_login() {
     return; // o usuário já esta logado.
   }
 
-  string usr;
   cout << "Matricula: ";
-  cin >> usr;
-  username = usr;
+  cin >> username;
 
-  string psw;
   cout << "Senha: ";
-  cin >> psw;
-  password = psw;
+  cin >> password;
 
   if (!valida_usuario(username,password)) {
     username = "";
