@@ -134,6 +134,7 @@ void main_menu() {
           break;
           default:
             cout << "Usuário inválido! " << usrtipo << endl;
+            press_any_key();
             command = MENU_INICIAL;
           break;
         }
@@ -193,12 +194,11 @@ void menu_login() {
   }
 
   atualiza_tipo_de_usuario(username);
-
 }
 
 bool valida_usuario(string username, string password) {
   array<string, 3> user = usuarios[username];
-  if (user[0].compare(password)== 0) {
+  if (user[0].compare(password) == 0) {
     return true;
   } else{
     cout << "Senha inválida.";
@@ -208,13 +208,14 @@ bool valida_usuario(string username, string password) {
 
 void atualiza_tipo_de_usuario(string username) {
   array<string, 3> user = usuarios[username];
-  if(user[2].compare("aluno") == 0){
+  cout << user[1];
+  if(user[1].compare("aluno") == 0){
     usrtipo = ALUNO;
   }
-  else if(user[2].compare("professor") == 0){
+  else if(user[1].compare("professor") == 0){
     usrtipo = PROFESSOR;
   }
-  else if(user[2].compare("coordenador") == 0){
+  else if(user[1].compare("coordenador") == 0){
     usrtipo = COORDENADOR;
   }
 }
@@ -619,9 +620,8 @@ void cadastra_aluno() {
   }
 
   while (true) {
-    limparTela();
 
-    cout << "Matricula: ";
+    cout << "\nMatricula: ";
     cin >> matricula;
 
     cout << "Nome: ";
@@ -631,7 +631,7 @@ void cadastra_aluno() {
     cin >> pswd;
 
     if (usuarios.count(nome) == 0) {
-      usuarios[matricula] = {pswd,"aluno", nome};
+      usuarios[matricula] = {pswd, nome, "aluno"};
       struct Aluno aluno;
       aluno.nome = nome;
       aluno.matricula = matricula;

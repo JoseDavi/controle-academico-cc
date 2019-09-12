@@ -46,8 +46,8 @@ map<string, array<string, 3>> lerUsuarios() {
   while (file.peek() != EOF) {
     getline(file, username, ',');
     getline(file, password, ',');
-    getline(file, name, ',');
-    getline(file, type, '\n');
+    getline(file, type, ',');
+    getline(file, name, '\n');
 
     usuarios.insert(pair<string, array<string, 3>>(username, {password, type, name}));
   }
