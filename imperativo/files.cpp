@@ -41,15 +41,15 @@ map<string, array<string, 3>> lerUsuarios() {
   // Abrir arquivo existente
   file.open("resources/usuarios.csv");
 
-  string matricula, password, type, name;
+  string username, password, type, name;
 
   while (file.peek() != EOF) {
-    getline(file, matricula, ',');
+    getline(file, username, ',');
     getline(file, password, ',');
-    getline(file, type, ',');
-    getline(file, name, '\n');
+    getline(file, name, ',');
+    getline(file, type, '\n');
 
-    usuarios.insert(pair<string, array<string, 3>>(matricula, {password, type, name}));
+    usuarios.insert(pair<string, array<string, 3>>(username, {password, type, name}));
   }
 
   file.close();
@@ -89,7 +89,7 @@ map<string, Disciplina> lerDisciplinas() {
   file.open("resources/disciplinas.csv");
 
   string code, name, vagas, prerequisito1, prerequisito2;
-  printf("oiiiii");
+
   while (file.peek() != EOF) {
     getline(file, code, ',');
     getline(file, name, ',');
@@ -127,6 +127,7 @@ void salvarAlunos(map<string, Aluno> alunos) {
   for(it = alunos.begin(); it != alunos.end(); it++){
     fout << it->first << ","
          << it->second.nome << ","
+         << it->second.disciplinas_matriculadas << ","
          << it->second.esta_desvinculado << ",";
 
     map<string, DisciplinaEmAluno> historico = it->second.historico;
@@ -135,7 +136,6 @@ void salvarAlunos(map<string, Aluno> alunos) {
     fout << "[";
     for (itHist = historico.begin(); itHist != historico.end(); itHist++) {
       fout << itHist->first << ";"
-           << itHist->second.codigo << ";"
            << itHist->second.nome << ";"
            << itHist->second.faltas << ";"
            << itHist->second.notas[0] << ";"
@@ -161,7 +161,7 @@ map<string, Aluno> lerAlunos() {
     file.open("resources/alunos.csv");
 
     string matricula, nome, esta_desvinculado;
-    string disciplina, codDisciplina, estado;
+    string disciplina, codDisciplina, estado, disciplinas_matriculadas;
     int faltas;
     double notas[3];
 
@@ -171,12 +171,14 @@ map<string, Aluno> lerAlunos() {
     while (file.peek() != EOF) {
       getline(file, matricula, ',');
       getline(file, nome, ',');
+      getline(file, disciplinas_matriculadas, ',');
       getline(file, esta_desvinculado, ',');
       getline(file, disciplina, '\n');
 
       // Modificando primeiros atributos de aluno
       al.matricula = matricula;
       al.nome = nome;
+      al.disciplinas_matriculadas = std::stoi(disciplinas_matriculadas);
       al.esta_desvinculado = (esta_desvinculado == "1");
 
       // Processando a string de disciplinas
@@ -190,13 +192,13 @@ map<string, Aluno> lerAlunos() {
       for(std::size_t i=0; i<disciplinas.size(); i++) {
         vector<string> disciplinaInfo = split(disciplinas[i], ';');
 
-        disc.codigo = std::stoi(disciplinaInfo[1]);
-        disc.nome = std::stoi(disciplinaInfo[2]);
-        disc.faltas = std::stoi(disciplinaInfo[3]);
-        disc.notas[0] = std::stod(disciplinaInfo[4]);
-        disc.notas[1] = std::stod(disciplinaInfo[5]);
-        disc.notas[2] = std::stod(disciplinaInfo[6]);
-        disc.estado = disciplinaInfo[7];
+        disc.codigo = disciplinaInfo[0];
+        disc.nome = disciplinaInfo[1];
+        disc.faltas = std::stoi(disciplinaInfo[2]);
+        disc.notas[0] = std::stod(disciplinaInfo[3]);
+        disc.notas[1] = std::stod(disciplinaInfo[4]);
+        disc.notas[2] = std::stod(disciplinaInfo[5]);
+        disc.estado = disciplinaInfo[6];
 
         historico[disciplinaInfo[0]] = disc;
       }

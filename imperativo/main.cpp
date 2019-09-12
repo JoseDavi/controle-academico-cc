@@ -71,7 +71,6 @@ int main() {
   usuarios = lerUsuarios();
   disciplinas = lerDisciplinas();
   alunos = lerAlunos();
-
   estado = MATRICULA;
 
   // Se quiserem testar, fçam o seguinte: Vejam o csv de alunos, depois
@@ -82,7 +81,7 @@ int main() {
   // test.matricula = "22222222";
   // test.nome = "wizar matteus";
   // test.esta_desvinculado = 2;
-  
+
   // DisciplinaEmAluno disciplina;
   // disciplina.faltas = 2;
   // disciplina.notas[0] = 9.3;
@@ -90,9 +89,9 @@ int main() {
   // disciplina.notas[2] = 7.1;
   // disciplina.estado = "concluida";
   // disciplina.estado = "trancada";
-  
+
   // test.historico["120"] = disciplina;
-  
+
   // alunos[test.matricula] = test;
   // alunos["11911919"] = test;
 
@@ -417,7 +416,7 @@ void realizar_matricula() {
 
 void trancar_disciplina() {
   string op;
-  
+
     Aluno aluno =  alunos.find(username)->second;
 
     if (aluno.disciplinas_matriculadas <= 4) {
@@ -443,11 +442,11 @@ void trancar_disciplina() {
         cin >> op;
 
       } while (op == "s");
-      
-    }
-    
 
-    
+    }
+
+
+
 
 
 }
@@ -540,7 +539,7 @@ void analisa_trancamento() {
 
   int op, op2;
 
-  while (true) { 
+  while (true) {
     limparTela();
     for (int i = 0; i < trancamentos.size(); i++) {
       cout << i+1 << ")" << "Aluno de matricula: " << trancamentos[i][1] << " solicita trancamento de:  " << trancamentos[i][0] << endl;
@@ -567,7 +566,7 @@ void analisa_trancamento() {
       }
     }
   }
-  
+
 
 }
 
