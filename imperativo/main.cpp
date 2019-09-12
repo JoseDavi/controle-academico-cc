@@ -494,6 +494,8 @@ float calcula_media(double array[3]){
 void ver_historico() {
   string matricula = username;
   double media;
+  double cra = 0.0;
+  int disciplinas_concluidas = 0;
 
   map<string, DisciplinaEmAluno> historico = alunos.find(matricula)->second.historico;
 
@@ -512,7 +514,17 @@ void ver_historico() {
             situacao = "REPROVADO";
         }
         cout << it->first + " | " <<  it->second.nome << " | " << to_string(media) + " | " << situacao << endl;
+        if (it->second.estado == "concluida") {
+          cra += media;
+          disciplinas_concluidas++;
+        }
      }
+   }
+   cra = cra / disciplinas_concluidas;
+   if (disciplinas_concluidas >= 1) {
+     cout << "CRA: " << cra << endl;
+   } else {
+     cout << "O aluno ainda não possui CRA definido!" << endl;
    }
 }
 
