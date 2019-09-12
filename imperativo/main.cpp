@@ -262,6 +262,7 @@ void menu_aluno() {
       break;
     case VER_DISCIPLINA:
       ver_disciplina();
+      press_any_key();
       break;
     case VER_HISTORICO:
       ver_historico();
