@@ -44,3 +44,6 @@ map<string, Aluno> lerAlunos();
 
 void salvarTrancamentos(vector<array<string, 2>> trancamentos);
 vector<array <string, 2>> lerTrancamentos();
+
+void salvarProfessor_Disciplina(vector<array <string, 2>> professor_disciplina);
+vector<array <string, 2>> lerProfessor_Disciplina();

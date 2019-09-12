@@ -61,6 +61,9 @@ map<string, Aluno> alunos;
 //Solicitacoes de trancamento
 vector<array <string, 2>> trancamentos;
 
+// Professor e Disciplina
+vector<array <string, 2>>  professor_disciplina;
+
 // Comandos principais do sistema
 int command = MENU_INICIAL;
 int estado;
@@ -72,6 +75,7 @@ int main() {
   disciplinas = lerDisciplinas();
   alunos = lerAlunos();
   estado = MATRICULA;
+  professor_disciplina = lerProfessor_Disciplina();
 
   // Se quiserem testar, fçam o seguinte: Vejam o csv de alunos, depois
   // descomentem essa seção que cadastra mais usuários e depois rodem o
@@ -101,6 +105,7 @@ int main() {
   salvarDisciplinas(disciplinas);
   salvarUsuarios(usuarios);
   salvarTrancamentos(trancamentos);
+  salvarProfessor_Disciplina(professor_disciplina);
 
   return 0;
 }
@@ -531,7 +536,28 @@ void ver_historico() {
 /* Seção onde se gerencia os professores */
 
 void fazer_chamada() {
+  limparTela();
+  int op;
+  for (int i = 0; i < professor_disciplina.size(); i++)
+  {
+    if(professor_disciplina[i][0] == username){
 
+      map<string, Aluno>::iterator it;
+
+      for(it = alunos.begin(); it != alunos.end(); it++){
+        map<string, DisciplinaEmAluno> historicoAluno = alunos.find(it->first)->second.historico;
+        if(historicoAluno.find(professor_disciplina[i][1])->second.estado == "em curso"){
+          cout << "Matricula: " << it->first << " Nome: " << it->second.nome << endl;
+          cout << "0) Aluno presente." << endl;
+          cout << "1) Aluno faltou." << endl;
+          cin >> op;
+          if(op){
+            historicoAluno.find(professor_disciplina[i][1])->second.faltas++;
+          }
+        }
+      }
+    }
+  }
 }
 void fechar_disciplina() {
   // To do

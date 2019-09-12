@@ -255,3 +255,39 @@ vector<array<string,2>> lerTrancamentos() {
 
   return trancamentos;
 }
+
+void salvarProfessor_Disciplina(vector<array <string, 2>> professor_disciplina) {
+
+  fstream fout;
+
+  esvaziarArquivo("professores_disciplinas.csv");
+
+  fout.open("resources/professores_disciplinas.csv", ios::out | ios::app);
+
+  for(auto i = 0; i != professor_disciplina.size(); i++){
+    fout << professor_disciplina[i][0] << ","
+         << professor_disciplina[i][1] << "\n";
+  }
+}
+
+vector<array <string, 2>> lerProfessor_Disciplina() {
+
+  vector<array <string, 2>> professores_disciplinas;
+
+  ifstream file;
+
+  file.open("resources/professores_disciplinas.csv");
+
+  string nome, codigo;
+
+  while (file.peek() != EOF) {
+    getline(file, nome, ',');
+    getline(file, codigo, '\n');
+
+    professores_disciplinas.push_back({nome.c_str(), codigo.c_str()});
+  }
+
+  file.close();
+
+  return professores_disciplinas;
+}
