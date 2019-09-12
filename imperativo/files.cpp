@@ -41,15 +41,15 @@ map<string, array<string, 3>> lerUsuarios() {
   // Abrir arquivo existente
   file.open("resources/usuarios.csv");
 
-  string username, password, type, name;
+  string matricula, password, type, name;
 
   while (file.peek() != EOF) {
-    getline(file, username, ',');
+    getline(file, matricula, ',');
     getline(file, password, ',');
-    getline(file, name, ',');
-    getline(file, type, '\n');
+    getline(file, type, ',');
+    getline(file, name, '\n');
 
-    usuarios.insert(pair<string, array<string, 3>>(username, {password, type, name}));
+    usuarios.insert(pair<string, array<string, 3>>(matricula, {password, type, name}));
   }
 
   file.close();

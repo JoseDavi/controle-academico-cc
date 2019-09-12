@@ -129,6 +129,7 @@ void main_menu() {
           break;
           default:
             cout << "Usuário inválido! " << usrtipo << endl;
+            command = MENU_INICIAL;
           break;
         }
       break;
