@@ -185,6 +185,8 @@ void menu_login() {
 
   initscr();
 
+  clear();
+  
   printw("Matricula: ");
 
   getstr(user);
