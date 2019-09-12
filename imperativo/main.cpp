@@ -5,6 +5,7 @@
 #include <map>
 #include <fstream>
 #include <iomanip>
+#include <curses.h>
 
 #include "files.h"
 #include "util.h"
@@ -180,11 +181,26 @@ void menu_login() {
     return; // o usuário já esta logado.
   }
 
-  cout << "Matricula: ";
-  cin >> username;
+  char user[50], pass[50];
 
-  cout << "Senha: ";
-  cin >> password;
+  initscr();
+
+  printw("Matricula: ");
+
+  getstr(user);
+
+  printw("Senha: ");
+
+  noecho();
+
+  getstr(pass);
+
+  echo();
+
+  endwin();
+
+  username = user;
+  password = pass;
 
   if (!valida_usuario(username,password)) {
     username = "";
