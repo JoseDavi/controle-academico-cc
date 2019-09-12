@@ -627,11 +627,11 @@ void cadastra_aluno() {
     cout << "Nome: ";
     cin >> nome;
 
-    cout << "\nSenha do aluno: ";
+    cout << "Senha do aluno: ";
     cin >> pswd;
 
     if (usuarios.count(nome) == 0) {
-      usuarios[matricula] = {pswd, nome, "aluno"};
+      usuarios[matricula] = {pswd, "aluno", nome};
       struct Aluno aluno;
       aluno.nome = nome;
       aluno.matricula = matricula;
@@ -640,7 +640,7 @@ void cadastra_aluno() {
       cout << "\n\nCadastro negado. Aluno já consta no sistema!\n" << endl;
     }
 
-    cout << "Deseja cadastrar mais um aluno? s/n" << endl;
+    cout << "\nDeseja cadastrar mais um aluno? s/n" << endl;
     cin >> op;
 
     if (op == "n") {
@@ -665,10 +665,10 @@ void cadastra_professor() {
   while (true) {
     limparTela();
 
-    cout << "Nome do professor: ";
+    cout << "\nNome do professor: ";
     cin >> name;
 
-    cout << "\nSenha do professor: ";
+    cout << "Senha do professor: ";
     cin >> pswd;
 
     if (usuarios.count(name) == 0) {
@@ -678,7 +678,7 @@ void cadastra_professor() {
       cout << "\n\nCadastro negado. Professor já consta no sistema!\n" << endl;
     }
 
-    cout << "Deseja cadastrar mais um professor? s/n" << endl;
+    cout << "\nDeseja cadastrar mais um professor? s/n" << endl;
     cin >> op;
 
     if (op == "n") {
