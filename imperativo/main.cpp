@@ -36,7 +36,7 @@ void ver_historico();
 
 void fazer_chamada();
 void fechar_disciplina();
-void notas_aluno();
+void notas_aluno(int estagio);
 void alocar_professor();
 
 // Funções auxiliares de autenticação e atualização de usuário operante
@@ -333,7 +333,10 @@ void menu_professor() {
       fechar_disciplina();
       break;
       case INSERIR_NOTAS:
-      notas_aluno();
+      cout << "Qual estágio?" << endl;
+      int estagio;
+      cin >> estagio;
+      notas_aluno(estagio);
       break;
       default:
       cout << "Opção inválida!" << endl;
@@ -600,9 +603,28 @@ void fazer_chamada() {
 void fechar_disciplina() {
   // To do
 }
-void notas_aluno() {
-  // To do
-}
+void notas_aluno(int estagio) {
+
+  for (auto i = 0; i != professor_disciplina.size(); i++)
+  {
+    if(professor_disciplina[i][0] == username){
+
+      map<string, Aluno>::iterator it;
+
+      for(it = alunos.begin(); it != alunos.end(); it++){
+        map<string, DisciplinaEmAluno> historicoAluno = it->second.historico;
+        if(historicoAluno.count(professor_disciplina[i][1])){
+          if(historicoAluno.find(professor_disciplina[i][1])->second.estado == "em curso"){
+            cout << "Matricula: " << it->first << " Nome: " << it->second.nome << endl;
+            cout << "Nota do Aluno" << endl;
+            float nota;
+            cin >> nota;
+            historicoAluno.find(professor_disciplina[i][1])->second.notas[estagio-1] = nota;
+          }
+        }
+      }
+    }
+  }}
 
 /* Seção onde se gerencia o coordenador */
 
