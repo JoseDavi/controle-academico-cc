@@ -603,6 +603,7 @@ void analisa_trancamento() {
     for (int i = 0; i < trancamentos.size(); i++) {
       cout << i+1 << ")" << "Aluno de matricula: " << trancamentos[i][1] << " solicita trancamento de:  " << trancamentos[i][0] << endl;
     }
+
     cout << "Digite o número da solicitação que deseja analisar ou digite 0 para sair." << endl;
     cin >> numero_solicitacao;
 
@@ -620,7 +621,6 @@ void analisa_trancamento() {
       if (trancamentos[numero_solicitacao-1][0] == "curso") {
         alunos.find(matricula)->second.esta_desvinculado = 1;
       } else {
-        //printf("nome: %s   matricula: %s  desvinc: %d\n", alunos.find(matricula)->second.nome.c_str(), alunos.find(matricula)->second.matricula.c_str(), alunos.find(matricula)->second.esta_desvinculado);
         alunos.find(matricula)->second.historico[codigo_disciplina].estado = "trancada";
         alunos.find(matricula)->second.disciplinas_matriculadas--;
       }
@@ -628,17 +628,6 @@ void analisa_trancamento() {
     trancamentos.erase(trancamentos.begin() + numero_solicitacao - 1);
   }
 }
-
-/*
-| ID | NOME | MEDIA | SITUAÇÃO |
-| 110 | LOGICA | - | em curso |
-| 114 | GRAFOS | - | em curso |
-| 122 | AS | - | em curso |
-| 129 | IA | - | em curso |
-| 130 | ATAL | 0 | REPROVADO |
-| 131 | COMPILA | 0 | REPROVADO |
-
-*/
 
 // Cadastramento de aluno por parte do coordenador
 void cadastra_aluno() {
