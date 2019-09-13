@@ -622,7 +622,7 @@ void fazer_chamada() {
             cout << "1) Aluno faltou." << endl;
             cin >> op;
             if(op){
-              historicoAluno.find(professor_disciplina[i][1])->second.faltas++;
+              it->second.historico.find(professor_disciplina[i][1])->second.faltas++;
             }
           }
         }
@@ -631,7 +631,23 @@ void fazer_chamada() {
   }
 }
 void fechar_disciplina() {
-  // To do
+  for (auto i = 0; i != professor_disciplina.size(); i++)
+  {
+    if(professor_disciplina[i][0] == username){
+
+      map<string, Aluno>::iterator it;
+
+      for(it = alunos.begin(); it != alunos.end(); it++){
+        string codigo = professor_disciplina[i][1];
+        map<string, DisciplinaEmAluno> historicoAluno = it->second.historico;
+        if(historicoAluno.count(codigo)){
+          if(historicoAluno.find(codigo)->second.estado == "em curso"){
+            it->second.historico.find(codigo)->second.estado = "concluida";
+          }
+        }
+      }
+    }
+  }
 }
 void notas_aluno(int estagio) {
 
@@ -649,7 +665,7 @@ void notas_aluno(int estagio) {
             cout << "Nota do Aluno" << endl;
             float nota;
             cin >> nota;
-            historicoAluno.find(professor_disciplina[i][1])->second.notas[estagio-1] = nota;
+            it->second.historico.find(professor_disciplina[i][1])->second.notas[estagio-1] = nota;
           }
         }
       }
