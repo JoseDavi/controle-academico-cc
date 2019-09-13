@@ -506,7 +506,13 @@ void realizar_matricula() {
 }
 
 void trancar_disciplina() {
-  string op, disciplina_id, estado;
+
+    if (estado != EM_CURSO) {
+      cout << "Funcionalidade indisponível no momento, pois o estado sistema não está no estado em curso." << endl;
+      return;
+    }
+
+    string op, disciplina_id, estado_disciplina;
 
     Aluno aluno =  alunos.find(username)->second;
 
@@ -519,11 +525,11 @@ void trancar_disciplina() {
         cout << "\nDigite o ID da disciplina que deseja trancar: ";
         cin >> disciplina_id;
 
-        estado = aluno.historico.find(disciplina_id)->second.estado;
-        if (aluno.historico.count(disciplina_id) > 0 &&  estado.compare("em curso") == 0) {
+        estado_disciplina = aluno.historico.find(disciplina_id)->second.estado;
+        if (aluno.historico.count(disciplina_id) > 0 &&  estado_disciplina.compare("em curso") == 0) {
           trancamentos.push_back({disciplina_id, username});
           cout << "Solicitação enviada com sucesso!";
-        } else if (aluno.historico.count(disciplina_id) > 0 && estado.compare("trancada") == 0) {
+        } else if (aluno.historico.count(disciplina_id) > 0 && estado_disciplina.compare("trancada") == 0) {
           cout << "Disciplina já foi trancada!" << endl;
         } else {
           cout << "Aluno não matriculado nessa disciplina!" << endl;
@@ -666,6 +672,7 @@ void fechar_disciplina() {
     }
   }
 }
+
 void notas_aluno(int estagio) {
 
   for (auto i = 0; i != professor_disciplina.size(); i++)
