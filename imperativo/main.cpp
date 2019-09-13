@@ -440,7 +440,7 @@ void realizar_matricula() {
 }
 
 void trancar_disciplina() {
-  string op;
+  string op, disciplina_id, estado;
 
     Aluno aluno =  alunos.find(username)->second;
 
@@ -452,13 +452,15 @@ void trancar_disciplina() {
       do {
         limparTela();
         cout << "\nDigite o ID da disciplina que deseja trancar: \n";
-        cin >> op;
+        cin >> disciplina_id;
         limparTela();
-
-        if (aluno.historico.count(op) > 0) {
-          trancamentos.push_back({op, username});
+        
+        estado = aluno.historico.find(disciplina_id)->second.estado;
+        if (aluno.historico.count(disciplina_id) > 0 &&  estado.compare("em curso") == 0) {
+          trancamentos.push_back({disciplina_id, username});
           cout << "Solicitação enviada com sucesso!\n";
-
+        } else if (aluno.historico.count(disciplina_id) > 0 && estado.compare("trancada") == 0) {
+          cout << "Disciplina já foi trancada!\n" << endl;
         } else {
           cout << "Aluno não matriculado nessa disciplina!\n" << endl;
         }
@@ -534,11 +536,17 @@ void ver_historico() {
      } else {
         string situacao;
         media = calcula_media(it->second.notas);
-        if (media >= 7) {
-            situacao = "APROVADO";
+        
+        if (it->second.estado.compare("trancado")){
+            situacao = "trancado";
         } else {
-            situacao = "REPROVADO";
+            if (media >= 7) {
+            situacao = "aprovado";
+        } else {
+            situacao = "reprovado";
         }
+      }
+        
         cout << "| " << it->first + " | " <<  it->second.nome << " | " << setprecision(3) << media << " | " << situacao << " |" << endl;
         if (it->second.estado == "concluida") {
           cra += media;
