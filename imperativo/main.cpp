@@ -596,38 +596,49 @@ void analisa_trancamento() {
     return;
   }
 
-  int op, op2;
+  int numero_solicitacao, operacao;
 
-  while (true) {
+  while (true) { 
     limparTela();
     for (int i = 0; i < trancamentos.size(); i++) {
       cout << i+1 << ")" << "Aluno de matricula: " << trancamentos[i][1] << " solicita trancamento de:  " << trancamentos[i][0] << endl;
     }
-
     cout << "Digite o número da solicitação que deseja analisar ou digite 0 para sair." << endl;
-    cin >> op;
+    cin >> numero_solicitacao;
 
-    if (op == 0) {
+    if (numero_solicitacao == 0) {
       break;
     }
 
     cout << "1) Aceitar solicitação" << endl;
     cout << "2) Recusar solicitação" << endl;
-    cin >> op2;
+    cin >> operacao;
 
-    if (op2 == 1) {
-      if (trancamentos[op-1][0] == "curso") {
-        alunos.find(trancamentos[op-1][1])->second.esta_desvinculado = 1;
-
+    if (operacao == 1) {
+      string matricula = trancamentos[numero_solicitacao-1][1];
+      string codigo_disciplina = trancamentos[numero_solicitacao-1][0];
+      if (trancamentos[numero_solicitacao-1][0] == "curso") {
+        alunos.find(matricula)->second.esta_desvinculado = 1;
       } else {
-        alunos.find(trancamentos[op-1][1])->second.historico[trancamentos[op-1][0]].estado = "trancada";
-        alunos.find(trancamentos[op-1][1])->second.disciplinas_matriculadas--;
+        //printf("nome: %s   matricula: %s  desvinc: %d\n", alunos.find(matricula)->second.nome.c_str(), alunos.find(matricula)->second.matricula.c_str(), alunos.find(matricula)->second.esta_desvinculado);
+        alunos.find(matricula)->second.historico[codigo_disciplina].estado = "trancada";
+        alunos.find(matricula)->second.disciplinas_matriculadas--;
       }
     }
+    trancamentos.erase(trancamentos.begin() + numero_solicitacao - 1);
   }
-
-
 }
+
+/*
+| ID | NOME | MEDIA | SITUAÇÃO |
+| 110 | LOGICA | - | em curso |
+| 114 | GRAFOS | - | em curso |
+| 122 | AS | - | em curso |
+| 129 | IA | - | em curso |
+| 130 | ATAL | 0 | REPROVADO |
+| 131 | COMPILA | 0 | REPROVADO |
+
+*/
 
 // Cadastramento de aluno por parte do coordenador
 void cadastra_aluno() {
