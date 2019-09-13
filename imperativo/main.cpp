@@ -413,6 +413,30 @@ void imprime_disciplinas_disponiveis(map<string, DisciplinaEmAluno> historico) {
   }
 }
 
+
+string verifica_prerequisitos(string disciplina_id, map<string, DisciplinaEmAluno> historico ) {
+    string prerequisito1 = disciplinas.find(disciplina_id)->second.codigo_prerequisitos[0]; 
+    string prerequisito2 = disciplinas.find(disciplina_id)->second.codigo_prerequisitos[1];
+    bool prerequisitos_satisfeitos, sem_prerequisito1, sem_prerequisito2, sem_nenhum_prerequisito;
+
+    prerequisitos_satisfeitos = historico.count(prerequisito1) && historico.find(prerequisito1)->second.estado.compare("concluida") == 0 &&
+        historico.count(prerequisito1) && historico.find(prerequisito2)->second.estado.compare("concluida") == 0 ;
+
+    sem_prerequisito1 = prerequisito1.compare("0") != 0 && (!historico.count(prerequisito1) || historico.find(prerequisito1)->second.estado.compare("concluida") != 0);
+    sem_prerequisito2 = prerequisito2.compare("0") != 0 && (!historico.count(prerequisito2) || historico.find(prerequisito2)->second.estado.compare("concluida") != 0);
+    sem_nenhum_prerequisito = sem_prerequisito1 && sem_prerequisito2;
+    if (prerequisitos_satisfeitos) {
+      return "";
+    }  else if (sem_nenhum_prerequisito) {
+      return "Disciplinas " + disciplinas.find(prerequisito1)->second.nome + " e " + disciplinas.find(prerequisito2)->second.nome + " não concluidas";
+    } else if (sem_prerequisito1) {
+      return "Disciplina " + disciplinas.find(prerequisito1)->second.nome + " não concluida";
+    } else if (sem_prerequisito2) {
+      return "Disciplina " + disciplinas.find(prerequisito2)->second.nome + " não concluida";
+    }
+}
+
+
 void realizar_matricula() {
   if (estado != MATRICULA) {
       cout << "O tempo de realização de matrícula foi esgotado." << endl;
@@ -431,6 +455,12 @@ void realizar_matricula() {
 
   if (!disciplinas.count(codigo)) {
     cout << "Código de disciplina inválido" <<  endl;
+    return;
+  }
+
+  string msg = verifica_prerequisitos(codigo, alunos.find(matricula)->second.historico);
+  if (msg.compare("") != 0){
+    cout << "Matrícula não permitida. " << msg <<  endl;
     return;
   }
 
