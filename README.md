@@ -43,8 +43,6 @@ Fechar uma disciplina.
 
 **O coordenador pode ...**
 
-Criar a lista de disciplinas que serão ofertadas no próximo semestre.
-
 Analizar solicitações de trancamento de curso ou de disciplinas.
 
 Cadastrar Alunos e Professores.
