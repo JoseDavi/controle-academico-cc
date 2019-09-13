@@ -503,6 +503,7 @@ void ver_disciplina() {
       cout << "" << endl;
       cout << "Nome: " + historico.find(codigo)->second.nome << endl;
       cout << "Estado: " + historico.find(codigo)->second.estado << endl;
+      cout << "Faltas: " + to_string(historico.find(codigo)->second.faltas) << endl;
       cout << "1° estágio: " + to_string(historico.find(codigo)->second.notas[0])<< endl;
       cout << "2° estágio: " + to_string(historico.find(codigo)->second.notas[1])<< endl;
       cout << "3° estágio: " + to_string(historico.find(codigo)->second.notas[2])<< endl;
