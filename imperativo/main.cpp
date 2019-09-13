@@ -394,9 +394,12 @@ void menu_coordenador() {
 
 
 void imprime_disciplinas_disponiveis(map<string, DisciplinaEmAluno> historico) {
+  bool disciplina_nunca_matriculada, disciplina_trancada;
   map<string, Disciplina>::iterator it;
   for(it = disciplinas.begin(); it != disciplinas.end(); it++){
-    if (!historico.count(it->first)){     // key not exists
+    disciplina_nunca_matriculada = !historico.count(it->first);   // key not exists
+    disciplina_trancada = historico.count(it->first) && historico.find(it->first)->second.estado.compare("trancada") == 0;
+    if (disciplina_nunca_matriculada || disciplina_trancada){    
         cout << it->first << ") " <<  it->second.nome << endl;
     }
   }
