@@ -568,23 +568,24 @@ void ver_historico() {
 /* Seção onde se gerencia os professores */
 
 void fazer_chamada() {
-  limparTela();
   int op;
-  for (int i = 0; i < professor_disciplina.size(); i++)
+  for (auto i = 0; i != professor_disciplina.size(); i++)
   {
     if(professor_disciplina[i][0] == username){
 
       map<string, Aluno>::iterator it;
 
       for(it = alunos.begin(); it != alunos.end(); it++){
-        map<string, DisciplinaEmAluno> historicoAluno = alunos.find(it->first)->second.historico;
-        if(historicoAluno.find(professor_disciplina[i][1])->second.estado == "em curso"){
-          cout << "Matricula: " << it->first << " Nome: " << it->second.nome << endl;
-          cout << "0) Aluno presente." << endl;
-          cout << "1) Aluno faltou." << endl;
-          cin >> op;
-          if(op){
-            historicoAluno.find(professor_disciplina[i][1])->second.faltas++;
+        map<string, DisciplinaEmAluno> historicoAluno = it->second.historico;
+        if(historicoAluno.count(professor_disciplina[i][1])){
+          if(historicoAluno.find(professor_disciplina[i][1])->second.estado == "em curso"){
+            cout << "Matricula: " << it->first << " Nome: " << it->second.nome << endl;
+            cout << "0) Aluno presente." << endl;
+            cout << "1) Aluno faltou." << endl;
+            cin >> op;
+            if(op){
+              historicoAluno.find(professor_disciplina[i][1])->second.faltas++;
+            }
           }
         }
       }
@@ -685,7 +686,7 @@ void cadastra_aluno() {
 
 // Cadastramento de professor por parte do coordenador
 void cadastra_professor() {
-  string name, pswd, op;
+  string mat, name, pswd, op;
 
   if (!usuario_esta_logado()) {
     cout << "Usuário não está logado!";
@@ -695,15 +696,17 @@ void cadastra_professor() {
   while (true) {
     limparTela();
 
+    cout << "\nMatricula do professor: ";
+    cin >> mat;
+
     cout << "\nNome do professor: ";
     cin >> name;
 
-    cout << "Senha do professor: ";
+    cout << "\nSenha do professor: ";
     cin >> pswd;
 
-    if (usuarios.count(name) == 0) {
-      usuarios[name] = {pswd,"professor", name};
-
+    if (usuarios.count(mat) == 0) {
+      usuarios[mat] = {pswd,"professor", name};
     } else {
       cout << "\n\nCadastro negado. Professor já consta no sistema!\n" << endl;
     }
