@@ -282,6 +282,7 @@ void menu_aluno() {
       break;
     case TRANCAR_CURSO:
       trancar_curso();
+      press_any_key();
       break;
     case VER_DISCIPLINA:
       ver_disciplina();
@@ -500,22 +501,20 @@ void trancar_disciplina() {
     } else {
 
       do {
-        limparTela();
-        cout << "\nDigite o ID da disciplina que deseja trancar: \n";
+        cout << "\nDigite o ID da disciplina que deseja trancar: ";
         cin >> disciplina_id;
-        limparTela();
 
         estado = aluno.historico.find(disciplina_id)->second.estado;
         if (aluno.historico.count(disciplina_id) > 0 &&  estado.compare("em curso") == 0) {
           trancamentos.push_back({disciplina_id, username});
-          cout << "Solicitação enviada com sucesso!\n";
+          cout << "Solicitação enviada com sucesso!";
         } else if (aluno.historico.count(disciplina_id) > 0 && estado.compare("trancada") == 0) {
-          cout << "Disciplina já foi trancada!\n" << endl;
+          cout << "Disciplina já foi trancada!" << endl;
         } else {
-          cout << "Aluno não matriculado nessa disciplina!\n" << endl;
+          cout << "Aluno não matriculado nessa disciplina!" << endl;
         }
 
-        cout << "Deseja solicitar o trancamento de mais uma disciplina? s/n\n" << endl;
+        cout << "\nDeseja solicitar o trancamento de mais uma disciplina? s/n" << endl;
         cin >> op;
 
       } while (op == "s");
@@ -531,14 +530,14 @@ void trancar_disciplina() {
 void trancar_curso() {
   string op;
 
-  limparTela();
-  cout << "Deseja solicitar o trancamento total do curso? s/n";
+  cout << "\nDeseja solicitar o trancamento total do curso? s/n" << endl;
   cin >> op;
 
   if (op == "s") {
     trancamentos.push_back({"curso", username});
     cout << "Solicitação enviada com sucesso!";
-
+  } else {
+    cout << "Operação não realizada!";
   }
 
 }
