@@ -587,15 +587,13 @@ void ver_historico() {
         string situacao;
         media = calcula_media(it->second.notas);
 
-        if (it->second.estado.compare("trancado")){
+        if (it->second.estado.compare("trancado") == 0){
             situacao = "trancado";
-        } else {
-            if (media >= 7) {
+        } else if (media >= 7) {
             situacao = "aprovado";
         } else {
             situacao = "reprovado";
         }
-      }
 
         cout << "| " << it->first + " | " <<  it->second.nome << " | " << setprecision(3) << media << " | " << situacao << " |" << endl;
         if (it->second.estado == "concluida") {
@@ -603,13 +601,13 @@ void ver_historico() {
           disciplinas_concluidas++;
         }
      }
-   }
-   cra = cra / disciplinas_concluidas;
-   if (disciplinas_concluidas >= 1) {
-     cout << "CRA: " << cra << endl;
-   } else {
-     cout << "O aluno ainda não possui CRA definido!" << endl;
-   }
+  }
+  cra = cra / disciplinas_concluidas;
+  if (disciplinas_concluidas >= 1) {
+    cout << "CRA: " << cra << endl;
+  } else {
+    cout << "O aluno ainda não possui CRA definido!" << endl;
+  }
 }
 
 /* Seção onde se gerencia os professores */
