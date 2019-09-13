@@ -189,7 +189,7 @@ void menu_login() {
   initscr();
 
   clear();
-  
+
   printw("Matricula: ");
 
   getstr(user);
@@ -275,6 +275,7 @@ void menu_aluno() {
   switch (command) {
     case FAZER_MATRICULA:
       realizar_matricula();
+      press_any_key();
       break;
     case TRANCAR_DISCIPLINA:
       trancar_disciplina();
@@ -412,7 +413,7 @@ void imprime_disciplinas_disponiveis(map<string, DisciplinaEmAluno> historico) {
   for(it = disciplinas.begin(); it != disciplinas.end(); it++){
     disciplina_nunca_matriculada = !historico.count(it->first);   // key not exists
     disciplina_trancada = historico.count(it->first) && historico.find(it->first)->second.estado.compare("trancada") == 0;
-    if (disciplina_nunca_matriculada || disciplina_trancada){    
+    if (disciplina_nunca_matriculada || disciplina_trancada){
         cout << it->first << ") " <<  it->second.nome << endl;
     }
   }
@@ -420,16 +421,18 @@ void imprime_disciplinas_disponiveis(map<string, DisciplinaEmAluno> historico) {
 
 
 string verifica_prerequisitos(string disciplina_id, map<string, DisciplinaEmAluno> historico ) {
-    string prerequisito1 = disciplinas.find(disciplina_id)->second.codigo_prerequisitos[0]; 
+    string prerequisito1 = disciplinas.find(disciplina_id)->second.codigo_prerequisitos[0];
     string prerequisito2 = disciplinas.find(disciplina_id)->second.codigo_prerequisitos[1];
     bool prerequisitos_satisfeitos, sem_prerequisito1, sem_prerequisito2, sem_nenhum_prerequisito;
 
-    prerequisitos_satisfeitos = historico.count(prerequisito1) && historico.find(prerequisito1)->second.estado.compare("concluida") == 0 &&
-        historico.count(prerequisito1) && historico.find(prerequisito2)->second.estado.compare("concluida") == 0 ;
+    prerequisitos_satisfeitos = (prerequisito1.compare("0") == 0 && prerequisito2.compare("0") == 0) ||
+        historico.count(prerequisito1) && historico.find(prerequisito1)->second.estado.compare("concluida") == 0 &&
+        historico.count(prerequisito2) && historico.find(prerequisito2)->second.estado.compare("concluida") == 0 ;
 
     sem_prerequisito1 = prerequisito1.compare("0") != 0 && (!historico.count(prerequisito1) || historico.find(prerequisito1)->second.estado.compare("concluida") != 0);
     sem_prerequisito2 = prerequisito2.compare("0") != 0 && (!historico.count(prerequisito2) || historico.find(prerequisito2)->second.estado.compare("concluida") != 0);
     sem_nenhum_prerequisito = sem_prerequisito1 && sem_prerequisito2;
+
     if (prerequisitos_satisfeitos) {
       return "";
     }  else if (sem_nenhum_prerequisito) {
@@ -443,6 +446,7 @@ string verifica_prerequisitos(string disciplina_id, map<string, DisciplinaEmAlun
 
 
 void realizar_matricula() {
+
   if (estado != MATRICULA) {
       cout << "O tempo de realização de matrícula foi esgotado." << endl;
       return;
@@ -500,7 +504,7 @@ void trancar_disciplina() {
         cout << "\nDigite o ID da disciplina que deseja trancar: \n";
         cin >> disciplina_id;
         limparTela();
-        
+
         estado = aluno.historico.find(disciplina_id)->second.estado;
         if (aluno.historico.count(disciplina_id) > 0 &&  estado.compare("em curso") == 0) {
           trancamentos.push_back({disciplina_id, username});
@@ -582,7 +586,7 @@ void ver_historico() {
      } else {
         string situacao;
         media = calcula_media(it->second.notas);
-        
+
         if (it->second.estado.compare("trancado")){
             situacao = "trancado";
         } else {
@@ -592,7 +596,7 @@ void ver_historico() {
             situacao = "reprovado";
         }
       }
-        
+
         cout << "| " << it->first + " | " <<  it->second.nome << " | " << setprecision(3) << media << " | " << situacao << " |" << endl;
         if (it->second.estado == "concluida") {
           cra += media;
@@ -695,7 +699,7 @@ void analisa_trancamento() {
 
   int numero_solicitacao, operacao;
 
-  while (true) { 
+  while (true) {
     limparTela();
     for (int i = 0; i < trancamentos.size(); i++) {
       cout << i+1 << ")" << "Aluno de matricula: " << trancamentos[i][1] << " solicita trancamento de:  " << trancamentos[i][0] << endl;
@@ -860,7 +864,7 @@ void altera_estado() {
       break;
       default:
       cout << "Opção inválida!" << endl;
-      break; 
+      break;
     }
   }
 }

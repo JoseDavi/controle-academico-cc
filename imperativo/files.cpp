@@ -72,7 +72,7 @@ void salvarDisciplinas(map<string, Disciplina> disciplinas) {
   for(it = disciplinas.begin(); it != disciplinas.end(); it++){
     fout << it->first << ","
          << it->second.nome << ","
-         << to_string(it->second.vagas) << ","
+         << it->second.vagas << ","
          << it->second.codigo_prerequisitos[0] << ","
          << it->second.codigo_prerequisitos[1] << "\n";
   }
@@ -89,6 +89,7 @@ map<string, Disciplina> lerDisciplinas() {
   file.open("resources/disciplinas.csv");
 
   string code, name, vagas, prerequisito1, prerequisito2;
+  Disciplina disciplina;
 
   while (file.peek() != EOF) {
     getline(file, code, ',');
@@ -97,12 +98,11 @@ map<string, Disciplina> lerDisciplinas() {
     getline(file, prerequisito1, ',');
     getline(file, prerequisito2, '\n');
 
-    struct Disciplina disciplina;
-    disciplina.codigo = code.c_str();
-    disciplina.nome = name.c_str();
-    disciplina.vagas = stoi(vagas.c_str());
+    disciplina.codigo = code;
+    disciplina.nome = name;
+    disciplina.vagas = stoi(vagas);
     disciplina.codigo_prerequisitos[0] = prerequisito1;
-    disciplina.codigo_prerequisitos[1] = prerequisito2.c_str();
+    disciplina.codigo_prerequisitos[1] = prerequisito2;
 
     disciplinas.insert(pair<string, Disciplina>(code, disciplina));
   }
