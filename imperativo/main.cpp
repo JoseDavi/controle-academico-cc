@@ -16,7 +16,7 @@ using namespace std;
 enum Estado              {MATRICULA = 1, EM_CURSO = 2, FIM_DE_PERIODO = 3};
 enum ComandosPrincipais  {MENU_INICIAL, LOGAR, SAIR, FECHAR_SISTEMA};
 enum TipoUsuario         {NONE = 0, ALUNO = 1, PROFESSOR = 2, COORDENADOR = 3};
-enum ComandoCoordenador  {CADASTRA_ALUNO = 1, CADASTRA_PROFESSOR = 2, ANALISA_TRANCAMENTO = 3};
+enum ComandoCoordenador  {CADASTRA_ALUNO = 1, CADASTRA_PROFESSOR = 2, ANALISA_TRANCAMENTO = 3, ALOCAR_PROFESSOR = 4};
 enum ComandoAluno        {FAZER_MATRICULA = 1, TRANCAR_DISCIPLINA = 2, TRANCAR_CURSO = 3, VER_DISCIPLINA = 4, VER_HISTORICO = 5};
 enum ComandoProfessor    {FAZER_CHAMADA = 1, FECHAR_DISCIPLINA = 2, INSERIR_NOTAS = 3};
 
@@ -37,6 +37,7 @@ void ver_historico();
 void fazer_chamada();
 void fechar_disciplina();
 void notas_aluno();
+void alocar_professor();
 
 // Funções auxiliares de autenticação e atualização de usuário operante
 bool valida_usuario(string username, string password);
@@ -357,14 +358,15 @@ void menu_coordenador() {
     cout << "1) Cadastrar Aluno\n";
     cout << "2) Cadastrar Professor\n";
     cout << "3) Analisar Trancamenos\n";
-    cout << "4) Voltar...\n";
+    cout << "4) Alocar professor a Disciplina\n";
+    cout << "5) Voltar...\n";
     cout << "\n| ----------------------------------------------- |\n";
     cout << "> ";
 
     cin >> command;
     testa_falha_cin();
 
-    if (command == 4) {
+    if (command == 5) {
       //username = "";
       //password = "";
       break;
@@ -380,6 +382,9 @@ void menu_coordenador() {
       break;
       case ANALISA_TRANCAMENTO:
       analisa_trancamento();
+      break;
+      case ALOCAR_PROFESSOR:
+      alocar_professor();
       break;
       default:
       cout << "Opção inválida!" << endl;
@@ -722,4 +727,22 @@ void cadastra_professor() {
 
   }
 
+}
+
+void alocar_professor(){
+  string matricula, codigo;
+  cout << "\nMatricula do professor: ";
+  cin >> matricula;
+
+  cout << "\nCodigo da disciplina: ";
+  cin >> codigo;
+
+  if(usuarios.count(matricula) && disciplinas.count(codigo)){
+    professor_disciplina.push_back({matricula,codigo});
+  }else{
+    if(usuarios.count(matricula) == 0){
+      cout << "\nMatricula do professor invalida!";
+    }
+    cout << "\nCodigo da disciplina invalido!";
+  }
 }
