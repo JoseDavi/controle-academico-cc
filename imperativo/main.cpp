@@ -826,14 +826,14 @@ void altera_estado() {
 
 
     switch (command) {
-      case MATRICULA:
-      estado = 1;
+      case 1:
+      estado = MATRICULA;
       break;
-      case EM_CURSO:
-      estado = 2 ;
+      case 2:
+      estado = EM_CURSO;
       break;
-      case FIM_DE_PERIODO:
-      estado = 3;
+      case 3:
+      estado = FIM_DE_PERIODO;
       break;
       default:
       cout << "Opção inválida!" << endl;
