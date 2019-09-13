@@ -344,10 +344,19 @@ void menu_professor() {
       fechar_disciplina();
       break;
       case INSERIR_NOTAS:
-      cout << "Qual estágio?" << endl;
+      while (true){
+      cout << "Qual estágio? Digite 0 para voltar." << endl;
       int estagio;
       cin >> estagio;
+      if(estagio == 0){
+        break;
+      }
+      else if(estagio > 3 || estagio < 1){
+        cout << "Estágio invalido, por favor escolha entre os estágios 1, 2 e 3." << endl;
+      }else{
       notas_aluno(estagio);
+      }
+      }
       break;
       default:
       cout << "Opção inválida!" << endl;
@@ -671,11 +680,11 @@ void notas_aluno(int estagio) {
           if(historicoAluno.find(professor_disciplina[i][1])->second.estado == "em curso"){
             while(true){
             cout << "Matricula: " << it->first << " Nome: " << it->second.nome << endl;
-            cout << "Nota do Aluno" << endl;
+            cout << "Nota do Aluno:" << endl;
             float nota;
             cin >> nota;
             if(nota < 0 || nota > 10){
-              cout << "Nota inválida" << endl;
+              cout << "Nota inválida, por favor atribua uma nota de 0 a 10." << endl;
             }else{
             it->second.historico.find(professor_disciplina[i][1])->second.notas[estagio-1] = nota;
             break;
