@@ -16,7 +16,7 @@ using namespace std;
 enum Estado              {MATRICULA = 1, EM_CURSO = 2, FIM_DE_PERIODO = 3};
 enum ComandosPrincipais  {MENU_INICIAL, LOGAR, SAIR, FECHAR_SISTEMA};
 enum TipoUsuario         {NONE = 0, ALUNO = 1, PROFESSOR = 2, COORDENADOR = 3};
-enum ComandoCoordenador  {CADASTRA_ALUNO = 1, CADASTRA_PROFESSOR = 2, ANALISA_TRANCAMENTO = 3, ALOCAR_PROFESSOR = 4};
+enum ComandoCoordenador  {CADASTRA_ALUNO = 1, CADASTRA_PROFESSOR = 2, ANALISA_TRANCAMENTO = 3, ALOCAR_PROFESSOR = 4, ALTERA_ESTADO = 5};
 enum ComandoAluno        {FAZER_MATRICULA = 1, TRANCAR_DISCIPLINA = 2, TRANCAR_CURSO = 3, VER_DISCIPLINA = 4, VER_HISTORICO = 5};
 enum ComandoProfessor    {FAZER_CHAMADA = 1, FECHAR_DISCIPLINA = 2, INSERIR_NOTAS = 3};
 
@@ -37,7 +37,7 @@ void ver_historico();
 void fazer_chamada();
 void fechar_disciplina();
 void notas_aluno(int estagio);
-void alocar_professor();
+
 
 // Funções auxiliares de autenticação e atualização de usuário operante
 bool valida_usuario(string username, string password);
@@ -47,6 +47,8 @@ void atualiza_tipo_de_usuario(string username);
 void cadastra_aluno();
 void cadastra_professor();
 void analisa_trancamento();
+void alocar_professor();
+void altera_estado();
 
 int usrtipo = NONE; // Tipo do usuário operante
 string username = "";
@@ -362,14 +364,15 @@ void menu_coordenador() {
     cout << "2) Cadastrar Professor\n";
     cout << "3) Analisar Trancamenos\n";
     cout << "4) Alocar professor a Disciplina\n";
-    cout << "5) Voltar...\n";
+    cout << "5) Modificar estado do sistema\n;";
+    cout << "6) Voltar...\n";
     cout << "\n| ----------------------------------------------- |\n";
     cout << "> ";
 
     cin >> command;
     testa_falha_cin();
 
-    if (command == 5) {
+    if (command == 6) {
       //username = "";
       //password = "";
       break;
@@ -389,6 +392,8 @@ void menu_coordenador() {
       case ALOCAR_PROFESSOR:
       alocar_professor();
       break;
+      case ALTERA_ESTADO:
+      altera_estado();
       default:
       cout << "Opção inválida!" << endl;
       break;
@@ -486,7 +491,7 @@ void trancar_disciplina() {
     Aluno aluno =  alunos.find(username)->second;
 
     if (aluno.disciplinas_matriculadas <= 4) {
-      cout << "Para solicitar o trancamento, é necessário estar matriculado em mais de 4 disciplinas. Pressione qlqr tecla pra voltar." << endl;
+      cout << "Para solicitar o trancamento, é necessário estar matriculado em mais de 4 disciplinas. Pressione qualquer tecla para voltar." << endl;
       cin >> op;
     } else {
 
@@ -781,6 +786,7 @@ void cadastra_professor() {
 
 }
 
+// Aloca professor em uma disciplina
 void alocar_professor(){
   string matricula, codigo;
   cout << "\nMatricula do professor: ";
@@ -796,5 +802,41 @@ void alocar_professor(){
       cout << "\nMatricula do professor invalida!";
     }
     cout << "\nCodigo da disciplina invalido!";
+  }
+}
+
+// Altera o estado do controle acadêmico (semana de matrícula, período em curso ou fim de período)
+void altera_estado() {
+
+  while (true)  {
+    limparTela();
+
+    cout << "Selecione o estado do sistema:\n";
+    cout << "1) Semana de matrículas.\n";
+    cout << "2) Período em curso.\n";
+    cout << "3) Final de período\n";
+    cout << "4) Voltar ao menu do Coordenador.\n";
+
+    cin >> command;
+    testa_falha_cin();
+
+    if (command == 4) {
+      break;
+    }
+
+
+    switch (command) {
+      case MATRICULA:
+      estado = 1;
+      break;
+      case EM_CURSO:
+      estado = 2 ;
+      break;
+      case FIM_DE_PERIODO:
+      estado = 3;
+      break;
+      default:
+      cout << "Opção inválida!" << endl;
+      break; 
   }
 }
