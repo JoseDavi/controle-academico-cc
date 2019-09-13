@@ -861,5 +861,6 @@ void altera_estado() {
       default:
       cout << "Opção inválida!" << endl;
       break; 
+    }
   }
 }
