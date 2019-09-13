@@ -691,7 +691,7 @@ void cadastra_professor() {
     cin >> pswd;
 
     if (usuarios.count(name) == 0) {
-      usuarios[name] = {pswd,"professor"};
+      usuarios[name] = {pswd,"professor", name};
 
     } else {
       cout << "\n\nCadastro negado. Professor já consta no sistema!\n" << endl;
