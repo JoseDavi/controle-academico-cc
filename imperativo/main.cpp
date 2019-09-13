@@ -661,11 +661,18 @@ void notas_aluno(int estagio) {
         map<string, DisciplinaEmAluno> historicoAluno = it->second.historico;
         if(historicoAluno.count(professor_disciplina[i][1])){
           if(historicoAluno.find(professor_disciplina[i][1])->second.estado == "em curso"){
+            while(true){
             cout << "Matricula: " << it->first << " Nome: " << it->second.nome << endl;
             cout << "Nota do Aluno" << endl;
             float nota;
             cin >> nota;
+            if(nota < 0 || nota > 10){
+              cout << "Nota inválida" << endl;
+            }else{
             it->second.historico.find(professor_disciplina[i][1])->second.notas[estagio-1] = nota;
+            break;
+            }
+            }
           }
         }
       }
