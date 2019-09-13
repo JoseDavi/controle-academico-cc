@@ -115,6 +115,10 @@ int main() {
   return 0;
 }
 
+bool usuario_esta_logado () {
+  return !username.empty() && !password.empty();
+}
+
 void main_menu() {
 
   menu_inicial();
@@ -137,16 +141,21 @@ void main_menu() {
             menu_coordenador();
           break;
           default:
-            cout << "Usuário inválido! " << usrtipo << endl;
+            cout << " Usuário inválido! " << endl;
             press_any_key();
             command = MENU_INICIAL;
           break;
         }
       break;
       case SAIR:
-        cout << "saindo da conta...\n";
-        username = "";
-        password = "";
+        if (usuario_esta_logado()) {
+          cout << "saindo da conta...\n";
+          username = "";
+          password = "";
+        } else {
+          cout << "Você ainda não está logado!";
+        }
+        press_any_key();
         command = MENU_INICIAL;
       break;
       case FECHAR_SISTEMA:
@@ -171,11 +180,6 @@ void menu_inicial() {
 
   cin >> command;
   testa_falha_cin();
-}
-
-
-bool usuario_esta_logado () {
-  return !username.empty() && !password.empty();
 }
 
 void menu_login() {
@@ -366,7 +370,7 @@ void menu_coordenador() {
     cout << "2) Cadastrar Professor\n";
     cout << "3) Analisar Trancamenos\n";
     cout << "4) Alocar professor a Disciplina\n";
-    cout << "5) Modificar estado do sistema\n;";
+    cout << "5) Modificar estado do sistema\n";
     cout << "6) Voltar...\n";
     cout << "\n| ----------------------------------------------- |\n";
     cout << "> ";
@@ -481,7 +485,6 @@ void realizar_matricula() {
   disciplina.nome = disciplinas.find(codigo)->second.nome;
 
   if (aluno.disciplinas_matriculadas < 6) {
-    // TODO - vefiricar se o aluno já pagou todos os pre-requisitos
     novohistorico.insert(pair<string,DisciplinaEmAluno>(codigo, disciplina));
     alunos.find(matricula)->second.historico = novohistorico;
     alunos.find(matricula)->second.disciplinas_matriculadas++;
@@ -520,10 +523,6 @@ void trancar_disciplina() {
       } while (op == "s");
 
     }
-
-
-
-
 
 }
 
@@ -780,21 +779,20 @@ void cadastra_professor() {
   }
 
   while (true) {
-    limparTela();
 
     cout << "\nMatricula do professor: ";
     cin >> mat;
 
-    cout << "\nNome do professor: ";
+    cout << "Nome do professor: ";
     cin >> name;
 
-    cout << "\nSenha do professor: ";
+    cout << "Senha do professor: ";
     cin >> pswd;
 
     if (usuarios.count(mat) == 0) {
       usuarios[mat] = {pswd,"professor", name};
     } else {
-      cout << "\n\nCadastro negado. Professor já consta no sistema!\n" << endl;
+      cout << "\nCadastro negado. Professor já consta no sistema!\n" << endl;
     }
 
     cout << "\nDeseja cadastrar mais um professor? s/n" << endl;
