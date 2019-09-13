@@ -222,18 +222,21 @@ void menu_login() {
 }
 
 bool valida_usuario(string username, string password) {
-  array<string, 3> user = usuarios[username];
-  if (user[0].compare(password) == 0) {
-    return true;
-  } else{
-    cout << "Senha inválida.";
-    return false;
+  if (usuarios.count(username) > 0) {
+    array<string, 3> user = usuarios[username];
+    if (user[0].compare(password) == 0) {
+      return true;
+    } else{
+      cout << "Senha inválida.";
+      return false;
+    }
+  } else {
+    cout << "Usuário inexistente!";
   }
 }
 
 void atualiza_tipo_de_usuario(string username) {
   array<string, 3> user = usuarios[username];
-  cout << user[1];
   if(user[1].compare("aluno") == 0){
     usrtipo = ALUNO;
   }
