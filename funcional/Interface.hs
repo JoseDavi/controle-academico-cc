@@ -5,7 +5,7 @@ import Util
 -- Limpa a tela adicionando cem quebras de linha no terminal
 limpar_tela :: IO()
 limpar_tela = do
-    putStr $ repeteCaractere "\n" 100
+    putStr (repeteCaractere "\n" 100)
 
 -- Define o cabeçalho padrão do sistema
 header :: String
@@ -25,6 +25,11 @@ login = (repeteCaractere " " n_spaces) ++ "╦  ╔═╗╔═╗╦╔╗╔\n
 
 prompt :: String
 prompt = (repeteCaractere " " n_spaces) ++ "> "
+
+
+{-
+    Menus principais do sistema
+-}
 
 menu_inicial :: IO Int
 menu_inicial = do
@@ -105,3 +110,22 @@ menu_coordenador = do
     option <- readLn :: IO Int
     return option
 
+{-
+    Menus auxiliares
+-}
+
+menu_altera_estado :: IO Int
+menu_altera_estado = do
+    limpar_tela
+
+    putStr   header       
+    printStr "Selecione o estado do sistema:    ";
+    printStr "1) Semana de matrículas.          ";
+    printStr "2) Período em curso.              ";
+    printStr "3) Final de período               ";
+    printStr "4) Voltar ao menu do Coordenador. ";   
+    putStr   footer                                  
+    putStr   prompt
+
+    option <- readLn :: IO Int
+    return option

@@ -6,3 +6,4 @@ main = do
     menu_aluno
     menu_professor
     menu_coordenador
+    menu_altera_estado
