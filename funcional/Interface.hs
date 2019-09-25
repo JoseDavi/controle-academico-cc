@@ -5,74 +5,103 @@ import Util
 -- Limpa a tela adicionando cem quebras de linha no terminal
 limpar_tela :: IO()
 limpar_tela = do
-    putStr $ repeatNewLine 100
+    putStr $ repeteCaractere "\n" 100
 
 -- Define o cabeçalho padrão do sistema
 header :: String
-header =  "\n╔═╗┌─┐┌┐┌┌┬┐┬─┐┌─┐┬  ┌─┐  ╔═╗┌─┐┌─┐┌┬┐┌─┐┌┬┐┬┌─┐┌─┐  ╔═╗╔═╗\n" ++
-            "║  │ ││││ │ ├┬┘│ ││  ├┤   ╠═╣│  ├─┤ ││├┤ │││││  │ │  ║  ║\n"   ++  
-            "╚═╝└─┘┘└┘ ┴ ┴└─└─┘┴─┘└─┘  ╩ ╩└─┘┴ ┴─┴┘└─┘┴ ┴┴└─┘└─┘  ╚═╝╚═╝\n\n"
+header =  (repeteCaractere " " n_spaces) ++ "╔═╗┌─┐┌┐┌┌┬┐┬─┐┌─┐┬  ┌─┐  ╔═╗┌─┐┌─┐┌┬┐┌─┐┌┬┐┬┌─┐┌─┐  ╔═╗╔═╗\n"  ++
+          (repeteCaractere " " n_spaces) ++ "║  │ ││││ │ ├┬┘│ ││  ├┤   ╠═╣│  ├─┤ ││├┤ │││││  │ │  ║  ║  \n"  ++  
+          (repeteCaractere " " n_spaces) ++ "╚═╝└─┘┘└┘ ┴ ┴└─└─┘┴─┘└─┘  ╩ ╩└─┘┴ ┴─┴┘└─┘┴ ┴┴└─┘└─┘  ╚═╝╚═╝\n\n"
 
 -- Define o rodapé padrão do sistema
 footer :: String
-footer =  "\n-----------------------------------------------------------\n"
+footer =  (repeteCaractere " " n_spaces) ++ "-----------------------------------------------------------\n"
 
+-- Define a messagem de login
+login :: String 
+login = (repeteCaractere " " n_spaces) ++ "╦  ╔═╗╔═╗╦╔╗╔\n" ++
+        (repeteCaractere " " n_spaces) ++ "║  ║ ║║ ╦║║║║\n" ++
+        (repeteCaractere " " n_spaces) ++ "╩═╝╚═╝╚═╝╩╝╚╝\n"
+
+prompt :: String
+prompt = (repeteCaractere " " n_spaces) ++ "> "
 
 menu_inicial :: IO Int
 menu_inicial = do
     limpar_tela
-    putStr $   header                 ++
-               "1) Entrar \n"         ++
-               "2) Sair\n"            ++
-               "3) Fechar sistema\n"  ++
-               footer                 ++
-               "> "
+    
+    putStr header
+    printStr "1) Entrar         "
+    printStr "2) Sair           "
+    printStr "3) Fechar sistema "
+    putStr footer
+    putStr prompt
+
     option <- readLn :: IO Int
     return option
+
+menu_login :: IO (String, String)
+menu_login = do
+    limpar_tela
+    putStr $ login ++ (repeteCaractere "\n" 2)
+
+    putStr $ (repeteCaractere " " n_spaces) ++ "Nome: "
+    nome <- getLine
+
+    putStr $ (repeteCaractere " " n_spaces) ++ "Senha: "
+    senha <- getSenha
+    
+    return (nome, senha)
 
 menu_aluno :: IO Int
 menu_aluno = do 
     limpar_tela
-    putStr $ header                    ++
-             "aluno...\n\n"            ++
-             "1) Fazer Matrícula\n"    ++
-             "2) Trancar Disciplina\n" ++
-             "3) Trancar Curso\n"      ++
-             "4) Ver Disciplina\n"     ++
-             "5) Ver Histórico\n"      ++
-             "6) Voltar...\n"          ++
-             footer                    ++
-             "> "
+    
+    putStr   header
+    printStr "aluno...              "
+    printStr "1) Fazer Matrícula    "
+    printStr "2) Trancar Disciplina "
+    printStr "3) Trancar Curso      "  
+    printStr "4) Ver Disciplina     " 
+    printStr "5) Ver Histórico      " 
+    printStr "6) Voltar...          " 
+    putStr   footer                     
+    putStr   prompt
+
     option <- readLn :: IO Int
     return option
 
 menu_professor :: IO Int
 menu_professor = do
     limpar_tela
-    putStr $  header                     ++
-              "professor...\n\n"         ++
-              "1) Fazer Chamada\n"       ++
-               "2) Fechar Disciplina\n"  ++
-              "3) Inserir Notas\n"       ++
-              "4) Voltar...\n"           ++
-              footer                     ++
-              "> "
+
+    putStr   header
+    printStr "professor...          "
+    printStr "1) Fazer Chamada      "
+    printStr "2) Fechar Disciplina  "
+    printStr "3) Inserir Notas      "
+    printStr "4) Voltar...          "
+    putStr   footer                     
+    putStr   prompt
+
     option <- readLn :: IO Int
     return option
 
 menu_coordenador :: IO Int
 menu_coordenador = do
     limpar_tela
-    putStr $  header                                ++
-              "coordenador...\n\n"                  ++
-              "1) Cadastrar Aluno\n"                ++
-              "2) Cadastrar Professor\n"            ++
-              "3) Analisar Trancamenos\n"           ++
-              "4) Alocar professor a Disciplina\n"  ++
-              "5) Modificar estado do sistema\n"    ++
-              "6) Voltar...\n"                      ++
-              footer                                ++
-              "> "
+
+    putStr   header       
+    printStr "coordenador...                   "
+    printStr "1) Cadastrar Aluno               "   
+    printStr "2) Cadastrar Professor           "   
+    printStr "3) Analisar Trancamenos          "  
+    printStr "4) Alocar professor a Disciplina "   
+    printStr "5) Modificar estado do sistema   "  
+    printStr "6) Voltar...                     "   
+    putStr   footer                                  
+    putStr   prompt
+
     option <- readLn :: IO Int
     return option
 
