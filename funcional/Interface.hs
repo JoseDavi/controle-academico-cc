@@ -129,3 +129,54 @@ menu_altera_estado = do
 
     option <- readLn :: IO Int
     return option
+
+
+menu_cadastro_professor :: IO (String, String, String)
+menu_cadastro_professor = do
+    limpar_tela
+
+    putStr  header       
+    
+    printStr "Cadastrando professor... \n"
+
+    putStr $ (repeteCaractere " " n_spaces) ++ "Matricula: "
+    matricula <- getLine
+    putStr $ (repeteCaractere " " n_spaces) ++ "Nome: "
+    nome <- getLine
+
+    putStr $ (repeteCaractere " " n_spaces) ++ "Senha: "
+    senha <- getSenha
+    putStr $ (repeteCaractere " " n_spaces) ++ "Confirme a senha: "
+    senhaConfirmada <- getSenha
+
+    if senhaConfirmada == senha then
+        return (matricula, nome, senha)
+    else do
+        putStr $ "\n" ++ (repeteCaractere " " n_spaces) ++ "Senhas não batem, cadastro abortado..."
+        qualquer <- getChar
+        menu_cadastro_professor
+
+menu_cadastro_aluno :: IO (String, String, String)
+menu_cadastro_aluno = do
+    limpar_tela
+
+    putStr  header       
+    
+    printStr "Cadastrando aluno... \n"
+
+    putStr $ (repeteCaractere " " n_spaces) ++ "Matricula: "
+    matricula <- getLine
+    putStr $ (repeteCaractere " " n_spaces) ++ "Nome: "
+    nome <- getLine
+
+    putStr $ (repeteCaractere " " n_spaces) ++ "Senha: "
+    senha <- getSenha
+    putStr $ (repeteCaractere " " n_spaces) ++ "Confirme a senha: "
+    senhaConfirmada <- getSenha
+
+    if senhaConfirmada == senha then
+        return (matricula, nome, senha)
+    else do
+        putStr $ "\n" ++ (repeteCaractere " " n_spaces) ++ "Senhas não batem, cadastro abortado..."
+        qualquer <- getChar
+        menu_cadastro_aluno

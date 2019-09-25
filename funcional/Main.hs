@@ -7,3 +7,5 @@ main = do
     menu_professor
     menu_coordenador
     menu_altera_estado
+    menu_cadastro_professor
+    menu_cadastro_aluno
