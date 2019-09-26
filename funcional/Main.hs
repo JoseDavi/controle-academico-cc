@@ -9,3 +9,4 @@ main = do
     menu_altera_estado
     menu_cadastro_professor
     menu_cadastro_aluno
+    menu_trancamento_curso

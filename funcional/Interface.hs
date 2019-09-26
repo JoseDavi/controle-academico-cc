@@ -1,30 +1,41 @@
 module Interface where
 
 import Util
-
--- Limpa a tela adicionando cem quebras de linha no terminal
-limpar_tela :: IO()
-limpar_tela = do
-    putStr (repeteCaractere "\n" 100)
+import Constants
 
 -- Define o cabeçalho padrão do sistema
 header :: String
-header =  (repeteCaractere " " n_spaces) ++ "╔═╗┌─┐┌┐┌┌┬┐┬─┐┌─┐┬  ┌─┐  ╔═╗┌─┐┌─┐┌┬┐┌─┐┌┬┐┬┌─┐┌─┐  ╔═╗╔═╗\n"  ++
-          (repeteCaractere " " n_spaces) ++ "║  │ ││││ │ ├┬┘│ ││  ├┤   ╠═╣│  ├─┤ ││├┤ │││││  │ │  ║  ║  \n"  ++  
-          (repeteCaractere " " n_spaces) ++ "╚═╝└─┘┘└┘ ┴ ┴└─└─┘┴─┘└─┘  ╩ ╩└─┘┴ ┴─┴┘└─┘┴ ┴┴└─┘└─┘  ╚═╝╚═╝\n\n"
+header = do
+    adiciona_espacos spaces_default $
+        "\n╔═╗┌─┐┌┐┌┌┬┐┬─┐┌─┐┬  ┌─┐  ╔═╗┌─┐┌─┐┌┬┐┌─┐┌┬┐┬┌─┐┌─┐  ╔═╗╔═╗\n"  ++
+          "║  │ ││││ │ ├┬┘│ ││  ├┤   ╠═╣│  ├─┤ ││├┤ │││││  │ │  ║  ║  \n"  ++  
+          "╚═╝└─┘┘└┘ ┴ ┴└─└─┘┴─┘└─┘  ╩ ╩└─┘┴ ┴─┴┘└─┘┴ ┴┴└─┘└─┘  ╚═╝╚═╝\n\n"
 
 -- Define o rodapé padrão do sistema
 footer :: String
-footer =  (repeteCaractere " " n_spaces) ++ "-----------------------------------------------------------\n"
-
--- Define a messagem de login
-login :: String 
-login = (repeteCaractere " " n_spaces) ++ "╦  ╔═╗╔═╗╦╔╗╔\n" ++
-        (repeteCaractere " " n_spaces) ++ "║  ║ ║║ ╦║║║║\n" ++
-        (repeteCaractere " " n_spaces) ++ "╩═╝╚═╝╚═╝╩╝╚╝\n"
+footer = do
+    adiciona_espacos spaces_default "\n-----------------------------------------------------------\n"
 
 prompt :: String
-prompt = (repeteCaractere " " n_spaces) ++ "> "
+prompt = "> "
+
+-- Define o cabeçalho de login
+login :: String 
+login = do
+    adiciona_espacos spaces_center $ 
+        "\n╦  ╔═╗╔═╗╦╔╗╔\n" ++
+          "║  ║ ║║ ╦║║║║\n" ++
+          "╩═╝╚═╝╚═╝╩╝╚╝"
+
+trancar_curso_mensagem :: String 
+trancar_curso_mensagem = do
+    adiciona_espacos spaces_default $
+        "\n╔╦╗┬─┐┌─┐┌┐┌┌─┐┌─┐┬─┐  ╔═╗┬ ┬┬─┐┌─┐┌─┐\n" ++
+          " ║ ├┬┘├─┤││││  ├─┤├┬┘  ║  │ │├┬┘└─┐│ │\n" ++
+          " ╩ ┴└─┴ ┴┘└┘└─┘┴ ┴┴└─  ╚═╝└─┘┴└─└─┘└─┘\n\n"
+
+emoticon_triste :: String
+emoticon_triste = " (▰ ︶︹︺▰) "
 
 
 {-
@@ -36,9 +47,9 @@ menu_inicial = do
     limpar_tela
     
     putStr header
-    printStr "1) Entrar         "
-    printStr "2) Sair           "
-    printStr "3) Fechar sistema "
+    putStrLn "  1) Entrar         "
+    printStrLn "2) Sair           "
+    printStrLn "3) Fechar sistema "
     putStr footer
     putStr prompt
 
@@ -48,12 +59,12 @@ menu_inicial = do
 menu_login :: IO (String, String)
 menu_login = do
     limpar_tela
-    putStr $ login ++ (repeteCaractere "\n" 2)
+    putStr $ login ++ "\n\n"
 
-    putStr $ (repeteCaractere " " n_spaces) ++ "Nome: "
+    printCenter "Nome: "
     nome <- getLine
 
-    putStr $ (repeteCaractere " " n_spaces) ++ "Senha: "
+    printCenter "Senha: "
     senha <- getSenha
     
     return (nome, senha)
@@ -63,13 +74,13 @@ menu_aluno = do
     limpar_tela
     
     putStr   header
-    printStr "aluno...              "
-    printStr "1) Fazer Matrícula    "
-    printStr "2) Trancar Disciplina "
-    printStr "3) Trancar Curso      "  
-    printStr "4) Ver Disciplina     " 
-    printStr "5) Ver Histórico      " 
-    printStr "6) Voltar...          " 
+    putStrLn "  aluno...              \n"
+    printStrLn "1) Fazer Matrícula    "
+    printStrLn "2) Trancar Disciplina "
+    printStrLn "3) Trancar Curso      "  
+    printStrLn "4) Ver Disciplina     " 
+    printStrLn "5) Ver Histórico      " 
+    printStrLn "6) Voltar...          " 
     putStr   footer                     
     putStr   prompt
 
@@ -81,11 +92,11 @@ menu_professor = do
     limpar_tela
 
     putStr   header
-    printStr "professor...          "
-    printStr "1) Fazer Chamada      "
-    printStr "2) Fechar Disciplina  "
-    printStr "3) Inserir Notas      "
-    printStr "4) Voltar...          "
+    putStrLn "  professor...          \n"
+    printStrLn "1) Fazer Chamada      "
+    printStrLn "2) Fechar Disciplina  "
+    printStrLn "3) Inserir Notas      "
+    printStrLn "4) Voltar...          "
     putStr   footer                     
     putStr   prompt
 
@@ -97,13 +108,13 @@ menu_coordenador = do
     limpar_tela
 
     putStr   header       
-    printStr "coordenador...                   "
-    printStr "1) Cadastrar Aluno               "   
-    printStr "2) Cadastrar Professor           "   
-    printStr "3) Analisar Trancamenos          "  
-    printStr "4) Alocar professor a Disciplina "   
-    printStr "5) Modificar estado do sistema   "  
-    printStr "6) Voltar...                     "   
+    putStrLn "  coordenador...                   \n"
+    printStrLn "1) Cadastrar Aluno               "   
+    printStrLn "2) Cadastrar Professor           "   
+    printStrLn "3) Analisar Trancamenos          "  
+    printStrLn "4) Alocar professor a Disciplina "   
+    printStrLn "5) Modificar estado do sistema   "  
+    printStrLn "6) Voltar...                     "   
     putStr   footer                                  
     putStr   prompt
 
@@ -119,11 +130,11 @@ menu_altera_estado = do
     limpar_tela
 
     putStr   header       
-    printStr "Selecione o estado do sistema:    ";
-    printStr "1) Semana de matrículas.          ";
-    printStr "2) Período em curso.              ";
-    printStr "3) Final de período               ";
-    printStr "4) Voltar ao menu do Coordenador. ";   
+    putStrLn "  Selecione o estado do sistema:    \n";
+    printStrLn "1) Semana de matrículas.          ";
+    printStrLn "2) Período em curso.              ";
+    printStrLn "3) Final de período               ";
+    printStrLn "4) Voltar ao menu do Coordenador. ";   
     putStr   footer                                  
     putStr   prompt
 
@@ -137,22 +148,21 @@ menu_cadastro_professor = do
 
     putStr  header       
     
-    printStr "Cadastrando professor... \n"
+    putStrLn "  Cadastrando professor... \n"
 
-    putStr $ (repeteCaractere " " n_spaces) ++ "Matricula: "
+    printStr "Matricula: "
     matricula <- getLine
-    putStr $ (repeteCaractere " " n_spaces) ++ "Nome: "
+    printStr "Nome: "
     nome <- getLine
-
-    putStr $ (repeteCaractere " " n_spaces) ++ "Senha: "
+    printStr "Senha: "
     senha <- getSenha
-    putStr $ (repeteCaractere " " n_spaces) ++ "Confirme a senha: "
+    printStr "Confirme a senha: "
     senhaConfirmada <- getSenha
 
     if senhaConfirmada == senha then
         return (matricula, nome, senha)
     else do
-        putStr $ "\n" ++ (repeteCaractere " " n_spaces) ++ "Senhas não batem, cadastro abortado..."
+        printStr "Senhas não batem, cadastro abortado..."
         qualquer <- getChar
         menu_cadastro_professor
 
@@ -162,21 +172,31 @@ menu_cadastro_aluno = do
 
     putStr  header       
     
-    printStr "Cadastrando aluno... \n"
+    putStrLn "  Cadastrando aluno... \n"
 
-    putStr $ (repeteCaractere " " n_spaces) ++ "Matricula: "
+    printStr "Matricula: "
     matricula <- getLine
-    putStr $ (repeteCaractere " " n_spaces) ++ "Nome: "
+    printStr "Nome: "
     nome <- getLine
-
-    putStr $ (repeteCaractere " " n_spaces) ++ "Senha: "
+    printStr "Senha: "
     senha <- getSenha
-    putStr $ (repeteCaractere " " n_spaces) ++ "Confirme a senha: "
+    printStr "Confirme a senha: "
     senhaConfirmada <- getSenha
 
     if senhaConfirmada == senha then
         return (matricula, nome, senha)
     else do
-        putStr $ "\n" ++ (repeteCaractere " " n_spaces) ++ "Senhas não batem, cadastro abortado..."
-        qualquer <- getChar
+        printStr "Senhas não batem, cadastro abortado..."
+        espere <- getChar
         menu_cadastro_aluno
+
+menu_trancamento_curso :: IO String
+menu_trancamento_curso = do
+    limpar_tela
+
+    printCenter trancar_curso_mensagem
+    putStr $ " Você tem certeza " ++ emoticon_triste ++ " s/n ? "
+
+    op <- getLine
+
+    return op
