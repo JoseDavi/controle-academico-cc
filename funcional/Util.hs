@@ -46,12 +46,12 @@ limpar_tela = do
 
 -- Exibe uma mensagem com identação na saída padrão com quebra de linha
 printStrLn :: String -> IO()
-printStrLn s = putStr $ (repeteCaractere " " spaces_idented) ++ s ++ "\n"
+printStrLn s = putStr $ (repeteCaractere " " c_espacos_identados) ++ s ++ "\n"
 
 -- Exibe uma mensagem com identação para a tela de login na saída padrão
 printCenter :: String -> IO()
-printCenter s = putStr $ (repeteCaractere " " spaces_center) ++ s
+printCenter s = putStr $ (repeteCaractere " " c_espacos_centro) ++ s
 
 -- Exibe uma mensagem identada na sáida sem quebra de linha
 printStr :: String -> IO()
-printStr s = putStr $ (repeteCaractere " " spaces_idented) ++ s
+printStr s = putStr $ (repeteCaractere " " c_espacos_identados) ++ s

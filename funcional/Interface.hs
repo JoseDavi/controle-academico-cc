@@ -6,7 +6,7 @@ import Constants
 -- Define o cabeçalho padrão do sistema
 header :: String
 header = do
-    adiciona_espacos spaces_default $
+    adiciona_espacos c_espacos_padrao $
         "\n╔═╗┌─┐┌┐┌┌┬┐┬─┐┌─┐┬  ┌─┐  ╔═╗┌─┐┌─┐┌┬┐┌─┐┌┬┐┬┌─┐┌─┐  ╔═╗╔═╗\n"  ++
           "║  │ ││││ │ ├┬┘│ ││  ├┤   ╠═╣│  ├─┤ ││├┤ │││││  │ │  ║  ║  \n"  ++  
           "╚═╝└─┘┘└┘ ┴ ┴└─└─┘┴─┘└─┘  ╩ ╩└─┘┴ ┴─┴┘└─┘┴ ┴┴└─┘└─┘  ╚═╝╚═╝\n\n"
@@ -14,7 +14,7 @@ header = do
 -- Define o rodapé padrão do sistema
 footer :: String
 footer = do
-    adiciona_espacos spaces_default "\n-----------------------------------------------------------\n"
+    adiciona_espacos c_espacos_padrao "\n-----------------------------------------------------------\n"
 
 prompt :: String
 prompt = "> "
@@ -22,14 +22,14 @@ prompt = "> "
 -- Define o cabeçalho de login
 login :: String 
 login = do
-    adiciona_espacos spaces_center $ 
+    adiciona_espacos c_espacos_centro $ 
         "\n╦  ╔═╗╔═╗╦╔╗╔\n" ++
           "║  ║ ║║ ╦║║║║\n" ++
           "╩═╝╚═╝╚═╝╩╝╚╝"
 
 trancar_curso_mensagem :: String 
 trancar_curso_mensagem = do
-    adiciona_espacos spaces_default $
+    adiciona_espacos c_espacos_padrao $
         "\n╔╦╗┬─┐┌─┐┌┐┌┌─┐┌─┐┬─┐  ╔═╗┬ ┬┬─┐┌─┐┌─┐\n" ++
           " ║ ├┬┘├─┤││││  ├─┤├┬┘  ║  │ │├┬┘└─┐│ │\n" ++
           " ╩ ┴└─┴ ┴┘└┘└─┘┴ ┴┴└─  ╚═╝└─┘┴└─└─┘└─┘\n\n"
