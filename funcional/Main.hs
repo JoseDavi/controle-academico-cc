@@ -2,42 +2,70 @@ import Interface
 import Util
 import Constants
 
-{-
-
-Funções a serem implementadas:
-
-   esta_logado :: Bool
-
-   -- Função para escolher qual menu ou ação será chamada apartir do menu inicial
-   controlador_principal
-
-   -- Função que valida o usuário que está tentando se logar
-   autentica
-
-   Comentário: temos que pensar em algum mecanismo de sessão para o usuário,
-   já que haskell não suporta estados penso isso que vai ser guardado em um arquivo.
-
-   -- Função para escolher qual menu ou ação será chamada apartir do menu de professor
-   controlador_professor
-
-   -- Função para escolher qual menu ou ação será chamada apartir do menu de aluno
-   controlador_aluno
-
-   -- Função para escolher qual menu ou ação será chamada apartir do menu de coordenador
-   controlador_coordenador
-
-   ...
-
--}
-
 controlador_principal :: Int -> IO()
-controlador_principal option
-   | option == c_entrar         = printStr "Entrei"
-   | option == c_sair           = printStr "Sai"
-   | option == c_fechar_sistema = return ()
-   | otherwise                  = printStr "Opção inválida"
-   
+controlador_principal option = do
+   if option /= c_fechar_sistema then do
+      if option == c_entrar then 
+         controlador_login
+      else if option == c_sair then do
+         sair_sistema      
+      else
+         printStr "Opção inválida!"
+
+      -- Reinicia o ciclo
+      option <- menu_inicial
+      controlador_principal option
+
+   else do
+      printStrLn "Fechando sistema..."
+      return ()
+
+controlador_login :: IO()
+controlador_login = do
+   info_usuario <- menu_login
+   printStr "Loguei"
+
+   -- Procurar por usuário
+   -- Manter uma sessão
+   -- Chamar o controlador do tipo do usuário
+
+   option <- menu_aluno
+   controlador_aluno option
+
+controlador_aluno :: Int -> IO()
+controlador_aluno option = do
+   if option /= c_a_voltar then do
+      if option == c_fazer_matricula then
+         printStrLn "Fazer matrícula"
+      else if option == c_trancar_disciplina then
+         printStrLn "Trancar curso"
+      else if option == c_trancar_curso then
+         printStrLn "Trancar curso"
+      else if option == c_ver_disciplina then
+         printStrLn "Ver disciplina"
+      else
+         printStrLn "Ver histórico"
+
+      -- Reinicia o ciclo
+      option <- menu_aluno
+      controlador_aluno option
+   else
+      return ()
+
+controlador_professor :: IO()
+controlador_professor = do
+   return ()
+
+controlador_coordenador :: IO()
+controlador_coordenador = do
+   return ()
+
+sair_sistema :: IO()
+sair_sistema = do
+   printStr ("Sai da conta...")
+   espere
+   return ()
+            
 main = do
    option <- menu_inicial
-
    controlador_principal option

@@ -59,6 +59,7 @@ printStr s = putStr $ (repeteCaractere " " c_espacos_identados) ++ s
 
 espere :: IO Char
 espere = do
+  putStr "\n" 
   printStr "digite [ENTER] para continuar..."
   getChar
 

@@ -41,6 +41,7 @@ c_cadastra_professor  = 2 :: Int
 c_analisa_trancamento = 3 :: Int
 c_alocar_professor    = 4 :: Int
 c_altera_estado       = 5 :: Int
+c_c_voltar            = 6 :: Int
 
 -- comandos do aluno
 c_fazer_matricula    = 1 :: Int
@@ -48,8 +49,10 @@ c_trancar_disciplina = 2 :: Int
 c_trancar_curso      = 3 :: Int
 c_ver_disciplina     = 4 :: Int
 c_ver_historico      = 5 :: Int
+c_a_voltar           = 6 :: Int
 
 -- comandos do professor
 c_fazer_chamada     = 1 :: Int
 c_fechar_disciplina = 2 :: Int
 c_inserir_notas     = 3 :: Int
+c_p_voltar          = 4 :: Int
