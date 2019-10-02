@@ -1,4 +1,6 @@
 import Interface
+import Util
+import Constants
 
 {-
 
@@ -28,14 +30,14 @@ Funções a serem implementadas:
 
 -}
 
-
+controlador_principal :: Int -> IO()
+controlador_principal option
+   | option == c_entrar         = printStr "Entrei"
+   | option == c_sair           = printStr "Sai"
+   | option == c_fechar_sistema = return ()
+   | otherwise                  = printStr "Opção inválida"
+   
 main = do
-    menu_inicial
-    menu_login
-    menu_aluno
-    menu_professor
-    menu_coordenador
-    menu_altera_estado
-    menu_cadastro_professor
-    menu_cadastro_aluno
-    menu_trancamento_curso
+   option <- menu_inicial
+
+   controlador_principal option

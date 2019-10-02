@@ -53,7 +53,7 @@ menu_inicial = do
     putStr footer
     putStr prompt
 
-    option <- readLn :: IO Int
+    option <- getLineInt
     return option
 
 menu_login :: IO (String, String)
@@ -163,7 +163,7 @@ menu_cadastro_professor = do
         return (matricula, nome, senha)
     else do
         printStr "Senhas não batem, cadastro abortado..."
-        qualquer <- getChar
+        espere
         menu_cadastro_professor
 
 menu_cadastro_aluno :: IO (String, String, String)
@@ -187,7 +187,7 @@ menu_cadastro_aluno = do
         return (matricula, nome, senha)
     else do
         printStr "Senhas não batem, cadastro abortado..."
-        espere <- getChar
+        espere
         menu_cadastro_aluno
 
 menu_trancamento_curso :: IO String

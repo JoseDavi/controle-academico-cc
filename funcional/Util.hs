@@ -4,6 +4,7 @@ import System.IO
 import Control.Exception
 import Constants
 import Data.List
+import Text.Read
 
 {- Seção de controle de strings -}
 
@@ -55,3 +56,15 @@ printCenter s = putStr $ (repeteCaractere " " c_espacos_centro) ++ s
 -- Exibe uma mensagem identada na sáida sem quebra de linha
 printStr :: String -> IO()
 printStr s = putStr $ (repeteCaractere " " c_espacos_identados) ++ s
+
+espere :: IO Char
+espere = do
+  printStr "digite [ENTER] para continuar..."
+  getChar
+
+getLineInt :: IO Int
+getLineInt = do
+  line <- getLine
+  case readMaybe line of
+    Just x -> return x
+    Nothing -> printStr "Entrada inválida. Escolha dentre as opções listadas: >" >> getLineInt

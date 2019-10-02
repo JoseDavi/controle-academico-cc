@@ -25,8 +25,7 @@ c_em_curso       = 2 :: Int
 c_fim_de_periodo = 3 :: Int
 
 -- comandos principais
-c_menu_inicial   = 0 :: Int
-c_logar          = 1 :: Int
+c_entrar         = 1 :: Int
 c_sair           = 2 :: Int
 c_fechar_sistema = 3 :: Int
 
