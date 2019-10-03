@@ -1,18 +1,31 @@
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DeriveGeneric #-}
+
 module Persistence where
 
-{-
+import qualified Data.Text as T
+import GHC.Generics
+import Data.Aeson
 
-Funções que devem ser implementadas:
+-- Representação do usuário no sistema
+data Usuario = Usuario
+    { matricula :: String
+    , senha :: String
+    , tipo :: String
+    , nomeUsuario :: String
+    } deriving (Show,Generic)
 
-    lerUsuarios
-    lerDisciplinas
-    lerAlunos
-    lerProfessor_Disciplina
+instance FromJSON Usuario
+instance ToJSON Usuario
 
-    salvarAlunos (alunos)
-    salvarDisciplinas (disciplinas)
-    salvarUsuarios (usuarios)
-    salvarTrancamentos (trancamentos)
-    salvarProfessor_Disciplina (professor_disciplina)
+-- Representação da disciplina no sistema
+data Disciplina = Disciplina
+    { id :: Int
+    , nomeDisciplina :: String
+    , limite :: Int
+    , p_requisito :: Int
+    , s_requisito :: Int
+    } deriving (Show, Generic)
 
--}  
+instance FromJSON Disciplina
+instance ToJSON Disciplina
