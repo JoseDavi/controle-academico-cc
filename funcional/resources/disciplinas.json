@@ -1,219 +1,219 @@
 [
-  {
-    "id": 101,
-    "nomeDisciplina": "FMCC1",
-    "limite": 60,
-    "p_requisito": 0,
-    "s_requisito": 0
-  },
-  {
-    "id": 102,
-    "nomeDisciplina": "P1",
-    "limite": 45,
-    "p_requisito": 0,
-    "s_requisito": 0
-  },
-  {
-    "id": 103,
-    "nomeDisciplina": "LP1",
-    "limite": 80,
-    "p_requisito": 0,
-    "s_requisito": 0
-  },
-  {
-    "id": 104,
-    "nomeDisciplina": "IC",
-    "limite": 45,
-    "p_requisito": 0,
-    "s_requisito": 0
-  },
-  {
-    "id": 105,
-    "nomeDisciplina": "FMCC2",
-    "limite": 60,
-    "p_requisito": 101,
-    "s_requisito": 0
-  },
-  {
-    "id": 106,
-    "nomeDisciplina": "CALCULO1",
-    "limite": 60,
-    "p_requisito": 101,
-    "s_requisito": 0
-  },
-  {
-    "id": 107,
-    "nomeDisciplina": "P2",
-    "limite": 45,
-    "p_requisito": 102,
-    "s_requisito": 103
-  },
-  {
-    "id": 108,
-    "nomeDisciplina": "LP2",
-    "limite": 45,
-    "p_requisito": 102,
-    "s_requisito": 103
-  },
-  {
-    "id": 109,
-    "nomeDisciplina": "LINEAR",
-    "limite": 50,
-    "p_requisito": 105,
-    "s_requisito": 0
-  },
-  {
-    "id": 110,
-    "nomeDisciplina": "LOGICA",
-    "limite": 50,
-    "p_requisito": 105,
-    "s_requisito": 106
-  },
-  {
-    "id": 111,
-    "nomeDisciplina": "CALCULO2",
-    "limite": 50,
-    "p_requisito": 105,
-    "s_requisito": 106
-  },
-  {
-    "id": 112,
-    "nomeDisciplina": "EDA",
-    "limite": 45,
-    "p_requisito": 107,
-    "s_requisito": 108
-  },
-  {
-    "id": 113,
-    "nomeDisciplina": "LEDA",
-    "limite": 45,
-    "p_requisito": 107,
-    "s_requisito": 108
-  },
-  {
-    "id": 114,
-    "nomeDisciplina": "GRAFOS",
-    "limite": 45,
-    "p_requisito": 0,
-    "s_requisito": 0
-  },
-  {
-    "id": 115,
-    "nomeDisciplina": "PROB",
-    "limite": 50,
-    "p_requisito": 105,
-    "s_requisito": 106
-  },
-  {
-    "id": 116,
-    "nomeDisciplina": "PSOFT",
-    "limite": 50,
-    "p_requisito": 102,
-    "s_requisito": 103
-  },
-  {
-    "id": 117,
-    "nomeDisciplina": "PLP",
-    "limite": 40,
-    "p_requisito": 102,
-    "s_requisito": 103
-  },
-  {
-    "id": 118,
-    "nomeDisciplina": "BD1",
-    "limite": 40,
-    "p_requisito": 112,
-    "s_requisito": 0
-  },
-  {
-    "id": 119,
-    "nomeDisciplina": "OAC",
-    "limite": 50,
-    "p_requisito": 104,
-    "s_requisito": 0
-  },
-  {
-    "id": 120,
-    "nomeDisciplina": "LOAC",
-    "limite": 50,
-    "p_requisito": 104,
-    "s_requisito": 0
-  },
-  {
-    "id": 121,
-    "nomeDisciplina": "ESTATISTICA",
-    "limite": 50,
-    "p_requisito": 115,
-    "s_requisito": 0
-  },
-  {
-    "id": 122,
-    "nomeDisciplina": "AS",
-    "limite": 45,
-    "p_requisito": 102,
-    "s_requisito": 103
-  },
-  {
-    "id": 123,
-    "nomeDisciplina": "ES",
-    "limite": 45,
-    "p_requisito": 102,
-    "s_requisito": 103
-  },
-  {
-    "id": 124,
-    "nomeDisciplina": "REDES",
-    "limite": 40,
-    "p_requisito": 104,
-    "s_requisito": 0
-  },
-  {
-    "id": 125,
-    "nomeDisciplina": "SO",
-    "limite": 40,
-    "p_requisito": 120,
-    "s_requisito": 0
-  },
-  {
-    "id": 126,
-    "nomeDisciplina": "TC",
-    "limite": 40,
-    "p_requisito": 117,
-    "s_requisito": 0
-  },
-  {
-    "id": 127,
-    "nomeDisciplina": "METODOLOGIA",
-    "limite": 40,
-    "p_requisito": 0,
-    "s_requisito": 0
-  },
-  {
-    "id": 128,
-    "nomeDisciplina": "CONCORRENTE",
-    "limite": 40,
-    "p_requisito": 125,
-    "s_requisito": 0
-  },
-  {
-    "id": 129,
-    "nomeDisciplina": "IA",
-    "limite": 40,
-    "p_requisito": 126,
-    "s_requisito": 0
-  },
-  {
-    "id": 130,
-    "nomeDisciplina": "ATAL",
-    "limite": 45,
-    "p_requisito": 112,
-    "s_requisito": 113
-  },
-  {
-    "id": 131,
-    "nomeDisciplina": "COMPILA",
-    "limite": 45,
-    "p_requisito": 117,
-    "s_requisito": 0
-  }
-]
+    {
+      "id": 101,
+      "nomeDisciplina": "FMCC1",
+      "limite": 60,
+      "p_requisito": 0,
+      "s_requisito": 0
+    },
+    {
+      "id": 102,
+      "nomeDisciplina": "P1",
+      "limite": 45,
+      "p_requisito": 0,
+      "s_requisito": 0
+    },
+    {
+      "id": 103,
+      "nomeDisciplina": "LP1",
+      "limite": 80,
+      "p_requisito": 0,
+      "s_requisito": 0
+    },
+    {
+      "id": 104,
+      "nomeDisciplina": "IC",
+      "limite": 45,
+      "p_requisito": 0,
+      "s_requisito": 0
+    },
+    {
+      "id": 105,
+      "nomeDisciplina": "FMCC2",
+      "limite": 60,
+      "p_requisito": 101,
+      "s_requisito": 0
+    },
+    {
+      "id": 106,
+      "nomeDisciplina": "CALCULO1",
+      "limite": 60,
+      "p_requisito": 101,
+      "s_requisito": 0
+    },
+    {
+      "id": 107,
+      "nomeDisciplina": "P2",
+      "limite": 45,
+      "p_requisito": 102,
+      "s_requisito": 103
+    },
+    {
+      "id": 108,
+      "nomeDisciplina": "LP2",
+      "limite": 45,
+      "p_requisito": 102,
+      "s_requisito": 103
+    },
+    {
+      "id": 109,
+      "nomeDisciplina": "LINEAR",
+      "limite": 50,
+      "p_requisito": 105,
+      "s_requisito": 0
+    },
+    {
+      "id": 110,
+      "nomeDisciplina": "LOGICA",
+      "limite": 50,
+      "p_requisito": 105,
+      "s_requisito": 106
+    },
+    {
+      "id": 111,
+      "nomeDisciplina": "CALCULO2",
+      "limite": 50,
+      "p_requisito": 105,
+      "s_requisito": 106
+    },
+    {
+      "id": 112,
+      "nomeDisciplina": "EDA",
+      "limite": 45,
+      "p_requisito": 107,
+      "s_requisito": 108
+    },
+    {
+      "id": 113,
+      "nomeDisciplina": "LEDA",
+      "limite": 45,
+      "p_requisito": 107,
+      "s_requisito": 108
+    },
+    {
+      "id": 114,
+      "nomeDisciplina": "GRAFOS",
+      "limite": 45,
+      "p_requisito": 0,
+      "s_requisito": 0
+    },
+    {
+      "id": 115,
+      "nomeDisciplina": "PROB",
+      "limite": 50,
+      "p_requisito": 105,
+      "s_requisito": 106
+    },
+    {
+      "id": 116,
+      "nomeDisciplina": "PSOFT",
+      "limite": 50,
+      "p_requisito": 102,
+      "s_requisito": 103
+    },
+    {
+      "id": 117,
+      "nomeDisciplina": "PLP",
+      "limite": 40,
+      "p_requisito": 102,
+      "s_requisito": 103
+    },
+    {
+      "id": 118,
+      "nomeDisciplina": "BD1",
+      "limite": 40,
+      "p_requisito": 112,
+      "s_requisito": 0
+    },
+    {
+      "id": 119,
+      "nomeDisciplina": "OAC",
+      "limite": 50,
+      "p_requisito": 104,
+      "s_requisito": 0
+    },
+    {
+      "id": 120,
+      "nomeDisciplina": "LOAC",
+      "limite": 50,
+      "p_requisito": 104,
+      "s_requisito": 0
+    },
+    {
+      "id": 121,
+      "nomeDisciplina": "ESTATISTICA",
+      "limite": 50,
+      "p_requisito": 115,
+      "s_requisito": 0
+    },
+    {
+      "id": 122,
+      "nomeDisciplina": "AS",
+      "limite": 45,
+      "p_requisito": 102,
+      "s_requisito": 103
+    },
+    {
+      "id": 123,
+      "nomeDisciplina": "ES",
+      "limite": 45,
+      "p_requisito": 102,
+      "s_requisito": 103
+    },
+    {
+      "id": 124,
+      "nomeDisciplina": "REDES",
+      "limite": 40,
+      "p_requisito": 104,
+      "s_requisito": 0
+    },
+    {
+      "id": 125,
+      "nomeDisciplina": "SO",
+      "limite": 40,
+      "p_requisito": 120,
+      "s_requisito": 0
+    },
+    {
+      "id": 126,
+      "nomeDisciplina": "TC",
+      "limite": 40,
+      "p_requisito": 117,
+      "s_requisito": 0
+    },
+    {
+      "id": 127,
+      "nomeDisciplina": "METODOLOGIA",
+      "limite": 40,
+      "p_requisito": 0,
+      "s_requisito": 0
+    },
+    {
+      "id": 128,
+      "nomeDisciplina": "CONCORRENTE",
+      "limite": 40,
+      "p_requisito": 125,
+      "s_requisito": 0
+    },
+    {
+      "id": 129,
+      "nomeDisciplina": "IA",
+      "limite": 40,
+      "p_requisito": 126,
+      "s_requisito": 0
+    },
+    {
+      "id": 130,
+      "nomeDisciplina": "ATAL",
+      "limite": 45,
+      "p_requisito": 112,
+      "s_requisito": 113
+    },
+    {
+      "id": 131,
+      "nomeDisciplina": "COMPILA",
+      "limite": 45,
+      "p_requisito": 117,
+      "s_requisito": 0
+    }
+  ]

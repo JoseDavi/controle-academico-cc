@@ -9,6 +9,7 @@ import qualified Data.ByteString.Lazy as B
 import GHC.Generics
 import Data.Aeson
 import Data.Maybe
+import Control.DeepSeq
 
 -- Representação do usuário no sistema
 data Usuario = Usuario
@@ -78,6 +79,10 @@ leAlunos = do
     byteStrAlunos <- B.readFile "resources/alunos.json"
     let alunos = fromJust (decode byteStrAlunos :: Maybe [Aluno])
     return (alunos)
+
+salvaAlunos :: [Aluno] -> IO()
+salvaAlunos alunos = do
+    B.writeFile "resources/alunos.json" (encode alunos)
 
 removeAluno :: Aluno -> [Aluno] -> [Aluno]
 removeAluno _ []  = []
