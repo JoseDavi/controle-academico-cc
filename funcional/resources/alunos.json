@@ -1,0 +1,17 @@
+[
+    {
+        "matriculaAluno": "117117117",
+        "nomeAluno": "wesley",
+        "disciplinasMatriculadas": 1,
+        "estaDesvinculado": false,
+        "disciplinas" : [
+            {
+                "idMetaDisciplina": "101",
+                "nomeMetaDisciplina": "FMCC1",
+                "faltas": 3,
+                "notas": [9.4, 8.4, 5.3],
+                "estado": "em curso"
+            }
+        ]
+    }
+]
