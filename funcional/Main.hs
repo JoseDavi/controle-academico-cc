@@ -1,6 +1,7 @@
 import Interface
 import Util
 import Constants
+import Persistence
 
 controlador_principal :: Int -> IO()
 controlador_principal option = do
@@ -22,15 +23,30 @@ controlador_principal option = do
 
 controlador_login :: IO()
 controlador_login = do
-   info_usuario <- menu_login
-   printStr "Loguei"
+   -- Usuário informado pela interface
+   usuarioInterface <- menu_login
+   
+   -- Todos os usuário registrados até o momento
+   usuariosBD <- leUsuarios
+   
+   -- Realiza uma pesquisa sobre os usuários existentes
+   let usuarioQUERY = [u | u <- usuariosBD, 
+                           matricula u == (fst usuarioInterface),
+                           senha u == (snd usuarioInterface)]
 
-   -- Procurar por usuário
-   -- Manter uma sessão
-   -- Chamar o controlador do tipo do usuário
-
-   option <- menu_aluno
-   controlador_aluno option
+   let loginValido = length usuarioQUERY /= 0
+   
+   if loginValido then do
+      let usuarioTemp = (usuarioQUERY !! 0)
+      -- Salva uma sessão com as informações do usuário logado
+      salvaSessao usuarioTemp 
+      if tipoUsuario usuarioTemp == "aluno" then do
+         option <- menu_aluno
+         controlador_aluno option
+      else
+         printStr "Tipo não definido de usuário"
+   else
+      printStrLn "Login inválido!"
 
 controlador_aluno :: Int -> IO()
 controlador_aluno option = do

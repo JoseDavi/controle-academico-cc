@@ -61,7 +61,7 @@ menu_login = do
     limpar_tela
     putStr $ login ++ "\n\n"
 
-    printCenter "Nome: "
+    printCenter "Matricula: "
     nome <- getLine
 
     printCenter "Senha: "

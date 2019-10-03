@@ -84,6 +84,16 @@ salvaAlunos :: [Aluno] -> IO()
 salvaAlunos alunos = do
     B.writeFile "resources/alunos.json" (encode alunos)
 
+leSessao :: IO (Maybe Usuario)
+leSessao = do
+    byteStrSessao <- B.readFile "resources/sessao.json"
+    let usuario = decode byteStrSessao :: Maybe Usuario
+    return (usuario)
+
+salvaSessao :: Usuario -> IO()
+salvaSessao usuario = do
+    B.writeFile "resources/sessao.json" (encode usuario)
+
 removeAluno :: Aluno -> [Aluno] -> [Aluno]
 removeAluno _ []  = []
 removeAluno a (a1:an) | a == a1 = removeAluno a an
