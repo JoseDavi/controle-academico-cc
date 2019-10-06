@@ -43,6 +43,9 @@ controlador_login = do
       if tipoUsuario usuarioTemp == "aluno" then do
          option <- menu_aluno
          controlador_aluno option
+      else if tipoUsuario usuarioTemp == "coordenador" then do
+         option <- menu_coordenador
+         controlador_coordenador option
       else
          printStr "Tipo não definido de usuário"
    else
@@ -54,7 +57,7 @@ controlador_aluno option = do
       if option == c_fazer_matricula then
          printStrLn "Fazer matrícula"
       else if option == c_trancar_disciplina then
-         printStrLn "Trancar curso"
+         printStrLn "Trancar disciplina"
       else if option == c_trancar_curso then
          printStrLn "Trancar curso"
       else if option == c_ver_disciplina then
@@ -72,9 +75,27 @@ controlador_professor :: IO()
 controlador_professor = do
    return ()
 
-controlador_coordenador :: IO()
-controlador_coordenador = do
-   return ()
+controlador_coordenador :: Int -> IO()
+controlador_coordenador option = do
+   if option /= c_a_voltar then do
+      if option == c_cadastra_aluno then
+         printStrLn "Cadastrar Aluno"
+      else if option == c_cadastra_professor then
+         printStrLn "Cadastrar professor"
+      else if option == c_analisa_trancamento then
+         printStrLn "Analisar trancamento"
+      else if option == c_alocar_professor then
+         printStrLn "Alocar professor"
+      else if option == c_altera_estado then
+         printStrLn "Alterar estado"       
+      else
+         printStrLn "Comando inválido"
+
+      -- Reinicia o ciclo
+      option <- menu_coordenador
+      controlador_coordenador option
+   else
+      return ()
 
 sair_sistema :: IO()
 sair_sistema = do
