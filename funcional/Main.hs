@@ -51,11 +51,28 @@ controlador_login = do
    else
       printStrLn "Login inválido!"
 
+
+imprimeDisciplinas :: [Disciplina] -> IO()
+imprimeDisciplinas [] = putStr "\n"
+imprimeDisciplinas (head:tail) =  do printStr ("" ++ show (Persistence.id head) ++ "\t" ++ nomeDisciplina head ++ "\t\t" ++ show (limite head) ++ "\t" ++ show (p_requisito head) ++ "\t" ++ show (s_requisito head) ++ "\n")
+                                     imprimeDisciplinas tail 
+
+
 controlador_aluno :: Int -> IO()
 controlador_aluno option = do
    if option /= c_a_voltar then do
-      if option == c_fazer_matricula then
-         printStrLn "Fazer matrícula"
+      if option == c_fazer_matricula then do
+         disciplinas <- leDisciplinas  
+         printStr "ID\tNOME\t\tLIMITE\tPREREQ1\tPREREQ2\n"
+         imprimeDisciplinas disciplinas
+         idEscolhido <- readLn :: IO Int
+         let disciplina = getDisciplina idEscolhido disciplinas
+         print (nomeDisciplina disciplina)
+         
+
+
+
+
       else if option == c_trancar_disciplina then
          printStrLn "Trancar disciplina"
       else if option == c_trancar_curso then

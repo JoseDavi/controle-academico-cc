@@ -98,3 +98,9 @@ removeAluno :: Aluno -> [Aluno] -> [Aluno]
 removeAluno _ []  = []
 removeAluno a (a1:an) | a == a1 = removeAluno a an
                       | otherwise = a1 : removeAluno a an
+
+
+getDisciplina :: Int -> [Disciplina] ->  Disciplina
+getDisciplina idBusca disciplinas =  head [disc | disc <- disciplinas, (Persistence.id disc) == idBusca]
+
+                     

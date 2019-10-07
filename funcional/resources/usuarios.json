@@ -1,5 +1,4 @@
-[
-  {
+[{
     "matricula": "111111",
     "senha": "123",
     "tipoUsuario": "coordenador",
@@ -10,6 +9,12 @@
     "senha": "123",
     "tipoUsuario": "professor",
     "nomeUsuario": "baptista"
+  },
+  {
+    "matricula": "1",
+    "senha": "1",
+    "tipoUsuario": "aluno",
+    "nomeUsuario": "elin"
   },
   {
     "matricula": "117117117",
