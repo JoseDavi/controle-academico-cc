@@ -3,6 +3,9 @@ import Util
 import Constants
 import Persistence
 
+sleep :: IO()
+sleep = getLine >>= putStrLn
+
 controlador_principal :: Int -> IO()
 controlador_principal option = do
    if option /= c_fechar_sistema then do
@@ -63,6 +66,11 @@ imprimeDisciplinas [] = putStr "\n"
 imprimeDisciplinas (head:tail) =  do printStr ("" ++ show (Persistence.id head) ++ "\t" ++ nomeDisciplina head ++ "\t\t" ++ show (limite head) ++ "\t" ++ show (p_requisito head) ++ "\t" ++ show (s_requisito head) ++ "\n")
                                      imprimeDisciplinas tail 
 
+verDisciplina :: [MetaDisciplina] -> Int -> String
+verDisciplina lista id
+ |lista == [] = "Disciplina não cadastrada"
+ |Persistence.id (head lista) == id = show (Persistence.id (head lista)) ++ "\t" ++ nomeDisciplina (head lista) ++ "\t" ++ show (limite (head lista)) ++ "\t" ++ show (p_requisito (head lista)) ++ "\t" ++ show (s_requisito (head lista)) ++ "\n"
+ |otherwise = verDisciplina (tail lista) id
 
 controlador_aluno :: Aluno -> Int -> IO()
 controlador_aluno aluno option = do
@@ -88,7 +96,11 @@ controlador_aluno aluno option = do
       else if option == c_trancar_curso then
          printStrLn "Trancar curso"
       else if option == c_ver_disciplina then
-         printStrLn "Ver disciplina"
+            printStrLn "Ver disciplina"
+            disciplinas <- disciplinas aluno
+            id_disciplina <- readLn :: IO Int
+            printStrLn(verDisciplina disciplinas id_disciplina)
+            sleep
       else
          printStrLn "Ver histórico"
 
