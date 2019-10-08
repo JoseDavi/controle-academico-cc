@@ -88,9 +88,23 @@ controlador_aluno option = do
    else
       return ()
 
-controlador_professor :: IO()
-controlador_professor = do
-   return ()
+controlador_professor :: Int -> IO()
+controlador_professor option = do
+      if option /= c_p_voltar then do
+            if option == c_fazer_chamada then
+               printStrLn "Fazer Chamada"
+            else if option == c_fechar_disciplina then
+               printStrLn "Fechar Disciplina"
+            else if option == c_inserir_notas then
+               printStrLn "Inserir Notas"       
+            else
+               printStrLn "Comando inválido"
+      
+            -- Reinicia o ciclo
+            option <- menu_professor
+            controlador_professor option
+      else
+            return ()
 
 controlador_coordenador :: Int -> IO()
 controlador_coordenador option = do
