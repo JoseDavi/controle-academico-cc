@@ -55,10 +55,12 @@ controlador_login = do
       else if tipoUsuario usuarioTemp == "coordenador" then do
          option <- menu_coordenador
          controlador_coordenador option
-      else
+      else do
          printStr "Tipo não definido de usuário"
-   else
+         sleep
+   else do
       printStrLn "Login inválido!"
+      sleep
 
 
 imprimeDisciplinas :: [Disciplina] -> IO()
@@ -68,8 +70,8 @@ imprimeDisciplinas (head:tail) =  do printStr ("" ++ show (Persistence.id head) 
 
 verDisciplina :: [MetaDisciplina] -> Int -> String
 verDisciplina lista id
- |lista == [] = "Disciplina não cadastrada"
- |Persistence.id (head lista) == id = show (Persistence.id (head lista)) ++ "\t" ++ nomeDisciplina (head lista) ++ "\t" ++ show (limite (head lista)) ++ "\t" ++ show (p_requisito (head lista)) ++ "\t" ++ show (s_requisito (head lista)) ++ "\n"
+ |lista == [] = "Disciplina não cursada ou matriculada"
+ |Persistence.idMetaDisciplina (head lista) == show id = "ID\tNOME\tFALTAS\tNOTAS\t\tESTADO\n\t\t\t\t\t" ++ show (Persistence.idMetaDisciplina (head lista)) ++ "\t" ++ nomeMetaDisciplina (head lista) ++ "\t" ++ show (faltas (head lista)) ++ "\t" ++ show (notas (head lista)) ++ "\t" ++ estado (head lista) ++ "\n"
  |otherwise = verDisciplina (tail lista) id
 
 controlador_aluno :: Aluno -> Int -> IO()
@@ -79,10 +81,12 @@ controlador_aluno aluno option = do
          disciplinas <- leDisciplinas  
          printStr "ID\tNOME\t\tLIMITE\tPREREQ1\tPREREQ2\n"
          imprimeDisciplinas disciplinas
+         printStr prompt
          idEscolhido <- readLn :: IO Int
          let disciplina = getDisciplina idEscolhido disciplinas
          print disciplina
          print aluno
+         sleep
          --let newmetadisciplina = MetaDisciplina (show (Persistence.id disciplina))  (nomeDisciplina disciplina)  0 [0,0,0] "em curso"   
          --let newlista = metadisciplinas ++ [newmetadisciplina]
 
@@ -95,11 +99,11 @@ controlador_aluno aluno option = do
          printStrLn "Trancar disciplina"
       else if option == c_trancar_curso then
          printStrLn "Trancar curso"
-      else if option == c_ver_disciplina then
-            printStrLn "Ver disciplina"
-            disciplinas <- disciplinas aluno
+      else if option == c_ver_disciplina then do
+            printStrLn "Ver disciplina: "
+            printStr prompt
             id_disciplina <- readLn :: IO Int
-            printStrLn(verDisciplina disciplinas id_disciplina)
+            printStrLn(verDisciplina (disciplinas aluno) id_disciplina)
             sleep
       else
          printStrLn "Ver histórico"
@@ -110,23 +114,23 @@ controlador_aluno aluno option = do
    else
       return ()
 
-      controlador_professor :: Int -> IO()
-      controlador_professor option = do
-            if option /= c_p_voltar then do
-                  if option == c_fazer_chamada then
-                     printStrLn "Fazer Chamada"
-                  else if option == c_fechar_disciplina then
-                     printStrLn "Fechar Disciplina"
-                  else if option == c_inserir_notas then
-                     printStrLn "Inserir Notas"       
-                  else
-                     printStrLn "Comando inválido"
-            
-                  -- Reinicia o ciclo
-                  option <- menu_professor
-                  controlador_professor option
+controlador_professor :: Int -> IO()
+controlador_professor option = do
+      if option /= c_p_voltar then do
+            if option == c_fazer_chamada then
+               printStrLn "Fazer Chamada"
+            else if option == c_fechar_disciplina then
+               printStrLn "Fechar Disciplina"
+            else if option == c_inserir_notas then
+                  printStrLn "Inserir Notas"       
             else
-                  return ()
+                  printStrLn "Comando inválido"
+            
+            -- Reinicia o ciclo
+            option <- menu_professor
+            controlador_professor option
+      else
+            return ()
 
 controlador_coordenador :: Int -> IO()
 controlador_coordenador option = do
