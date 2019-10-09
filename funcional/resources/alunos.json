@@ -6,11 +6,18 @@
         "estaDesvinculado": false,
         "disciplinas" : [
             {
-                "idMetaDisciplina": "101",
+                "idMetaDisciplina": 101,
                 "nomeMetaDisciplina": "FMCC1",
                 "faltas": 3,
                 "notas": [9.4, 8.4, 5.3],
                 "estado": "em curso"
+            },
+            {
+                "idMetaDisciplina": 102,
+                "nomeMetaDisciplina": "P1",
+                "faltas": 5,
+                "notas": [9.6, 9.4, 7.0],
+                "estado": "fechada"
             }
         ]
     }

@@ -37,7 +37,7 @@ instance ToJSON Aluno
 
 -- Representação de disciplina de um aluno
 data MetaDisciplina = MetaDisciplina
-    { idMetaDisciplina :: String
+    { idMetaDisciplina :: Int
     , nomeMetaDisciplina :: String
     , faltas :: Int
     , notas :: [Double]
