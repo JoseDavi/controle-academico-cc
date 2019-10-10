@@ -28,9 +28,19 @@ controlador_principal option = do
 
 controlador_login :: IO()
 controlador_login = do
-   -- Usuário informado pela interface
-   usuarioInterface <- menu_login
-   
+
+   -- Verifica se o usuário da sessão está disponível
+   existeSessao <- existe_sessao_ativa
+   usuarioInterface <- case existeSessao of
+                           False -> do
+                              temp <- menu_login
+                              return (temp)
+                           True -> do
+                              sessao <- leSessao
+                              let usuario = fromJust sessao
+                              let temp = (matricula usuario, senha usuario)
+                              return (temp)
+
    -- Usuário identificado no banco
    usuarioBD <- leUsuario (fst usuarioInterface)
 
@@ -183,15 +193,22 @@ controlador_coordenador option = do
 
 sair_sistema :: IO()
 sair_sistema = do
-   sessao <- leSessao
-   case sessao of
-      Nothing -> printStr "Não existe usuário logado no momento!"
-      Just u -> do
-         limpaSessao
-         printStr ("Você saiu com sucesso...")
+   existeSessao <- existe_sessao_ativa
+   if (existeSessao == False) then
+      printStr "Não existe usuário logado no momento!"
+   else do
+      limpaSessao
+      printStr ("Você saiu com sucesso...")
    espere
    return ()
-            
+
+existe_sessao_ativa :: IO Bool
+existe_sessao_ativa = do
+   sessao <- leSessao
+   return $ case sessao of
+               Nothing -> False
+               Just u -> True
+
 main = do
    option <- menu_inicial
    controlador_principal option
