@@ -166,16 +166,16 @@ controlador_coordenador option = do
       if option == c_cadastra_aluno then do
          -- aluno em formato (matricula, nome, senha)
          aluno_temp <- menu_cadastro_aluno
-
          let aluno = Aluno (triple_fst aluno_temp) (triple_snd aluno_temp) 0 False []
          let usuario = Usuario (triple_fst aluno_temp) (triple_thd aluno_temp) "aluno" (triple_snd aluno_temp)
-         
          salvaAluno aluno
          salvaUsuario usuario
-
          espere
       else if option == c_cadastra_professor then do
-         printStrLn "Cadastrar professor"
+         -- professor em formato (matricula, nome, senha)
+         professor_temp <- menu_cadastro_professor
+         let usuario = Usuario (triple_fst professor_temp) (triple_thd professor_temp) "professor" (triple_snd professor_temp)
+         salvaUsuario usuario
          espere
       else if option == c_analisa_trancamento then do
          printStrLn "Analisar trancamento"
