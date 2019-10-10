@@ -2,6 +2,7 @@ import Interface
 import Util
 import Constants
 import Persistence
+import Data.Maybe
 
 sleep :: IO()
 sleep = getLine >>= putStrLn
@@ -30,32 +31,33 @@ controlador_login = do
    -- Usuário informado pela interface
    usuarioInterface <- menu_login
    
-   -- Todos os usuário registrados até o momento
-   usuariosBD <- leUsuarios
-   
-   -- Todos os usuário registrados até o momento
-   alunosBD <- leAlunos
+   -- Usuário identificado no banco
+   usuarioBD <- leUsuario (fst usuarioInterface)
 
-   -- Realiza uma pesquisa sobre os usuários existentes
-   let usuarioQUERY = [u | u <- usuariosBD, 
-                           matricula u == (fst usuarioInterface),
-                           senha u == (snd usuarioInterface)]
-
-   let loginValido = length usuarioQUERY /= 0
+   let loginValido = case usuarioBD of
+                           Nothing -> False
+                           Just u -> True
    
    if loginValido then do
 
-      let usuarioTemp = (usuarioQUERY !! 0)
+      -- Usuário logado no sistema
+      let usuarioLogado = fromJust usuarioBD
+
       -- Salva uma sessão com as informações do usuário logado
-      salvaSessao usuarioTemp 
-      if tipoUsuario usuarioTemp == "aluno" then do
+      salvaSessao usuarioLogado
+      
+      let tipoLogin = tipoUsuario usuarioLogado
+
+      if tipoLogin == "aluno" then do
          option <- menu_aluno
-         let alunoQUERY = [aluno | aluno <- alunosBD, 
-                           matriculaAluno aluno == (fst usuarioInterface)]
-         controlador_aluno (head alunoQUERY) option
-      else if tipoUsuario usuarioTemp == "coordenador" then do
+         alunoBD <- leAluno (fst usuarioInterface)
+         controlador_aluno (fromJust alunoBD) option
+      else if tipoLogin == "coordenador" then do
          option <- menu_coordenador
          controlador_coordenador option
+      else if tipoLogin == "professor" then do
+         option <- menu_professor
+         controlador_professor option
       else do
          printStr "Tipo não definido de usuário"
          sleep

@@ -74,11 +74,39 @@ leUsuarios = do
     let usuarios = fromJust (decode byteStrUsuarios :: Maybe [Usuario])
     return (usuarios)
 
+leUsuario :: String -> IO (Maybe Usuario)
+leUsuario matr = do
+    -- Todos os usuário registrados até o momento
+    usuariosBD <- leUsuarios
+
+    -- Realiza uma pesquisa sobre os usuários existentes
+    let usuarioQUERY = [u | u <- usuariosBD, 
+                           matricula u == matr]
+    
+    if (usuarioQUERY == []) then
+        return (Nothing)
+    else
+        return (Just (usuarioQUERY !! 0))
+
 leAlunos :: IO ([Aluno])
 leAlunos = do
     byteStrAlunos <- B.readFile "resources/alunos.json"
     let alunos = fromJust (decode byteStrAlunos :: Maybe [Aluno])
     return (alunos)
+
+leAluno :: String -> IO (Maybe Aluno)
+leAluno matr = do
+    -- Todos os alunos registrados até o momento
+    alunosBD <- leAlunos
+
+    -- Realiza uma pesquisa sobre os alunos existentes
+    let alunoQUERY = [a | a <- alunosBD, 
+                            matriculaAluno a == matr]
+    
+    if (alunoQUERY == []) then
+        return (Nothing)
+    else
+        return (Just (alunoQUERY !! 0))
 
 salvaAlunos :: [Aluno] -> IO()
 salvaAlunos alunos = do
