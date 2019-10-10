@@ -1,24 +1,32 @@
 [
     {
-        "matriculaAluno": "117117117",
-        "nomeAluno": "wesley",
-        "disciplinasMatriculadas": 1,
-        "estaDesvinculado": false,
-        "disciplinas" : [
+        "disciplinas": [
             {
-                "idMetaDisciplina": 101,
+                "notas": [
+                    9.4,
+                    8.4,
+                    5.3
+                ],
                 "nomeMetaDisciplina": "FMCC1",
-                "faltas": 3,
-                "notas": [9.4, 8.4, 5.3],
-                "estado": "em curso"
+                "estado": "em curso",
+                "idMetaDisciplina": 101,
+                "faltas": 3
             },
             {
-                "idMetaDisciplina": 102,
+                "notas": [
+                    9.6,
+                    9.4,
+                    7
+                ],
                 "nomeMetaDisciplina": "P1",
-                "faltas": 5,
-                "notas": [9.6, 9.4, 7.0],
-                "estado": "fechada"
+                "estado": "fechada",
+                "idMetaDisciplina": 102,
+                "faltas": 5
             }
-        ]
+        ],
+        "estaDesvinculado": false,
+        "nomeAluno": "wesley",
+        "disciplinasMatriculadas": 1,
+        "matriculaAluno": "117117117"
     }
 ]

@@ -10,6 +10,7 @@ import GHC.Generics
 import Data.Aeson
 import Data.Maybe
 import Control.DeepSeq
+import System.Directory
 
 -- Representação do usuário no sistema
 data Usuario = Usuario
@@ -88,6 +89,13 @@ leUsuario matr = do
     else
         return (Just (usuarioQUERY !! 0))
 
+salvaUsuario :: Usuario -> IO()
+salvaUsuario usuario = do
+    usuarios <- leUsuarios
+    B.writeFile "resources/usuarios_temp.json" (encode (usuarios ++ [usuario]))
+    removeFile "resources/usuarios.json"
+    renameFile "resources/usuarios_temp.json" "resources/usuarios.json"
+
 leAlunos :: IO ([Aluno])
 leAlunos = do
     byteStrAlunos <- B.readFile "resources/alunos.json"
@@ -111,6 +119,13 @@ leAluno matr = do
 salvaAlunos :: [Aluno] -> IO()
 salvaAlunos alunos = do
     B.writeFile "resources/alunos.json" (encode alunos)
+
+salvaAluno :: Aluno -> IO()
+salvaAluno novoAluno = do
+    alunos <- leAlunos
+    B.writeFile "resources/alunos_temp.json" (encode (alunos ++ [novoAluno]))
+    removeFile "resources/alunos.json"
+    renameFile "resources/alunos_temp.json" "resources/alunos.json"
 
 leSessao :: IO (Maybe Usuario)
 leSessao = do

@@ -4,9 +4,6 @@ import Constants
 import Persistence
 import Data.Maybe
 
-sleep :: IO()
-sleep = getLine >>= putStrLn
-
 controlador_principal :: Int -> IO()
 controlador_principal option = do
    if option /= c_fechar_sistema then do
@@ -16,7 +13,7 @@ controlador_principal option = do
          sair_sistema      
       else do
          printStr "Opção inválida!"
-         sleep
+         espere
 
       -- Reinicia o ciclo
       option <- menu_inicial
@@ -69,10 +66,10 @@ controlador_login = do
          controlador_professor option
       else do
          printStr "Tipo não definido de usuário"
-         sleep
+         espere
    else do
       printStrLn "Login inválido!"
-      sleep
+      espere
 
 
 imprimeDisciplinas :: [Disciplina] -> IO()
@@ -105,7 +102,7 @@ controlador_aluno aluno option = do
          let disciplina = getDisciplina idEscolhido disciplinas
          print disciplina
          print aluno
-         sleep
+         espere
          --let newmetadisciplina = MetaDisciplina (show (Persistence.id disciplina))  (nomeDisciplina disciplina)  0 [0,0,0] "em curso"   
          --let newlista = metadisciplinas ++ [newmetadisciplina]
 
@@ -116,24 +113,24 @@ controlador_aluno aluno option = do
 
       else if option == c_trancar_disciplina then do
          printStrLn "Trancar disciplina"
-         sleep
+         espere
       else if option == c_trancar_curso then do
          printStrLn "Trancar curso"
-         sleep
+         espere
       else if option == c_ver_disciplina then do
             printStrLn "Ver disciplina: "
             printStr prompt
             id_disciplina <- readLn :: IO Int
             printStrLn(verDisciplina (disciplinas aluno) id_disciplina)
-            sleep
+            espere
       else if option == c_ver_historico then do
             printStrLn "Ver histórico"
             printStr "ID\tNOME\tFALTAS\tNOTAS\t\tESTADO\n"
             verHistorico (disciplinas aluno)
-            sleep
+            espere
       else do
             printStr "Opção Invalida"
-            sleep
+            espere
 
       -- Reinicia o ciclo
       option <- menu_aluno
@@ -146,16 +143,16 @@ controlador_professor option = do
       if option /= c_p_voltar then do
             if option == c_fazer_chamada then do
                printStrLn "Fazer Chamada"
-               sleep
+               espere
             else if option == c_fechar_disciplina then do
                printStrLn "Fechar Disciplina"
-               sleep
+               espere
             else if option == c_inserir_notas then do
                   printStrLn "Inserir Notas"
-                  sleep 
+                  espere 
             else do
                   printStrLn "Comando inválido"
-                  sleep
+                  espere
             
             -- Reinicia o ciclo
             option <- menu_professor
@@ -167,23 +164,31 @@ controlador_coordenador :: Int -> IO()
 controlador_coordenador option = do
    if option /= c_a_voltar then do
       if option == c_cadastra_aluno then do
-         printStrLn "Cadastrar Aluno"
-         sleep
+         -- aluno em formato (matricula, nome, senha)
+         aluno_temp <- menu_cadastro_aluno
+
+         let aluno = Aluno (triple_fst aluno_temp) (triple_snd aluno_temp) 0 False []
+         let usuario = Usuario (triple_fst aluno_temp) (triple_thd aluno_temp) "aluno" (triple_snd aluno_temp)
+         
+         salvaAluno aluno
+         salvaUsuario usuario
+
+         espere
       else if option == c_cadastra_professor then do
          printStrLn "Cadastrar professor"
-         sleep
+         espere
       else if option == c_analisa_trancamento then do
          printStrLn "Analisar trancamento"
-         sleep
+         espere
       else if option == c_alocar_professor then do
          printStrLn "Alocar professor"
-         sleep
+         espere
       else if option == c_altera_estado then do
          printStrLn "Alterar estado"
-         sleep
+         espere
       else do
          printStrLn "Comando inválido"
-         sleep
+         espere
 
       -- Reinicia o ciclo
       option <- menu_coordenador

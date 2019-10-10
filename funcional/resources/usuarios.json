@@ -1,73 +1,74 @@
-[{
-    "matricula": "111111",
-    "senha": "123",
-    "tipoUsuario": "coordenador",
-    "nomeUsuario": "joao"
-  },
-  {
-    "matricula": "115115",
-    "senha": "123",
-    "tipoUsuario": "professor",
-    "nomeUsuario": "baptista"
-  },
-  {
-    "matricula": "1",
-    "senha": "1",
-    "tipoUsuario": "aluno",
-    "nomeUsuario": "elin"
-  },
-  {
-    "matricula": "117117117",
-    "senha": "123",
-    "tipoUsuario": "aluno",
-    "nomeUsuario": "ronaldo"
-  },
-  {
-    "matricula": "117210708",
-    "senha": "123",
-    "tipoUsuario": "aluno",
-    "nomeUsuario": "vinicius"
-  },
-  {
-    "matricula": "118110188",
-    "senha": "123",
-    "tipoUsuario": "aluno",
-    "nomeUsuario": "wesley"
-  },
-  {
-    "matricula": "119110110",
-    "senha": "345",
-    "tipoUsuario": "aluno",
-    "nomeUsuario": "john"
-  },
-  {
-    "matricula": "123456789",
-    "senha": "123",
-    "tipoUsuario": "aluno",
-    "nomeUsuario": "davi"
-  },
-  {
-    "matricula": "127767667",
-    "senha": "123",
-    "tipoUsuario": "aluno",
-    "nomeUsuario": "ronildo"
-  },
-  {
-    "matricula": "22222222",
-    "senha": "321",
-    "tipoUsuario": "aluno",
-    "nomeUsuario": "jonas"
-  },
-  {
-    "matricula": "333333",
-    "senha": "132",
-    "tipoUsuario": "professor",
-    "nomeUsuario": "jorge"
-  },
-  {
-    "matricula": "654321",
-    "senha": "123",
-    "tipoUsuario": "professor",
-    "nomeUsuario": "matheus"
-  }
+[
+    {
+        "tipoUsuario": "coordenador",
+        "nomeUsuario": "joao",
+        "matricula": "111111",
+        "senha": "123"
+    },
+    {
+        "tipoUsuario": "professor",
+        "nomeUsuario": "baptista",
+        "matricula": "115115",
+        "senha": "123"
+    },
+    {
+        "tipoUsuario": "aluno",
+        "nomeUsuario": "elin",
+        "matricula": "1",
+        "senha": "1"
+    },
+    {
+        "tipoUsuario": "aluno",
+        "nomeUsuario": "ronaldo",
+        "matricula": "117117117",
+        "senha": "123"
+    },
+    {
+        "tipoUsuario": "aluno",
+        "nomeUsuario": "vinicius",
+        "matricula": "117210708",
+        "senha": "123"
+    },
+    {
+        "tipoUsuario": "aluno",
+        "nomeUsuario": "wesley",
+        "matricula": "118110188",
+        "senha": "123"
+    },
+    {
+        "tipoUsuario": "aluno",
+        "nomeUsuario": "john",
+        "matricula": "119110110",
+        "senha": "345"
+    },
+    {
+        "tipoUsuario": "aluno",
+        "nomeUsuario": "davi",
+        "matricula": "123456789",
+        "senha": "123"
+    },
+    {
+        "tipoUsuario": "aluno",
+        "nomeUsuario": "ronildo",
+        "matricula": "127767667",
+        "senha": "123"
+    },
+    {
+        "tipoUsuario": "aluno",
+        "nomeUsuario": "jonas",
+        "matricula": "22222222",
+        "senha": "321"
+    },
+    {
+        "tipoUsuario": "professor",
+        "nomeUsuario": "jorge",
+        "matricula": "333333",
+        "senha": "132"
+    },
+    {
+        "tipoUsuario": "professor",
+        "nomeUsuario": "matheus",
+        "matricula": "654321",
+        "senha": "123"
+    }
 ]

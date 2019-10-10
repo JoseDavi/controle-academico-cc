@@ -57,11 +57,12 @@ printCenter s = putStr $ (repeteCaractere " " c_espacos_centro) ++ s
 printStr :: String -> IO()
 printStr s = putStr $ (repeteCaractere " " c_espacos_identados) ++ s
 
-espere :: IO Char
+espere :: IO()
 espere = do
   putStr "\n" 
   printStr "digite [ENTER] para continuar..."
   getChar
+  return ()
 
 getLineInt :: IO Int
 getLineInt = do
@@ -69,3 +70,14 @@ getLineInt = do
   case readMaybe line of
     Just x -> return x
     Nothing -> printStr "Entrada inválida. Escolha dentre as opções listadas: >" >> getLineInt
+
+{- Utilitários para tuplas -}
+
+triple_fst :: (a, b, c) -> a
+triple_fst (a,_,_) = a
+
+triple_snd :: (a, b, c) -> b
+triple_snd (_,b,_) = b
+
+triple_thd :: (a, b, c) -> c
+triple_thd (_,_,c) = c
