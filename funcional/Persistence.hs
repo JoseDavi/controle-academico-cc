@@ -122,6 +122,10 @@ salvaSessao :: Usuario -> IO()
 salvaSessao usuario = do
     B.writeFile "resources/sessao.json" (encode usuario)
 
+limpaSessao :: IO()
+limpaSessao = do
+    B.writeFile "resources/sessao.json" ""
+
 removeAluno :: Aluno -> [Aluno] -> [Aluno]
 removeAluno _ []  = []
 removeAluno a (a1:an) | a == a1 = removeAluno a an

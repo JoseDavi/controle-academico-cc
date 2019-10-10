@@ -39,7 +39,6 @@ controlador_login = do
                            Just u -> True
    
    if loginValido then do
-
       -- Usuário logado no sistema
       let usuarioLogado = fromJust usuarioBD
 
@@ -184,7 +183,12 @@ controlador_coordenador option = do
 
 sair_sistema :: IO()
 sair_sistema = do
-   printStr ("Sai da conta...")
+   sessao <- leSessao
+   case sessao of
+      Nothing -> printStr "Não existe usuário logado no momento!"
+      Just u -> do
+         limpaSessao
+         printStr ("Você saiu com sucesso...")
    espere
    return ()
             
