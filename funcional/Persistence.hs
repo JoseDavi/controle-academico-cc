@@ -205,16 +205,27 @@ alocaProfessor professor_disciplina = do
 
     if (usuarioQUERY /= [] && disciplinaQUERY /= []) then do
         professorDisciplinasBD <- leProfessorDisciplinas
+        
         let professor_temp = [p | p <- professorDisciplinasBD,
                                   (matriculaProfessor p) == (fst professor_disciplina)]
-        insert <- case professor_temp of
-                    [] -> do
-                        let temp = ProfessorDisciplina (fst professor_disciplina) [snd professor_disciplina]
-                        return (professorDisciplinasBD ++ [temp])
-                    p -> do
-                        let professorDisciplinas = (removeProfessorDisciplina (p !! 0) professorDisciplinasBD)
-                        let temp = ProfessorDisciplina (matriculaProfessor (p !! 0)) ((disciplinasProfessor (p !! 0)) ++ [(snd professor_disciplina)])
-                        return (professorDisciplinas ++ [temp])
+        
+        
+        let disciplinas = disciplinasProfessor (professor_temp !! 0)
+        let disciplina_repetida = [d | d <- disciplinasProfessor (professor_temp !! 0), 
+                                       d == (snd professor_disciplina)]
+
+        insert <- if professor_temp == [] then do
+                    let temp = ProfessorDisciplina (fst professor_disciplina) [snd professor_disciplina]
+                    return (professorDisciplinasBD ++ [temp])
+                  else if disciplina_repetida == [] then do
+                    let p = professor_temp
+                    let professorDisciplinas = (removeProfessorDisciplina (p !! 0) professorDisciplinasBD)
+                    let temp = ProfessorDisciplina (matriculaProfessor (p !! 0)) ((disciplinasProfessor (p !! 0)) ++ [(snd professor_disciplina)])
+                    return (professorDisciplinas ++ [temp])
+                  else do
+                    putStr "\n"
+                    printStrLn "Professor já esta alocado em disciplina."
+                    return (professorDisciplinasBD)
 
         B.writeFile "resources/professor_disciplina_temp.json" (encode insert)
         removeFile "resources/professor_disciplina.json"

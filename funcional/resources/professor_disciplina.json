@@ -6,12 +6,6 @@
         ]
     },
     {
-        "matriculaProfessor": "115115",
-        "disciplinasProfessor": [
-            103
-        ]
-    },
-    {
         "matriculaProfessor": "333333",
         "disciplinasProfessor": [
             102,
@@ -22,6 +16,12 @@
         "matriculaProfessor": "123456",
         "disciplinasProfessor": [
             114
+        ]
+    },
+    {
+        "matriculaProfessor": "115115",
+        "disciplinasProfessor": [
+            103
         ]
     }
 ]
