@@ -61,6 +61,15 @@ instance FromJSON Disciplina
 instance ToJSON Disciplina
 
 
+-- Representação do estado do sistema
+data Estado = Estado
+    { estadoSistema :: Int
+    } deriving (Show, Generic, Eq)
+
+instance FromJSON Estado
+instance ToJSON Estado
+
+
 {- Seção para recuperação de informações dos arquivos -}
 
 leDisciplinas :: IO ([Disciplina])
@@ -136,6 +145,10 @@ atualizaAluno aluno = do
     removeFile "resources/alunos.json"
     renameFile "resources/alunos_temp.json" "resources/alunos.json"
 
+removeAluno :: Aluno -> [Aluno] -> [Aluno]
+removeAluno _ []  = []
+removeAluno a (a1:an) | matriculaAluno a == matriculaAluno a1 = removeAluno a an
+                      | otherwise = a1 : removeAluno a an
     
 leSessao :: IO (Maybe Usuario)
 leSessao = do
@@ -151,11 +164,15 @@ limpaSessao :: IO()
 limpaSessao = do
     B.writeFile "resources/sessao.json" ""
 
-removeAluno :: Aluno -> [Aluno] -> [Aluno]
-removeAluno _ []  = []
-removeAluno a (a1:an) | matriculaAluno a == matriculaAluno a1 = removeAluno a an
-                      | otherwise = a1 : removeAluno a an
+salvaEstado :: Estado -> IO()
+salvaEstado estado = do
+    B.writeFile "resources/estado.json" (encode estado)
 
+leEstado :: IO (Maybe Estado)
+leEstado = do
+    byteStrEstado <- B.readFile "resources/estado.json"
+    let estado = decode byteStrEstado :: Maybe Estado
+    return (estado)
 
 getDisciplina :: Int -> [Disciplina] ->  Disciplina
 getDisciplina idBusca disciplinas =  head [disc | disc <- disciplinas, (Persistence.id disc) == idBusca]
