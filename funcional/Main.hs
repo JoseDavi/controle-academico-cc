@@ -215,8 +215,8 @@ controlador_coordenador option = do
          printStrLn "Analisar trancamento"
          espere
       else if option == c_alocar_professor then do
-         professor_temp <- menu_aloca_professor
-         -- alocaProfessor professor_temp
+         professor_disciplina_temp <- menu_aloca_professor
+         alocaProfessor professor_disciplina_temp
          espere
       else if option == c_altera_estado then do
          -- pede o novo estado para o usuário e altera o do sistema
