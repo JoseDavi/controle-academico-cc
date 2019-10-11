@@ -72,10 +72,15 @@ controlador_login = do
       espere
 
 
+
 imprimeDisciplinas :: [Disciplina] -> IO()
-imprimeDisciplinas [] = putStr "\n"
-imprimeDisciplinas (head:tail) =  do printStr ("" ++ show (Persistence.id head) ++ "\t" ++ nomeDisciplina head ++ "\t\t" ++ show (limite head) ++ "\t" ++ show (p_requisito head) ++ "\t" ++ show (s_requisito head) ++ "\n")
-                                     imprimeDisciplinas tail 
+imprimeDisciplinas disciplinas = do printStr "ID\tNOME\t\tLIMITE\tPREREQ1\tPREREQ2\n"
+                                    imprimeDisciplinasAux  disciplinas
+
+imprimeDisciplinasAux :: [Disciplina] -> IO()
+imprimeDisciplinasAux [] = putStr "\n"
+imprimeDisciplinasAux (head:tail) =  do   printStr ("" ++ show (Persistence.id head) ++ "\t" ++ nomeDisciplina head ++ "\t\t" ++ show (limite head) ++ "\t" ++ show (p_requisito head) ++ "\t" ++ show (s_requisito head) ++ "\n")
+                                          imprimeDisciplinasAux tail 
 
 verDisciplina :: [MetaDisciplina] -> Int -> String
 verDisciplina lista id
@@ -95,46 +100,60 @@ controlador_aluno aluno option = do
    if option /= c_a_voltar then do
       if option == c_fazer_matricula then do
          disciplinas <- leDisciplinas  
-         printStr "ID\tNOME\t\tLIMITE\tPREREQ1\tPREREQ2\n"
          imprimeDisciplinas disciplinas
          printStr prompt
          idEscolhido <- readLn :: IO Int
          let disciplina = getDisciplina idEscolhido disciplinas
-         print disciplina
-         print aluno
-         espere
-         --let newmetadisciplina = MetaDisciplina (show (Persistence.id disciplina))  (nomeDisciplina disciplina)  0 [0,0,0] "em curso"   
-         --let newlista = metadisciplinas ++ [newmetadisciplina]
+         let newmetadisciplina = MetaDisciplina (Persistence.id disciplina)  (nomeDisciplina disciplina)  0 [0,0,0] "em curso"   
+         let newlista = [newmetadisciplina] ++ (Persistence.disciplinas aluno)
+         let newaluno = Aluno (matriculaAluno aluno) (nomeAluno aluno) (disciplinasMatriculadas aluno) (estaDesvinculado aluno) newlista
+         atualizaAluno newaluno
 
-
-         --print newmetadisciplina
-
-
+         -- Reinicia o ciclo
+         option <- menu_aluno
+         controlador_aluno newaluno option
 
       else if option == c_trancar_disciplina then do
          printStrLn "Trancar disciplina"
          espere
+         
+         -- Reinicia o ciclo
+         option <- menu_aluno
+         controlador_aluno aluno option
       else if option == c_trancar_curso then do
          printStrLn "Trancar curso"
          espere
-      else if option == c_ver_disciplina then do
-            printStrLn "Ver disciplina: "
-            printStr prompt
-            id_disciplina <- readLn :: IO Int
-            printStrLn(verDisciplina (disciplinas aluno) id_disciplina)
-            espere
-      else if option == c_ver_historico then do
-            printStrLn "Ver histórico"
-            printStr "ID\tNOME\tFALTAS\tNOTAS\t\tESTADO\n"
-            verHistorico (disciplinas aluno)
-            espere
-      else do
-            printStr "Opção Invalida"
-            espere
 
-      -- Reinicia o ciclo
-      option <- menu_aluno
-      controlador_aluno aluno option
+         -- Reinicia o ciclo
+         option <- menu_aluno
+         controlador_aluno aluno option
+      else if option == c_ver_disciplina then do
+         printStrLn "Ver disciplina: "
+         printStr prompt
+         id_disciplina <- readLn :: IO Int
+         printStrLn(verDisciplina (disciplinas aluno) id_disciplina)
+         espere
+
+         -- Reinicia o ciclo
+         option <- menu_aluno
+         controlador_aluno aluno option
+      else if option == c_ver_historico then do
+         printStrLn "Ver histórico"
+         printStr "ID\tNOME\tFALTAS\tNOTAS\t\tESTADO\n"
+         verHistorico (disciplinas aluno)
+         espere
+
+         -- Reinicia o ciclo
+         option <- menu_aluno
+         controlador_aluno aluno option
+      else do
+         printStr "Opção Invalida"
+         espere
+
+         -- Reinicia o ciclo
+         option <- menu_aluno
+         controlador_aluno aluno option
+
    else
       return ()
 

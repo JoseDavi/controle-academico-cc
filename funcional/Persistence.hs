@@ -127,6 +127,16 @@ salvaAluno novoAluno = do
     removeFile "resources/alunos.json"
     renameFile "resources/alunos_temp.json" "resources/alunos.json"
 
+
+atualizaAluno :: Aluno -> IO()
+atualizaAluno aluno = do
+    alunosBD <- leAlunos
+    let alunos = (removeAluno aluno alunosBD)
+    B.writeFile "resources/alunos_temp.json" (encode (alunos ++ [aluno]))
+    removeFile "resources/alunos.json"
+    renameFile "resources/alunos_temp.json" "resources/alunos.json"
+
+    
 leSessao :: IO (Maybe Usuario)
 leSessao = do
     byteStrSessao <- B.readFile "resources/sessao.json"
@@ -143,7 +153,7 @@ limpaSessao = do
 
 removeAluno :: Aluno -> [Aluno] -> [Aluno]
 removeAluno _ []  = []
-removeAluno a (a1:an) | a == a1 = removeAluno a an
+removeAluno a (a1:an) | matriculaAluno a == matriculaAluno a1 = removeAluno a an
                       | otherwise = a1 : removeAluno a an
 
 
