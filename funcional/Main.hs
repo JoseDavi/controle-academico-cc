@@ -215,9 +215,11 @@ controlador_coordenador option = do
          printStrLn "Analisar trancamento"
          espere
       else if option == c_alocar_professor then do
-         printStrLn "Alocar professor"
+         professor_temp <- menu_aloca_professor
+         -- alocaProfessor professor_temp
          espere
       else if option == c_altera_estado then do
+         -- pede o novo estado para o usuário e altera o do sistema
          estado_int <- menu_altera_estado
          let estado = Estado estado_int
          salvaEstado estado

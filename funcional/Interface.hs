@@ -200,3 +200,19 @@ menu_trancamento_curso = do
     op <- getLine
 
     return op
+
+menu_aloca_professor :: IO (String, Int)
+menu_aloca_professor = do
+    limpar_tela
+
+    putStr  header       
+    
+    putStrLn "  Alocando professor... \n"
+
+    printStr "Matricula do professor: "
+    matricula <- getLine
+
+    printStr "Codigo da disciplina: "
+    codigo <- getLineInt
+
+    return (matricula, codigo)
