@@ -106,8 +106,13 @@ controlador_aluno aluno option = do
 
          let disciplinaJaMatriculada = verificaDisciplinaJaMatriculada idEscolhido (Persistence.disciplinas aluno)
 
-         if disciplinaJaMatriculada then do
-            printStr "Disciplina já matriculada"
+         if disciplinaJaMatriculada || (disciplinasMatriculadas aluno) >= 6 then do
+            
+            if disciplinaJaMatriculada then do
+               printStr "Disciplina já foi matriculada"
+            else do
+               printStr "O limite de disciplinas(6) já foi atingido"
+            
             espere
             -- Reinicia o ciclo
             option <- menu_aluno
@@ -116,7 +121,7 @@ controlador_aluno aluno option = do
             let disciplina = getDisciplina idEscolhido disciplinas
             let newmetadisciplina = MetaDisciplina (Persistence.id disciplina)  (nomeDisciplina disciplina)  0 [0,0,0] "em curso"   
             let newlista = [newmetadisciplina] ++ (Persistence.disciplinas aluno)
-            let newaluno = Aluno (matriculaAluno aluno) (nomeAluno aluno) (disciplinasMatriculadas aluno) (estaDesvinculado aluno) newlista
+            let newaluno = Aluno (matriculaAluno aluno) (nomeAluno aluno) (1 + disciplinasMatriculadas aluno) (estaDesvinculado aluno) newlista
             atualizaAluno newaluno
 
             -- Reinicia o ciclo
