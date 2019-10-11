@@ -1,0 +1,11 @@
+[
+    {
+        "tag": "TrancamentoDisciplina",
+        "matrTrancamentoDisc": "117117117", 
+        "idDisciplinaTrancamento": 131
+    },
+    {
+        "tag": "TrancamentoCurso",
+        "matrTrancamentoCur": "117117117"
+    }
+]

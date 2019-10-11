@@ -82,6 +82,15 @@ instance FromJSON ProfessorDisciplina
 instance ToJSON ProfessorDisciplina
 
 
+-- Representação de trancamentos no sistema
+data Trancamento 
+    = TrancamentoDisciplina { matrTrancamentoDisc :: String, idDisciplinaTrancamento :: Int }
+    | TrancamentoCurso { matrTrancamentoCur :: String } deriving (Show, Generic, Eq) 
+
+instance FromJSON Trancamento
+instance ToJSON Trancamento
+
+
 {- Seção para recuperação de informações dos arquivos -}
 
 leDisciplinas :: IO ([Disciplina])
@@ -191,6 +200,12 @@ leProfessorDisciplinas = do
     let professorDisciplina = fromJust (decode byteStrProfessorDisciplina :: Maybe [ProfessorDisciplina])
     return (professorDisciplina)
 
+removeProfessorDisciplina :: ProfessorDisciplina -> [ProfessorDisciplina] -> [ProfessorDisciplina]
+removeProfessorDisciplina _ []  = []
+removeProfessorDisciplina p (p1:pn) 
+                        | matriculaProfessor p == matriculaProfessor p1 = removeProfessorDisciplina p pn
+                        | otherwise = p1 : removeProfessorDisciplina p pn
+
 alocaProfessor :: (String, Int) -> IO()
 alocaProfessor professor_disciplina = do
     usuariosBD <- leUsuarios
@@ -234,11 +249,11 @@ alocaProfessor professor_disciplina = do
         putStr "\n"
         printStrLn "Usuário ou disciplina incorretos..."
 
-removeProfessorDisciplina :: ProfessorDisciplina -> [ProfessorDisciplina] -> [ProfessorDisciplina]
-removeProfessorDisciplina _ []  = []
-removeProfessorDisciplina p (p1:pn) 
-                        | matriculaProfessor p == matriculaProfessor p1 = removeProfessorDisciplina p pn
-                        | otherwise = p1 : removeProfessorDisciplina p pn
+leTrancamentos :: IO ([Trancamento])
+leTrancamentos = do
+    byteStrTrancamentos <- B.readFile "resources/trancamentos.json"
+    let trancamentos = fromJust (decode byteStrTrancamentos :: Maybe [Trancamento])
+    return (trancamentos)
 
 getDisciplina :: Int -> [Disciplina] ->  Disciplina
 getDisciplina idBusca disciplinas =  head [disc | disc <- disciplinas, (Persistence.id disc) == idBusca]
