@@ -218,7 +218,9 @@ controlador_coordenador option = do
          printStrLn "Alocar professor"
          espere
       else if option == c_altera_estado then do
-         printStrLn "Alterar estado"
+         estado_int <- menu_altera_estado
+         let estado = Estado estado_int
+         salvaEstado estado
          espere
       else do
          printStrLn "Comando inválido"

@@ -84,7 +84,7 @@ menu_aluno = do
     putStr   footer                     
     putStr   prompt
 
-    option <- readLn :: IO Int
+    option <- getLineInt
     return option
 
 menu_professor :: IO Int
@@ -100,7 +100,7 @@ menu_professor = do
     putStr   footer                     
     putStr   prompt
 
-    option <- readLn :: IO Int
+    option <- getLineInt
     return option
 
 menu_coordenador :: IO Int
@@ -118,7 +118,7 @@ menu_coordenador = do
     putStr   footer                                  
     putStr   prompt
 
-    option <- readLn :: IO Int
+    option <- getLineInt
     return option
 
 {-
@@ -138,7 +138,7 @@ menu_altera_estado = do
     putStr   footer                                  
     putStr   prompt
 
-    option <- readLn :: IO Int
+    option <- getLineInt
     return option
 
 
