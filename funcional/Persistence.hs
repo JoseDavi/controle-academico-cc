@@ -12,6 +12,8 @@ import Data.Maybe
 import Control.DeepSeq
 import System.Directory
 
+import Util
+
 -- Representação do usuário no sistema
 data Usuario = Usuario
     { matricula :: String
@@ -74,7 +76,7 @@ instance ToJSON Estado
 data ProfessorDisciplina = ProfessorDisciplina
     { matriculaProfessor :: String
     , disciplinasProfessor :: [Int]
-    }
+    } deriving (Show, Generic, Eq)
 
 instance FromJSON ProfessorDisciplina
 instance ToJSON ProfessorDisciplina
@@ -191,27 +193,41 @@ leProfessorDisciplinas = do
 
 alocaProfessor :: (String, Int) -> IO()
 alocaProfessor professor_disciplina = do
-    let usuariosBD = leUsuarios
-    let disciplinasBD = leDisciplinas
+    usuariosBD <- leUsuarios
+    disciplinasBD <- leDisciplinas
 
     let usuarioQUERY = [u | u <- usuariosBD, 
-                            matricula u == (fst professor_disciplina)]
+                            matricula u == (fst professor_disciplina),
+                            tipoUsuario u == "professor"]
 
     let disciplinaQUERY = [d | d <- disciplinasBD, 
                                Persistence.id d == (snd professor_disciplina)]
 
-    if (usuarioQUERY /= [] && disciplinaQUERY /= []) then
-        let professorDisciplinasBD = leProfessorDisciplinas
+    if (usuarioQUERY /= [] && disciplinaQUERY /= []) then do
+        professorDisciplinasBD <- leProfessorDisciplinas
         let professor_temp = [p | p <- professorDisciplinasBD,
-                                  matriculaProfessor p == (fst professor_disciplina)]
+                                  (matriculaProfessor p) == (fst professor_disciplina)]
         insert <- case professor_temp of
                     [] -> do
-                        let temp = ProfessorDisciplina (fst professor_disciplina) [fst professor_disciplina]
+                        let temp = ProfessorDisciplina (fst professor_disciplina) [snd professor_disciplina]
                         return (professorDisciplinasBD ++ [temp])
                     p -> do
-                        
-    else
-        printStr "Usuário ou disciplina incorretos..."
+                        let professorDisciplinas = (removeProfessorDisciplina (p !! 0) professorDisciplinasBD)
+                        let temp = ProfessorDisciplina (matriculaProfessor (p !! 0)) ((disciplinasProfessor (p !! 0)) ++ [(snd professor_disciplina)])
+                        return (professorDisciplinas ++ [temp])
+
+        B.writeFile "resources/professor_disciplina_temp.json" (encode insert)
+        removeFile "resources/professor_disciplina.json"
+        renameFile "resources/professor_disciplina_temp.json" "resources/professor_disciplina.json"
+    else do
+        putStr "\n"
+        printStrLn "Usuário ou disciplina incorretos..."
+
+removeProfessorDisciplina :: ProfessorDisciplina -> [ProfessorDisciplina] -> [ProfessorDisciplina]
+removeProfessorDisciplina _ []  = []
+removeProfessorDisciplina p (p1:pn) 
+                        | matriculaProfessor p == matriculaProfessor p1 = removeProfessorDisciplina p pn
+                        | otherwise = p1 : removeProfessorDisciplina p pn
 
 getDisciplina :: Int -> [Disciplina] ->  Disciplina
 getDisciplina idBusca disciplinas =  head [disc | disc <- disciplinas, (Persistence.id disc) == idBusca]

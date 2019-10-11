@@ -70,5 +70,11 @@
         "nomeUsuario": "matheus",
         "matricula": "654321",
         "senha": "123"
+    },
+    {
+        "tipoUsuario": "professor",
+        "nomeUsuario": "Emanuel",
+        "matricula": "123456",
+        "senha": "123"
     }
 ]
