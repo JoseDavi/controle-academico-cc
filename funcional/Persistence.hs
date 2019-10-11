@@ -160,4 +160,8 @@ removeAluno a (a1:an) | matriculaAluno a == matriculaAluno a1 = removeAluno a an
 getDisciplina :: Int -> [Disciplina] ->  Disciplina
 getDisciplina idBusca disciplinas =  head [disc | disc <- disciplinas, (Persistence.id disc) == idBusca]
 
+
+
+verificaDisciplinaJaMatriculada :: Int -> [MetaDisciplina]-> Bool
+verificaDisciplinaJaMatriculada idBusca listaDisciplinas = [] /= [disc | disc <- listaDisciplinas, (idMetaDisciplina disc) == idBusca] 
                      

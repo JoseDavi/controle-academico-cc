@@ -103,23 +103,33 @@ controlador_aluno aluno option = do
          imprimeDisciplinas disciplinas
          printStr prompt
          idEscolhido <- readLn :: IO Int
-         let disciplina = getDisciplina idEscolhido disciplinas
-         let newmetadisciplina = MetaDisciplina (Persistence.id disciplina)  (nomeDisciplina disciplina)  0 [0,0,0] "em curso"   
-         let newlista = [newmetadisciplina] ++ (Persistence.disciplinas aluno)
-         let newaluno = Aluno (matriculaAluno aluno) (nomeAluno aluno) (disciplinasMatriculadas aluno) (estaDesvinculado aluno) newlista
-         atualizaAluno newaluno
 
-         -- Reinicia o ciclo
-         option <- menu_aluno
-         controlador_aluno newaluno option
+         let disciplinaJaMatriculada = verificaDisciplinaJaMatriculada idEscolhido (Persistence.disciplinas aluno)
 
-      else if option == c_trancar_disciplina then do
-         printStrLn "Trancar disciplina"
-         espere
-         
-         -- Reinicia o ciclo
-         option <- menu_aluno
-         controlador_aluno aluno option
+         if disciplinaJaMatriculada then do
+            printStr "Disciplina já matriculada"
+            espere
+            -- Reinicia o ciclo
+            option <- menu_aluno
+            controlador_aluno aluno option
+         else do
+            let disciplina = getDisciplina idEscolhido disciplinas
+            let newmetadisciplina = MetaDisciplina (Persistence.id disciplina)  (nomeDisciplina disciplina)  0 [0,0,0] "em curso"   
+            let newlista = [newmetadisciplina] ++ (Persistence.disciplinas aluno)
+            let newaluno = Aluno (matriculaAluno aluno) (nomeAluno aluno) (disciplinasMatriculadas aluno) (estaDesvinculado aluno) newlista
+            atualizaAluno newaluno
+
+            -- Reinicia o ciclo
+            option <- menu_aluno
+            controlador_aluno newaluno option
+
+         else if option == c_trancar_disciplina then do
+            printStrLn "Trancar disciplina"
+            espere
+            
+            -- Reinicia o ciclo
+            option <- menu_aluno
+            controlador_aluno aluno option
       else if option == c_trancar_curso then do
          printStrLn "Trancar curso"
          espere
