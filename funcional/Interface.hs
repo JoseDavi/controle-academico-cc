@@ -216,3 +216,19 @@ menu_aloca_professor = do
     codigo <- getLineInt
 
     return (matricula, codigo)
+
+menu_analisa_trancamento :: String -> IO Int
+menu_analisa_trancamento trancamentos = do
+    limpar_tela
+
+    putStr  header       
+    
+    putStrLn " Solicitações de trancamento... \n"
+
+    printStr (adiciona_espacos c_espacos_identados trancamentos)
+
+    putStr "\n"
+    printStr  prompt
+
+    option <- getLineInt
+    return option

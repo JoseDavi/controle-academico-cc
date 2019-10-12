@@ -21,6 +21,7 @@ adiciona_espacos spaces str = do
       replace '\n' = "\n" ++ (repeteCaractere " " spaces)
       replace c = [c]
 
+      
 {- Seção de login -}
 
 -- Recebe uma senha na entrada padrão

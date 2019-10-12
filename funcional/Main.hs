@@ -212,7 +212,8 @@ controlador_coordenador option = do
          salvaUsuario usuario
          espere
       else if option == c_analisa_trancamento then do
-         printStrLn "Analisar trancamento"
+         trancamentos <- leTrancamentos
+         solic <- menu_analisa_trancamento (trancamentos_para_string trancamentos 1)
          espere
       else if option == c_alocar_professor then do
          professor_disciplina_temp <- menu_aloca_professor

@@ -11,6 +11,7 @@ import Data.Aeson
 import Data.Maybe
 import Control.DeepSeq
 import System.Directory
+import Data.List
 
 import Util
 
@@ -90,7 +91,20 @@ data Trancamento
 instance FromJSON Trancamento
 instance ToJSON Trancamento
 
+-- Representação string de um trancamento
+trancamento_para_string :: Trancamento -> String
+trancamento_para_string (TrancamentoDisciplina mat id) =
+    "Aluno de matrícula " ++ show mat ++ " solicita trancamento de disciplina " ++ show id
+trancamento_para_string (TrancamentoCurso mat) =
+    "Aluno de matrícula " ++ show mat ++ " solicita trancamento de curso"
 
+-- Representação string dos trancamentos
+trancamentos_para_string :: [Trancamento] -> Int -> String
+trancamentos_para_string [] _ = "" 
+trancamentos_para_string (t1:tn) c = 
+    show c ++ ") " ++ trancamento_para_string t1 ++ "\n" ++ trancamentos_para_string tn (c+1)
+
+    
 {- Seção para recuperação de informações dos arquivos -}
 
 leDisciplinas :: IO ([Disciplina])
