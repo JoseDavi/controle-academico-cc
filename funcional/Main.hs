@@ -211,7 +211,7 @@ adicionafalta lista id = do
 
 fazerChamada :: [Aluno] -> Int -> IO()
 fazerChamada lista id = do
-   if lista == [] then printStr "chamada concluida!"
+   if lista == [] then printStr "Chamada concluida!"
    else do
       printStr ("Matricula: " ++ (matriculaAluno (head lista)) ++ "\tAluno: " ++ (nomeAluno (head lista)) ++ "\n")
       printStr prompt
@@ -225,6 +225,25 @@ fazerChamada lista id = do
          else do
          printStr "Opção invalida: digite 1: para presente ou 2: para faltou\n"
          fazerChamada lista id
+
+fechaDisciplina:: [MetaDisciplina] -> Int -> [MetaDisciplina]
+fechaDisciplina lista id = do
+   if lista == [] then []
+   else do
+      if (idMetaDisciplina (head lista)) == id then do
+         let newmetadisciplina = MetaDisciplina (idMetaDisciplina (head lista))  (nomeMetaDisciplina (head lista))  (faltas (head lista)) (notas (head lista)) "fechada"
+         return newmetadisciplina ++ (tail lista)
+      else
+         [(head lista)] ++ (fechaDisciplina (tail lista) id)
+
+fecharDisciplina :: [Aluno] -> Int -> IO()
+fecharDisciplina lista id = do
+   if lista == [] then printStr "Fechamento concluido!"
+   else do
+      let newlista = fechaDisciplina (disciplinas (head lista)) id
+      let newaluno = Aluno (matriculaAluno (head lista)) (nomeAluno (head lista)) (disciplinasMatriculadas (head lista)) (estaDesvinculado (head lista)) newlista
+      atualizaAluno newaluno
+      fecharDisciplina (tail lista) id
 
 controlador_professor :: Int -> IO()
 controlador_professor option = do
@@ -253,7 +272,26 @@ controlador_professor option = do
                      controlador_professor c_fazer_chamada
                espere
             else if option == c_fechar_disciplina then do
-               printStrLn "Fechar Disciplina"
+               limpar_tela
+               professorDisciplina <- leProfessorDisciplinas
+               sessao <- leSessao
+               let disciplinas = disciplinasEmProfessor professorDisciplina (matricula (fromJust sessao))
+               if disciplinas == [] then
+                  printStr "Professor não alocado para nenhuma disciplina"
+               else do
+                  printStr "Disciplinas disponiveis.\n"
+                  imprimeDisciplinasProfessor disciplinas
+                  printStr prompt
+                  disciplina <- readLn :: IO Int
+                  if (elem disciplina disciplinas) then do
+                     alunosNoSistema <- leAlunos
+                     let alunos = listaDeAlunos alunosNoSistema disciplina
+                     fecharDisciplina alunos disciplina
+                  else do
+                     limpar_tela
+                     printStr "Disciplina não está na lista"
+                     espere
+                     controlador_professor c_fechar_disciplina
                espere
             else if option == c_inserir_notas then do
                   printStrLn "Inserir Notas"
