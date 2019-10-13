@@ -350,6 +350,16 @@ controlador_coordenador option = do
       else if option == c_analisa_trancamento then do
          trancamentos <- leTrancamentos
          solic <- menu_analisa_trancamento (trancamentos_para_string trancamentos 1)
+         opcao <- menu_decide_tranc
+         let tranc = getTrancamento 1 solic trancamentos
+
+         if opcao == 1 then do
+            analisaTrancamento tranc trancamentos
+         else do
+            putStr "A solicitação será excluída..."
+         let newTrancamentos = removeTrancamento tranc trancamentos
+         salvaTrancamentos newTrancamentos
+         
          espere
       else if option == c_alocar_professor then do
          professor_disciplina_temp <- menu_aloca_professor
@@ -392,3 +402,35 @@ existe_sessao_ativa = do
 main = do
    option <- menu_inicial
    controlador_principal option
+
+
+analisaTrancamento :: Trancamento -> [Trancamento] -> IO ()
+analisaTrancamento tranc trancamentos = do
+   alunoVeri <- leAluno (matrTrancamento tranc)
+   let alunoValido = case alunoVeri of
+                        Nothing -> False
+                        Just u -> True
+   if alunoValido then do
+      let aluno = fromJust alunoVeri
+      if (tag tranc) == "TrancamentoCurso" then do
+         let newaluno = Aluno (matriculaAluno aluno) (nomeAluno aluno) (disciplinasMatriculadas aluno) True (disciplinas aluno)
+         atualizaAluno newaluno
+      else do 
+         let disc = disciplinas aluno
+         let metadisciplina = getMetaDisciplina (idDisciplinaTrancamento tranc) disc
+         let newmetadisciplina = MetaDisciplina (idMetaDisciplina metadisciplina)  (nomeMetaDisciplina metadisciplina)  (faltas metadisciplina) (notas metadisciplina) "trancada"
+         let newlista = ((removeMetaDisciplina metadisciplina disc) ++ [newmetadisciplina])
+         let newaluno = Aluno (matriculaAluno aluno) (nomeAluno aluno) (disciplinasMatriculadas aluno) (estaDesvinculado aluno) newlista
+         atualizaAluno newaluno
+   else do
+      putStr "Aluno não existe!"
+  
+      
+
+   return ()
+
+
+getTrancamento ::Int -> Int -> [Trancamento] -> Trancamento
+getTrancamento cont index (h:t) | cont == index = h
+                                | otherwise = getTrancamento (cont + 1) index t
+

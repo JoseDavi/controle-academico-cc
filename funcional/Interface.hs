@@ -209,7 +209,7 @@ menu_desiste_trancamento = do
     limpar_tela
 
     printCenter trancar_curso_mensagem
-    putStr $ "Obrigada por continuar conosco! " ++ emoticon_feliz ++ "\n"
+    putStr $ "Obrigado por continuar conosco! " ++ emoticon_feliz ++ "\n"
 
     return ()
 
@@ -245,12 +245,25 @@ menu_analisa_trancamento trancamentos = do
 
     putStr  header       
     
-    putStrLn " Solicitações de trancamento... \n"
+    putStr " Solicitações de trancamento... \n"
 
-    printStr (adiciona_espacos c_espacos_identados trancamentos)
+    printStrLn (adiciona_espacos c_espacos_identados trancamentos) 
 
-    putStr "\n"
+    putStr " Digite o número da solicitação que deseja analisar\n"
+
     printStr  prompt
+
+    option <- getLineInt
+    return option
+
+menu_decide_tranc :: IO Int
+menu_decide_tranc = do
+    limpar_tela
+
+    putStr  header
+
+    putStrLn "1) Aceitar solicitação"
+    putStrLn "2) Recusar solicitação"
 
     option <- getLineInt
     return option
