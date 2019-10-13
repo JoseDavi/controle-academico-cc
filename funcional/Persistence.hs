@@ -85,8 +85,8 @@ instance ToJSON ProfessorDisciplina
 
 -- Representação de trancamentos no sistema
 data Trancamento 
-    = TrancamentoDisciplina { tag :: String, matrTrancamentoDisc :: String, idDisciplinaTrancamento :: Int }
-    | TrancamentoCurso { tag :: String, matrTrancamentoCur :: String } deriving (Show, Generic, Eq) 
+    = TrancamentoDisciplina { tag :: String, matrTrancamento :: String, idDisciplinaTrancamento :: Int }
+    | TrancamentoCurso { tag :: String, matrTrancamento :: String } deriving (Show, Generic, Eq) 
 
 instance FromJSON Trancamento
 instance ToJSON Trancamento
@@ -276,10 +276,29 @@ salvaTrancamento trancamento = do
     removeFile "resources/trancamentos.json"
     renameFile "resources/trancamentos_temp.json" "resources/trancamentos.json"
 
+salvaTrancamentos :: [Trancamento] -> IO()
+salvaTrancamentos trancamentos = do
+    B.writeFile "resources/trancamentos.json" (encode trancamentos)
+
+removeTrancamento :: Trancamento -> [Trancamento] -> [Trancamento]
+removeTrancamento _ []  = []
+removeTrancamento t (a1:an) | (tag t == "TrancamentoCurso") && (tag t == tag a1) && (matrTrancamento t == matrTrancamento a1) = removeTrancamento t an
+                            | (tag t == "TrancamentoDisciplina") && (tag t == tag a1) && (matrTrancamento t == matrTrancamento a1) && (idDisciplinaTrancamento t == idDisciplinaTrancamento a1) = removeTrancamento t an
+                            | otherwise = a1 : removeTrancamento t an
+                         
+
 getDisciplina :: Int -> [Disciplina] ->  Disciplina
 getDisciplina idBusca disciplinas =  head [disc | disc <- disciplinas, (Persistence.id disc) == idBusca]
 
+getMetaDisciplina :: Int -> [MetaDisciplina] ->  MetaDisciplina
+getMetaDisciplina idBusca metadisciplinas =  head [disc | disc <- metadisciplinas, (Persistence.idMetaDisciplina disc) == idBusca]
+
+
+removeMetaDisciplina :: MetaDisciplina -> [MetaDisciplina] -> [MetaDisciplina]
+removeMetaDisciplina _ []  = []
+removeMetaDisciplina a (a1:an) | idMetaDisciplina a == idMetaDisciplina a1 = removeMetaDisciplina a an
+                               | otherwise = a1 : removeMetaDisciplina a an
 
 verificaDisciplinaJaMatriculada :: Int -> [MetaDisciplina]-> Bool
-verificaDisciplinaJaMatriculada idBusca listaDisciplinas = [] /= [disc | disc <- listaDisciplinas, (idMetaDisciplina disc) == idBusca] 
-                     
+verificaDisciplinaJaMatriculada idBusca listaDisciplinas = [] /= [disc | disc <- listaDisciplinas, (idMetaDisciplina disc) == idBusca]
+
