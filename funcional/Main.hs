@@ -356,7 +356,7 @@ controlador_coordenador option = do
          if opcao == 1 then do
             analisaTrancamento tranc trancamentos
          else do
-            putStr "A solicitação será excluída..."
+            printStr "A solicitação será excluída..."
          let newTrancamentos = removeTrancamento tranc trancamentos
          salvaTrancamentos newTrancamentos
          
