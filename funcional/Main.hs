@@ -82,6 +82,17 @@ imprimeDisciplinasAux [] = putStr "\n"
 imprimeDisciplinasAux (head:tail) =  do   printStr ("" ++ show (Persistence.id head) ++ "\t" ++ nomeDisciplina head ++ "\t\t" ++ show (limite head) ++ "\t" ++ show (p_requisito head) ++ "\t" ++ show (s_requisito head) ++ "\n")
                                           imprimeDisciplinasAux tail 
 
+imprimeMetaDisciplinas :: [MetaDisciplina] -> IO()
+imprimeMetaDisciplinas metadisciplinas = do printStr "ID\tNOME\n"
+                                            imprimeMetaDisciplinasAux  metadisciplinas
+
+imprimeMetaDisciplinasAux :: [MetaDisciplina] -> IO()
+imprimeMetaDisciplinasAux [] = putStr "\n"
+imprimeMetaDisciplinasAux (head:tail) =  do   printStr ("" ++ show (Persistence.idMetaDisciplina head) ++ "\t" ++ nomeMetaDisciplina head ++ "\n")
+                                              imprimeMetaDisciplinasAux tail 
+
+
+
 verDisciplina :: [MetaDisciplina] -> Int -> String
 verDisciplina lista id
  |lista == [] = "Disciplina não cursada ou matriculada"
@@ -128,15 +139,28 @@ controlador_aluno aluno option = do
             option <- menu_aluno
             controlador_aluno newaluno option
 
-         else if option == c_trancar_disciplina then do
-            printStrLn "Trancar disciplina"
-            espere
-            
-            -- Reinicia o ciclo
-            option <- menu_aluno
-            controlador_aluno aluno option
+      else if option == c_trancar_disciplina then do
+         if (disciplinasMatriculadas aluno) > 4 then do
+            imprimeMetaDisciplinas (disciplinas aluno)
+            opcao <- menu_trancamento_disc
+            let newTrancamento = TrancamentoDisciplina "TrancamentoDisciplina" (matriculaAluno aluno) opcao
+            salvaTrancamento newTrancamento
+         else do
+            printStr "É necessário estar matriculado em mais de 4 disciplinas para solicitar o trancamento\n"
+
+         espere
+         
+         -- Reinicia o ciclo
+         option <- menu_aluno
+         controlador_aluno aluno option
       else if option == c_trancar_curso then do
-         printStrLn "Trancar curso"
+         opcao <- menu_trancamento_curso 
+         if opcao == "s" then do
+            let newTrancamento = TrancamentoCurso "TrancamentoCurso" (matriculaAluno aluno)
+            salvaTrancamento newTrancamento
+         else do
+            menu_desiste_trancamento
+            
          espere
 
          -- Reinicia o ciclo

@@ -37,6 +37,9 @@ trancar_curso_mensagem = do
 emoticon_triste :: String
 emoticon_triste = " (▰ ︶︹︺▰) "
 
+emoticon_feliz :: String
+emoticon_feliz = " (✿ ◠‿◠ ) "
+
 
 {-
     Menus principais do sistema
@@ -201,6 +204,25 @@ menu_trancamento_curso = do
 
     return op
 
+menu_desiste_trancamento :: IO ()
+menu_desiste_trancamento = do
+    limpar_tela
+
+    printCenter trancar_curso_mensagem
+    putStr $ "Obrigada por continuar conosco! " ++ emoticon_feliz ++ "\n"
+
+    return ()
+
+menu_trancamento_disc :: IO Int
+menu_trancamento_disc = do
+
+    printStr prompt
+    putStr "Digite o ID da disciplina que deseja trancar\n"
+    printStr prompt
+    op <- getLineInt
+
+    return op
+   
 menu_aloca_professor :: IO (String, Int)
 menu_aloca_professor = do
     limpar_tela

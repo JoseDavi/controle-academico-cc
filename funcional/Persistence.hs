@@ -85,17 +85,17 @@ instance ToJSON ProfessorDisciplina
 
 -- Representação de trancamentos no sistema
 data Trancamento 
-    = TrancamentoDisciplina { matrTrancamentoDisc :: String, idDisciplinaTrancamento :: Int }
-    | TrancamentoCurso { matrTrancamentoCur :: String } deriving (Show, Generic, Eq) 
+    = TrancamentoDisciplina { tag :: String, matrTrancamentoDisc :: String, idDisciplinaTrancamento :: Int }
+    | TrancamentoCurso { tag :: String, matrTrancamentoCur :: String } deriving (Show, Generic, Eq) 
 
 instance FromJSON Trancamento
 instance ToJSON Trancamento
 
 -- Representação string de um trancamento
 trancamento_para_string :: Trancamento -> String
-trancamento_para_string (TrancamentoDisciplina mat id) =
+trancamento_para_string (TrancamentoDisciplina tag mat id) =
     "Aluno de matrícula " ++ show mat ++ " solicita trancamento de disciplina " ++ show id
-trancamento_para_string (TrancamentoCurso mat) =
+trancamento_para_string (TrancamentoCurso tag mat) =
     "Aluno de matrícula " ++ show mat ++ " solicita trancamento de curso"
 
 -- Representação string dos trancamentos
@@ -268,6 +268,13 @@ leTrancamentos = do
     byteStrTrancamentos <- B.readFile "resources/trancamentos.json"
     let trancamentos = fromJust (decode byteStrTrancamentos :: Maybe [Trancamento])
     return (trancamentos)
+
+salvaTrancamento :: Trancamento -> IO()
+salvaTrancamento trancamento = do
+    trancamentos <- leTrancamentos
+    B.writeFile "resources/trancamentos_temp.json" (encode (trancamentos ++ [trancamento]))
+    removeFile "resources/trancamentos.json"
+    renameFile "resources/trancamentos_temp.json" "resources/trancamentos.json"
 
 getDisciplina :: Int -> [Disciplina] ->  Disciplina
 getDisciplina idBusca disciplinas =  head [disc | disc <- disciplinas, (Persistence.id disc) == idBusca]
