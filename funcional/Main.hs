@@ -113,85 +113,93 @@ controlador_aluno aluno option = do
          disciplinas <- leDisciplinas  
          imprimeDisciplinas disciplinas
          printStr prompt
-         idEscolhido <- readLn :: IO Int
+         idEscolhido <- getLineInt
 
-         let disciplinaJaMatriculada = verificaDisciplinaJaMatriculada idEscolhido (Persistence.disciplinas aluno)
-
-         if disciplinaJaMatriculada || (disciplinasMatriculadas aluno) >= 6 then do
-            
-            if disciplinaJaMatriculada then do
-               printStr "Disciplina já foi matriculada"
-            else do
-               printStr "O limite de disciplinas(6) já foi atingido"
-            
+         if idEscolhido > 131 || idEscolhido < 101 then do
+            printStrLn "Disciplina inválida."
             espere
             -- Reinicia o ciclo
             option <- menu_aluno
             controlador_aluno aluno option
          else do
-            let disciplina = getDisciplina idEscolhido disciplinas
-            let newmetadisciplina = MetaDisciplina (Persistence.id disciplina)  (nomeDisciplina disciplina)  0 [0,0,0] "em curso"   
-            let newlista = [newmetadisciplina] ++ (Persistence.disciplinas aluno)
-            let newaluno = Aluno (matriculaAluno aluno) (nomeAluno aluno) (1 + disciplinasMatriculadas aluno) (estaDesvinculado aluno) newlista
-            atualizaAluno newaluno
+            let disciplinaJaMatriculada = verificaDisciplinaJaMatriculada idEscolhido (Persistence.disciplinas aluno)
+
+            if disciplinaJaMatriculada || (disciplinasMatriculadas aluno) >= 6 then do
+               
+               if disciplinaJaMatriculada then do
+                  printStr "Disciplina já foi matriculada"
+               else do
+                  printStr "O limite de disciplinas(6) já foi atingido"
+               
+               espere
+               -- Reinicia o ciclo
+               option <- menu_aluno
+               controlador_aluno aluno option
+            else do
+               let disciplina = getDisciplina idEscolhido disciplinas
+               let newmetadisciplina = MetaDisciplina (Persistence.id disciplina)  (nomeDisciplina disciplina)  0 [0,0,0] "em curso"   
+               let newlista = [newmetadisciplina] ++ (Persistence.disciplinas aluno)
+               let newaluno = Aluno (matriculaAluno aluno) (nomeAluno aluno) (1 + disciplinasMatriculadas aluno) (estaDesvinculado aluno) newlista
+               atualizaAluno newaluno
+
+               -- Reinicia o ciclo
+               option <- menu_aluno
+               controlador_aluno newaluno option
+
+         else if option == c_trancar_disciplina then do
+            if (disciplinasMatriculadas aluno) > 4 then do
+               imprimeMetaDisciplinas (disciplinas aluno)
+               opcao <- menu_trancamento_disc
+               let newTrancamento = TrancamentoDisciplina "TrancamentoDisciplina" (matriculaAluno aluno) opcao
+               salvaTrancamento newTrancamento
+            else do
+               printStr "É necessário estar matriculado em mais de 4 disciplinas para solicitar o trancamento\n"
+
+            espere
+            
+            -- Reinicia o ciclo
+            option <- menu_aluno
+            controlador_aluno aluno option
+         else if option == c_trancar_curso then do
+            opcao <- menu_trancamento_curso 
+            if opcao == "s" then do
+               let newTrancamento = TrancamentoCurso "TrancamentoCurso" (matriculaAluno aluno)
+               salvaTrancamento newTrancamento
+            else do
+               menu_desiste_trancamento
+               
+            espere
 
             -- Reinicia o ciclo
             option <- menu_aluno
-            controlador_aluno newaluno option
+            controlador_aluno aluno option
+         else if option == c_ver_disciplina then do
+            printStrLn "Ver disciplina: "
+            printStr prompt
+            id_disciplina <- getLineInt
+            print id_disciplina
+            printStrLn(verDisciplina (disciplinas aluno) id_disciplina)
+            espere
 
-      else if option == c_trancar_disciplina then do
-         if (disciplinasMatriculadas aluno) > 4 then do
-            imprimeMetaDisciplinas (disciplinas aluno)
-            opcao <- menu_trancamento_disc
-            let newTrancamento = TrancamentoDisciplina "TrancamentoDisciplina" (matriculaAluno aluno) opcao
-            salvaTrancamento newTrancamento
+            -- Reinicia o ciclo
+            option <- menu_aluno
+            controlador_aluno aluno option
+         else if option == c_ver_historico then do
+            printStrLn "Ver histórico"
+            printStr "ID\tNOME\tFALTAS\tNOTAS\t\tESTADO\n"
+            verHistorico (disciplinas aluno)
+            espere
+
+            -- Reinicia o ciclo
+            option <- menu_aluno
+            controlador_aluno aluno option
          else do
-            printStr "É necessário estar matriculado em mais de 4 disciplinas para solicitar o trancamento\n"
+            printStr "Opção Invalida"
+            espere
 
-         espere
-         
-         -- Reinicia o ciclo
-         option <- menu_aluno
-         controlador_aluno aluno option
-      else if option == c_trancar_curso then do
-         opcao <- menu_trancamento_curso 
-         if opcao == "s" then do
-            let newTrancamento = TrancamentoCurso "TrancamentoCurso" (matriculaAluno aluno)
-            salvaTrancamento newTrancamento
-         else do
-            menu_desiste_trancamento
-            
-         espere
-
-         -- Reinicia o ciclo
-         option <- menu_aluno
-         controlador_aluno aluno option
-      else if option == c_ver_disciplina then do
-         printStrLn "Ver disciplina: "
-         printStr prompt
-         id_disciplina <- readLn :: IO Int
-         printStrLn(verDisciplina (disciplinas aluno) id_disciplina)
-         espere
-
-         -- Reinicia o ciclo
-         option <- menu_aluno
-         controlador_aluno aluno option
-      else if option == c_ver_historico then do
-         printStrLn "Ver histórico"
-         printStr "ID\tNOME\tFALTAS\tNOTAS\t\tESTADO\n"
-         verHistorico (disciplinas aluno)
-         espere
-
-         -- Reinicia o ciclo
-         option <- menu_aluno
-         controlador_aluno aluno option
-      else do
-         printStr "Opção Invalida"
-         espere
-
-         -- Reinicia o ciclo
-         option <- menu_aluno
-         controlador_aluno aluno option
+            -- Reinicia o ciclo
+            option <- menu_aluno
+            controlador_aluno aluno option
 
    else
       return ()
