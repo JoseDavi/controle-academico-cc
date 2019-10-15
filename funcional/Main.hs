@@ -106,10 +106,16 @@ verHistorico lista
       printStr (show (Persistence.idMetaDisciplina (head lista)) ++ "\t" ++ nomeMetaDisciplina (head lista) ++ "\t" ++ show (faltas (head lista)) ++ "\t" ++ show (notas (head lista)) ++ "\t" ++ estado (head lista) ++ "\n")
       verHistorico (tail lista)
 
+reiniciaCicloAluno :: Aluno -> IO()
+reiniciaCicloAluno aluno = do
+            option <- menu_aluno
+            controlador_aluno aluno option
+
 controlador_aluno :: Aluno -> Int -> IO()
 controlador_aluno aluno option = do
    if option /= c_a_voltar then do
       if option == c_fazer_matricula then do
+
          disciplinas <- leDisciplinas  
          imprimeDisciplinas disciplinas
          printStr prompt
@@ -118,9 +124,7 @@ controlador_aluno aluno option = do
          if idEscolhido > 131 || idEscolhido < 101 then do
             printStrLn "Disciplina inválida."
             espere
-            -- Reinicia o ciclo
-            option <- menu_aluno
-            controlador_aluno aluno option
+            reiniciaCicloAluno aluno
          else do
             let disciplinaJaMatriculada = verificaDisciplinaJaMatriculada idEscolhido (Persistence.disciplinas aluno)
 
@@ -132,19 +136,15 @@ controlador_aluno aluno option = do
                   printStr "O limite de disciplinas(6) já foi atingido"
                
                espere
-               -- Reinicia o ciclo
-               option <- menu_aluno
-               controlador_aluno aluno option
+               reiniciaCicloAluno aluno
+
             else do
                let disciplina = getDisciplina idEscolhido disciplinas
                let newmetadisciplina = MetaDisciplina (Persistence.id disciplina)  (nomeDisciplina disciplina)  0 [0,0,0] "em curso"   
                let newlista = [newmetadisciplina] ++ (Persistence.disciplinas aluno)
                let newaluno = Aluno (matriculaAluno aluno) (nomeAluno aluno) (1 + disciplinasMatriculadas aluno) (estaDesvinculado aluno) newlista
                atualizaAluno newaluno
-
-               -- Reinicia o ciclo
-               option <- menu_aluno
-               controlador_aluno newaluno option
+               reiniciaCicloAluno newaluno
 
          else if option == c_trancar_disciplina then do
             if (disciplinasMatriculadas aluno) > 4 then do
@@ -156,10 +156,8 @@ controlador_aluno aluno option = do
                printStr "É necessário estar matriculado em mais de 4 disciplinas para solicitar o trancamento\n"
 
             espere
-            
-            -- Reinicia o ciclo
-            option <- menu_aluno
-            controlador_aluno aluno option
+            reiniciaCicloAluno aluno
+
          else if option == c_trancar_curso then do
             opcao <- menu_trancamento_curso 
             if opcao == "s" then do
@@ -169,10 +167,8 @@ controlador_aluno aluno option = do
                menu_desiste_trancamento
                
             espere
+            reiniciaCicloAluno aluno
 
-            -- Reinicia o ciclo
-            option <- menu_aluno
-            controlador_aluno aluno option
          else if option == c_ver_disciplina then do
             printStrLn "Ver disciplina: "
             printStr prompt
@@ -180,26 +176,19 @@ controlador_aluno aluno option = do
             print id_disciplina
             printStrLn(verDisciplina (disciplinas aluno) id_disciplina)
             espere
+            reiniciaCicloAluno aluno
 
-            -- Reinicia o ciclo
-            option <- menu_aluno
-            controlador_aluno aluno option
          else if option == c_ver_historico then do
             printStrLn "Ver histórico"
             printStr "ID\tNOME\tFALTAS\tNOTAS\t\tESTADO\n"
             verHistorico (disciplinas aluno)
             espere
+            reiniciaCicloAluno aluno
 
-            -- Reinicia o ciclo
-            option <- menu_aluno
-            controlador_aluno aluno option
          else do
             printStr "Opção Invalida"
             espere
-
-            -- Reinicia o ciclo
-            option <- menu_aluno
-            controlador_aluno aluno option
+            reiniciaCicloAluno aluno
 
    else
       return ()
