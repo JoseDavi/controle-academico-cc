@@ -116,6 +116,21 @@ controlador_aluno aluno option = do
    if option /= c_a_voltar then do
       if option == c_fazer_matricula then do
 
+         
+
+         --let maybeestado = leEstado
+         --estado <- case maybeestado of
+           --       Nothing -> do
+             --           printStrLn "Estado inválido"
+               --         reiniciaCicloAluno aluno
+                --  Just est -> do
+                 --       return (fromJust est)
+                        
+         --print show estado
+                         
+      
+         
+
          disciplinas <- leDisciplinas  
          imprimeDisciplinas disciplinas
          printStr prompt
@@ -347,17 +362,20 @@ controlador_coordenador option = do
       else if option == c_analisa_trancamento then do
          trancamentos <- leTrancamentos
          solic <- menu_analisa_trancamento (trancamentos_para_string trancamentos 1)
-         opcao <- menu_decide_tranc
-         let tranc = getTrancamento 1 solic trancamentos
-
-         if opcao == 1 then do
-            analisaTrancamento tranc trancamentos
+         if(solic > length(trancamentos)) then do 
+            printStr "Opção inválida"
+            espere
          else do
-            printStr "A solicitação será excluída..."
-         let newTrancamentos = removeTrancamento tranc trancamentos
-         salvaTrancamentos newTrancamentos
+            opcao <- menu_decide_tranc
+            let tranc = getTrancamento 1 solic trancamentos
+            if opcao == 1 then do
+                  analisaTrancamento tranc trancamentos
+            else do
+                  printStr "A solicitação será excluída..."
+            let newTrancamentos = removeTrancamento tranc trancamentos
+            salvaTrancamentos newTrancamentos
          
-         espere
+            espere
       else if option == c_alocar_professor then do
          professor_disciplina_temp <- menu_aloca_professor
          alocaProfessor professor_disciplina_temp
