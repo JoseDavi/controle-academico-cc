@@ -231,7 +231,11 @@ listaDeAlunos :: [Aluno] -> Int -> [Aluno]
 listaDeAlunos lista id = do
    if(lista == []) then  []
    else do
-      if (contains (disciplinas (head lista)) id) then
+      
+      let disciplinaQUERY = [d | d <- disciplinas (head lista), idMetaDisciplina d == id]
+
+
+      if (contains (disciplinas (head lista)) id && estado (head disciplinaQUERY) /= "trancado" ) then
          return (head lista) ++ (listaDeAlunos (tail lista) id)
       else listaDeAlunos (tail lista) id
 

@@ -231,7 +231,7 @@ alocaProfessor professor_disciplina = do
 
     let disciplinaQUERY = [d | d <- disciplinasBD, 
                                Persistence.id d == (snd professor_disciplina)]
-
+                      
     if (usuarioQUERY /= [] && disciplinaQUERY /= []) then do
         professorDisciplinasBD <- leProfessorDisciplinas
         
