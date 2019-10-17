@@ -293,15 +293,19 @@ fazerChamada lista id = do
          fazerChamada lista id
 atribuirNotas :: [Aluno] -> Int -> Int -> IO()
 atribuirNotas lista id estagio = do
-   if lista == [] then printStr "Concluída"
+   if lista == [] then printStr "Atribuição de notas concluída\n"
    else do
       printStr ("Matricula: " ++ (matriculaAluno (head lista)) ++ "\tAluno: " ++ (nomeAluno (head lista)) ++ "\n")
       printStr prompt
       nota <- readLn :: IO Double
-      let newlista = adicionanota (disciplinas (head lista)) id estagio nota
-      let newaluno = Aluno (matriculaAluno (head lista)) (nomeAluno (head lista)) (disciplinasMatriculadas (head lista)) (estaDesvinculado (head lista)) newlista
-      atualizaAluno newaluno
-      atribuirNotas (tail lista) id estagio
+      if (nota > 10 || nota < 0) then do
+            printStr("Nota inválida, por favor insira uma nota de 0 a 10\n")
+            atribuirNotas lista id estagio
+      else do
+            let newlista = adicionanota (disciplinas (head lista)) id estagio nota
+            let newaluno = Aluno (matriculaAluno (head lista)) (nomeAluno (head lista)) (disciplinasMatriculadas (head lista)) (estaDesvinculado (head lista)) newlista
+            atualizaAluno newaluno
+            atribuirNotas (tail lista) id estagio
       
 fechaDisciplina:: [MetaDisciplina] -> Int -> [MetaDisciplina]
 fechaDisciplina lista id = do
@@ -385,9 +389,15 @@ controlador_professor option = do
                      if (elem disciplina disciplinas) then do
                         alunosNoSistema <- leAlunos
                         let alunos = listaDeAlunos alunosNoSistema disciplina
-                        printStr "Escolha o estágio"
+                        printStr "Escolha o estágio.\n"
                         estagio <- readLn :: IO Int
-                        atribuirNotas alunos disciplina estagio
+                        if (estagio < 1 || estagio > 3) then do
+                              limpar_tela
+                              printStr "Estágio inválido, insira por favor um estágio de 1 a 3.\n"
+                              espere
+                              controlador_professor c_inserir_notas
+                        else do
+                              atribuirNotas alunos disciplina estagio
                      else do
                         limpar_tela
                         printStr "Disciplina não está na lista"
