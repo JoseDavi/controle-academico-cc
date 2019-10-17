@@ -3,6 +3,8 @@ import Util
 import Constants
 import Persistence
 import Data.Maybe
+import Numeric 
+
 
 controlador_principal :: Int -> IO()
 controlador_principal option = do
@@ -99,12 +101,21 @@ verDisciplina lista id
  |Persistence.idMetaDisciplina (head lista) == id = "ID\tNOME\tFALTAS\tNOTAS\t\tESTADO\n\t\t\t\t\t" ++ show (Persistence.idMetaDisciplina (head lista)) ++ "\t" ++ nomeMetaDisciplina (head lista) ++ "\t" ++ show (faltas (head lista)) ++ "\t" ++ show (notas (head lista)) ++ "\t" ++ estado (head lista) ++ "\n"
  |otherwise = verDisciplina (tail lista) id
 
+verificaSituacao :: Double -> Int -> String ->  String
+verificaSituacao media faltas estado
+ |estado == "trancada" = "Trancada"
+ |(media >= 7.0) && (faltas <= 7) = "Aprovado"
+ |otherwise = "Reprovado"
+
 verHistorico :: [MetaDisciplina] -> IO()
 verHistorico lista
  |lista == [] = printStr "\n"
  |otherwise = do
-      printStr (show (Persistence.idMetaDisciplina (head lista)) ++ "\t" ++ nomeMetaDisciplina (head lista) ++ "\t" ++ show (faltas (head lista)) ++ "\t" ++ show (notas (head lista)) ++ "\t" ++ estado (head lista) ++ "\n")
-      verHistorico (tail lista)
+      if(estado (head lista) == "em curso") then verHistorico (tail lista)
+      else do
+            printStr (show (Persistence.idMetaDisciplina (head lista)) ++ "\t" ++ nomeMetaDisciplina (head lista) ++ "\t" ++ (showFFloat (Just 1) media "") ++ "\t" ++ (verificaSituacao media (faltas (head lista)) (estado (head lista))) ++ "\n")
+            verHistorico (tail lista)
+ where media = ((sum (notas (head lista))) / 3)
 
 reiniciaCicloAluno :: Aluno -> IO()
 reiniciaCicloAluno aluno = do
@@ -184,17 +195,16 @@ controlador_aluno aluno option = do
             reiniciaCicloAluno aluno
 
          else if option == c_ver_disciplina then do
-            printStrLn "Ver disciplina: "
+            printStrLn "Disciplina: "
             printStr prompt
             id_disciplina <- getLineInt
-            print id_disciplina
             printStrLn(verDisciplina (disciplinas aluno) id_disciplina)
             espere
             reiniciaCicloAluno aluno
 
          else if option == c_ver_historico then do
-            printStrLn "Ver histórico"
-            printStr "ID\tNOME\tFALTAS\tNOTAS\t\tESTADO\n"
+            printStrLn "Histórico"
+            printStr "ID\tNOME\tMEDIA\tESTADO\n"
             verHistorico (disciplinas aluno)
             espere
             reiniciaCicloAluno aluno
