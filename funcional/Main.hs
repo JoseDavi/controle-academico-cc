@@ -118,19 +118,8 @@ controlador_aluno aluno option = do
 
          
 
-         --let maybeestado = leEstado
-         --estado <- case maybeestado of
-           --       Nothing -> do
-             --           printStrLn "Estado inválido"
-               --         reiniciaCicloAluno aluno
-                --  Just est -> do
-                 --       return (fromJust est)
-                        
-         --print show estado
-                         
       
-         
-
+      
          disciplinas <- leDisciplinas  
          imprimeDisciplinas disciplinas
          printStr prompt
@@ -143,13 +132,23 @@ controlador_aluno aluno option = do
          else do
             let disciplinaJaMatriculada = verificaDisciplinaJaMatriculada idEscolhido (Persistence.disciplinas aluno)
 
-            if disciplinaJaMatriculada || (disciplinasMatriculadas aluno) >= 6 then do
+            let disciplina = getDisciplina idEscolhido disciplinas
+            let prereq1 = p_requisito disciplina
+            let prereq2 = s_requisito disciplina
+            let dispensaP1 = (prereq1 == 0) || (verificaDisciplinaJaMatriculada prereq1 (Persistence.disciplinas aluno))
+            let dispensaP2 = (prereq2 == 0) || (verificaDisciplinaJaMatriculada prereq2 (Persistence.disciplinas aluno))
+
+            if disciplinaJaMatriculada || (disciplinasMatriculadas aluno) >= 6 || not dispensaP1 || not dispensaP2 then do
                
                if disciplinaJaMatriculada then do
                   printStr "Disciplina já foi matriculada"
                else do
-                  printStr "O limite de disciplinas(6) já foi atingido"
-               
+
+                  if (disciplinasMatriculadas aluno) >= 6 then do
+                     printStr "O limite de disciplinas(6) já foi atingido"
+                  else do
+                     printStr "Faltam prerequisitos"
+                     
                espere
                reiniciaCicloAluno aluno
 
