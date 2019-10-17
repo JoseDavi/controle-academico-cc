@@ -272,7 +272,8 @@ mudaNota notas indice nota = do
             if indice == 0 then do
                   return nota ++ (tail notas)
             else do
-                  return (head notas) ++ mudaNota notas (indice - 1) nota
+                  return (head notas) ++ mudaNota (tail notas) (indice - 1) nota
+
 
 fazerChamada :: [Aluno] -> Int -> IO()
 fazerChamada lista id = do
