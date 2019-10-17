@@ -257,6 +257,22 @@ adicionafalta lista id = do
          return newmetadisciplina ++ (tail lista)
       else
          [(head lista)] ++ (adicionafalta (tail lista) id)
+adicionanota :: [MetaDisciplina] -> Int -> Int -> Double -> [MetaDisciplina]
+adicionanota lista id estagio nota = do
+   if lista == [] then []
+   else do
+      if (idMetaDisciplina (head lista)) == id then do
+         let newnotas =  mudaNota (notas (head lista)) (estagio-1) nota
+         let newmetadisciplina = MetaDisciplina (idMetaDisciplina (head lista))  (nomeMetaDisciplina (head lista))  ((faltas (head lista))) (newnotas) (estado (head lista))
+         return newmetadisciplina ++ (tail lista)
+      else
+         [(head lista)] ++ (adicionanota (tail lista) id estagio nota)
+mudaNota :: [Double] -> Int -> Double -> [Double]
+mudaNota notas indice nota = do
+            if indice == 0 then do
+                  return nota ++ (tail notas)
+            else do
+                  return (head notas) ++ mudaNota notas (indice - 1) nota
 
 fazerChamada :: [Aluno] -> Int -> IO()
 fazerChamada lista id = do
@@ -274,7 +290,18 @@ fazerChamada lista id = do
          else do
          printStr "Opção invalida: digite 1: para presente ou 2: para faltou\n"
          fazerChamada lista id
-
+atribuirNotas :: [Aluno] -> Int -> Int -> IO()
+atribuirNotas lista id estagio = do
+   if lista == [] then printStr "Concluída"
+   else do
+      printStr ("Matricula: " ++ (matriculaAluno (head lista)) ++ "\tAluno: " ++ (nomeAluno (head lista)) ++ "\n")
+      printStr prompt
+      nota <- readLn :: IO Double
+      let newlista = adicionanota (disciplinas (head lista)) id estagio nota
+      let newaluno = Aluno (matriculaAluno (head lista)) (nomeAluno (head lista)) (disciplinasMatriculadas (head lista)) (estaDesvinculado (head lista)) newlista
+      atualizaAluno newaluno
+      atribuirNotas (tail lista) id estagio
+      
 fechaDisciplina:: [MetaDisciplina] -> Int -> [MetaDisciplina]
 fechaDisciplina lista id = do
    if lista == [] then []
@@ -343,8 +370,30 @@ controlador_professor option = do
                      controlador_professor c_fechar_disciplina
                espere
             else if option == c_inserir_notas then do
-                  printStrLn "Inserir Notas"
+                  limpar_tela
+                  professorDisciplina <- leProfessorDisciplinas
+                  sessao <- leSessao
+                  let disciplinas = disciplinasEmProfessor professorDisciplina (matricula (fromJust sessao))
+                  if disciplinas == [] then
+                     printStr "Professor não alocado para nenhuma disciplina"
+                  else do
+                     printStr "Disciplinas disponiveis.\n"
+                     imprimeDisciplinasProfessor disciplinas
+                     printStr prompt
+                     disciplina <- readLn :: IO Int
+                     if (elem disciplina disciplinas) then do
+                        alunosNoSistema <- leAlunos
+                        let alunos = listaDeAlunos alunosNoSistema disciplina
+                        printStr "Escolha o estágio"
+                        estagio <- readLn :: IO Int
+                        atribuirNotas alunos disciplina estagio
+                     else do
+                        limpar_tela
+                        printStr "Disciplina não está na lista"
+                        espere
+                        controlador_professor c_inserir_notas
                   espere 
+
             else do
                   printStrLn "Comando inválido"
                   espere
