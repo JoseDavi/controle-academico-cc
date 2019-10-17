@@ -127,6 +127,10 @@ controlador_aluno aluno option = do
    if option /= c_a_voltar then do
       if option == c_fazer_matricula then do
 
+         
+
+      
+      
          disciplinas <- leDisciplinas  
          imprimeDisciplinas disciplinas
          printStr prompt
@@ -139,13 +143,23 @@ controlador_aluno aluno option = do
          else do
             let disciplinaJaMatriculada = verificaDisciplinaJaMatriculada idEscolhido (Persistence.disciplinas aluno)
 
-            if disciplinaJaMatriculada || (disciplinasMatriculadas aluno) >= 6 then do
+            let disciplina = getDisciplina idEscolhido disciplinas
+            let prereq1 = p_requisito disciplina
+            let prereq2 = s_requisito disciplina
+            let dispensaP1 = (prereq1 == 0) || (verificaDisciplinaJaMatriculada prereq1 (Persistence.disciplinas aluno))
+            let dispensaP2 = (prereq2 == 0) || (verificaDisciplinaJaMatriculada prereq2 (Persistence.disciplinas aluno))
+
+            if disciplinaJaMatriculada || (disciplinasMatriculadas aluno) >= 6 || not dispensaP1 || not dispensaP2 then do
                
                if disciplinaJaMatriculada then do
                   printStr "Disciplina já foi matriculada"
                else do
-                  printStr "O limite de disciplinas(6) já foi atingido"
-               
+
+                  if (disciplinasMatriculadas aluno) >= 6 then do
+                     printStr "O limite de disciplinas(6) já foi atingido"
+                  else do
+                     printStr "Faltam prerequisitos"
+                     
                espere
                reiniciaCicloAluno aluno
 
@@ -226,7 +240,11 @@ listaDeAlunos :: [Aluno] -> Int -> [Aluno]
 listaDeAlunos lista id = do
    if(lista == []) then  []
    else do
-      if (contains (disciplinas (head lista)) id) then
+      
+      let disciplinaQUERY = [d | d <- disciplinas (head lista), idMetaDisciplina d == id]
+
+
+      if (contains (disciplinas (head lista)) id && estado (head disciplinaQUERY) /= "trancado" ) then
          return (head lista) ++ (listaDeAlunos (tail lista) id)
       else listaDeAlunos (tail lista) id
 
@@ -357,17 +375,20 @@ controlador_coordenador option = do
       else if option == c_analisa_trancamento then do
          trancamentos <- leTrancamentos
          solic <- menu_analisa_trancamento (trancamentos_para_string trancamentos 1)
-         opcao <- menu_decide_tranc
-         let tranc = getTrancamento 1 solic trancamentos
-
-         if opcao == 1 then do
-            analisaTrancamento tranc trancamentos
+         if(solic > length(trancamentos)) then do 
+            printStr "Opção inválida"
+            espere
          else do
-            printStr "A solicitação será excluída..."
-         let newTrancamentos = removeTrancamento tranc trancamentos
-         salvaTrancamentos newTrancamentos
+            opcao <- menu_decide_tranc
+            let tranc = getTrancamento 1 solic trancamentos
+            if opcao == 1 then do
+                  analisaTrancamento tranc trancamentos
+            else do
+                  printStr "A solicitação será excluída..."
+            let newTrancamentos = removeTrancamento tranc trancamentos
+            salvaTrancamentos newTrancamentos
          
-         espere
+            espere
       else if option == c_alocar_professor then do
          professor_disciplina_temp <- menu_aloca_professor
          alocaProfessor professor_disciplina_temp
