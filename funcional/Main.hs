@@ -59,7 +59,7 @@ controlador_login = do
 
    let loginValido = case usuarioBD of
                            Nothing -> False
-                           Just u -> True
+                           Just u -> senha (fromJust usuarioBD) == (snd usuarioInterface)
    
    if loginValido then do
       -- Usuário logado no sistema
@@ -84,7 +84,7 @@ controlador_login = do
          printStr "Tipo não definido de usuário"
          espere
    else do
-      printStrLn "Login inválido!"
+      printCenter "Login inválido!"
       espere
 
 {-
