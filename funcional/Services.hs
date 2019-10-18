@@ -90,25 +90,31 @@ imprimeDisciplinasProfessor :: [Int] -> IO()
 imprimeDisciplinasProfessor [] = printStr "\n"
 imprimeDisciplinasProfessor (head:tail) = do 
     alunos <- leAlunos
-    printStr (show(head))
-    printStr "\n"
-    imprimeDisciplinasProfessor tail
+    if (disciplinaEstaAberta alunos head) then do
+        printStr ((show(head)) ++ "\n")
+        imprimeDisciplinasProfessor tail
+    else 
+        imprimeDisciplinasProfessor tail
 
-disciplinaEstaFechada :: [Aluno] -> Int -> Bool
-disciplinaEstaFechada alunos@(a:an) idDisc
-    | alunos == [] = False
-    | otherwise = if alunoTemDisciplina (disciplinas a) idDisc then 
-                    alunoTemDisciplinaFechada (disciplinas a) idDisc && disciplinaEstaFechada an idDisc
-                  else True
+disciplinaEstaAberta :: [Aluno] -> Int -> Bool
+disciplinaEstaAberta alunos idDisc
+ |alunos == [] = False
+ |otherwise =
+    if (alunoTemDisciplina (disciplinas (head alunos)) idDisc) then do
+        if (alunoTemDisciplinaAberta (disciplinas (head alunos)) idDisc) then True
+        else disciplinaEstaAberta (tail alunos) idDisc
+    else disciplinaEstaAberta (tail alunos) idDisc
 
-alunoTemDisciplinaFechada :: [MetaDisciplina] -> Int -> Bool
-alunoTemDisciplinaFechada [] _ = False 
-alunoTemDisciplinaFechada (d:ds) idDisc = 
-    (estado d == "fechada" && idMetaDisciplina d == idDisc) || (alunoTemDisciplinaFechada ds idDisc)
-
+alunoTemDisciplinaAberta :: [MetaDisciplina] -> Int -> Bool
+alunoTemDisciplinaAberta lista id
+ |lista == [] = False
+ |idMetaDisciplina (head lista) == id =  (estado (head lista) == "em curso")
+ |otherwise = alunoTemDisciplinaAberta (tail lista) id
+    
 alunoTemDisciplina :: [MetaDisciplina] -> Int -> Bool
-alunoTemDisciplina [] _ = False
-alunoTemDisciplina (d:ds) idDisc = (idMetaDisciplina d == idDisc) || alunoTemDisciplina ds idDisc
+alunoTemDisciplina lista idDisc
+ |lista == [] = False
+ |otherwise = ((idMetaDisciplina (head lista) == idDisc) || (alunoTemDisciplina (tail lista) idDisc))
 
 contains :: [MetaDisciplina] -> Int -> Bool
 contains lista id = do

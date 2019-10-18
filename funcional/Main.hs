@@ -273,6 +273,7 @@ controlador_professor option = do
                   alunosNoSistema <- leAlunos
                   let alunos = listaDeAlunos alunosNoSistema disciplina
                   printStr "Escolha o estágio.\n"
+                  printStr prompt
                   estagio <- readLn :: IO Int
                   if (estagio < 1 || estagio > 3) then do
                         limpar_tela
