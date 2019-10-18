@@ -209,20 +209,24 @@ controlador_professor option = do
             printStr "Professor não alocado para nenhuma disciplina"
          else do
             printStr "Disciplinas disponiveis.\n"
+            printStr "Pressione 0 para sair"
             imprimeDisciplinasProfessor disciplinas
             printStr prompt
             disciplina <- readLn :: IO Int
-            if (elem disciplina disciplinas) then do
-               alunosNoSistema <- leAlunos
-               let alunos = listaDeAlunos alunosNoSistema disciplina
-               printStr "1: para presente ou 2: para faltou\n"
-               fazerChamada alunos disciplina
+            if disciplina == 0 then do 
+                  controlador_professor 4
             else do
-               limpar_tela
-               printStr "Disciplina não está na lista"
-               espere
-               controlador_professor c_fazer_chamada
-         espere
+                  if (elem disciplina disciplinas) then do
+                  alunosNoSistema <- leAlunos
+                  let alunos = listaDeAlunos alunosNoSistema disciplina
+                  printStr "1: para presente ou 2: para faltou\n"
+                  fazerChamada alunos disciplina
+                  else do
+                  limpar_tela
+                  printStr "Disciplina não está na lista"
+                  espere
+                  controlador_professor c_fazer_chamada
+                  espere
       else if option == c_fechar_disciplina then do
          limpar_tela
          professorDisciplina <- leProfessorDisciplinas
@@ -232,19 +236,23 @@ controlador_professor option = do
             printStr "Professor não alocado para nenhuma disciplina"
          else do
             printStr "Disciplinas disponiveis.\n"
+            printStr "Pressione 0 para sair"
             imprimeDisciplinasProfessor disciplinas
             printStr prompt
             disciplina <- readLn :: IO Int
-            if (elem disciplina disciplinas) then do
-               alunosNoSistema <- leAlunos
-               let alunos = listaDeAlunos alunosNoSistema disciplina
-               fecharDisciplina alunos disciplina
+            if disciplina == 0 then do
+                  controlador_professor 4
             else do
-               limpar_tela
-               printStr "Disciplina não está na lista"
-               espere
-               controlador_professor c_fechar_disciplina
-         espere
+                  if (elem disciplina disciplinas) then do
+                  alunosNoSistema <- leAlunos
+                  let alunos = listaDeAlunos alunosNoSistema disciplina
+                  fecharDisciplina alunos disciplina
+                  else do
+                  limpar_tela
+                  printStr "Disciplina não está na lista"
+                  espere
+                  controlador_professor c_fechar_disciplina
+                  espere
       else if option == c_inserir_notas then do
          limpar_tela
          professorDisciplina <- leProfessorDisciplinas
@@ -254,27 +262,31 @@ controlador_professor option = do
             printStr "Professor não alocado para nenhuma disciplina"
          else do
             printStr "Disciplinas disponiveis.\n"
+            printStr "Pressione 0 para sair"
             imprimeDisciplinasProfessor disciplinas
             printStr prompt
             disciplina <- readLn :: IO Int
-            if (elem disciplina disciplinas) then do
-               alunosNoSistema <- leAlunos
-               let alunos = listaDeAlunos alunosNoSistema disciplina
-               printStr "Escolha o estágio.\n"
-               estagio <- readLn :: IO Int
-               if (estagio < 1 || estagio > 3) then do
+            if disciplina == 0 then do
+                  controlador_professor 4
+            else do
+                  if (elem disciplina disciplinas) then do
+                  alunosNoSistema <- leAlunos
+                  let alunos = listaDeAlunos alunosNoSistema disciplina
+                  printStr "Escolha o estágio.\n"
+                  estagio <- readLn :: IO Int
+                  if (estagio < 1 || estagio > 3) then do
+                        limpar_tela
+                        printStr "Estágio inválido, insira por favor um estágio de 1 a 3.\n"
+                        espere
+                        controlador_professor c_inserir_notas
+                  else do
+                        atribuirNotas alunos disciplina estagio
+                  else do
                   limpar_tela
-                  printStr "Estágio inválido, insira por favor um estágio de 1 a 3.\n"
+                  printStr "Disciplina não está na lista"
                   espere
                   controlador_professor c_inserir_notas
-               else do
-                  atribuirNotas alunos disciplina estagio
-            else do
-               limpar_tela
-               printStr "Disciplina não está na lista"
-               espere
-               controlador_professor c_inserir_notas
-         espere 
+                  espere 
 
       else do
          printStrLn "Comando inválido"
