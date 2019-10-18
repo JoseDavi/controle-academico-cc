@@ -212,7 +212,7 @@ controlador_professor option = do
             printStr "Pressione 0 para sair\n"
             imprimeDisciplinasProfessor disciplinas
             printStr prompt
-            disciplina <- readLn :: IO Int
+            disciplina <- getLineInt
             if disciplina == 0 then do 
                   controlador_professor 4
             else do
@@ -239,7 +239,7 @@ controlador_professor option = do
             printStr "Pressione 0 para sair\n"
             imprimeDisciplinasProfessor disciplinas
             printStr prompt
-            disciplina <- readLn :: IO Int
+            disciplina <- getLineInt
             if disciplina == 0 then do
                   controlador_professor 4
             else do
@@ -265,7 +265,7 @@ controlador_professor option = do
             printStr "Pressione 0 para sair\n"
             imprimeDisciplinasProfessor disciplinas
             printStr prompt
-            disciplina <- readLn :: IO Int
+            disciplina <- getLineInt
             if disciplina == 0 then do
                   controlador_professor 4
             else do
