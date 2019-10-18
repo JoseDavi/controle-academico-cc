@@ -90,10 +90,8 @@ imprimeDisciplinasProfessor :: [Int] -> IO()
 imprimeDisciplinasProfessor [] = printStr "\n"
 imprimeDisciplinasProfessor (head:tail) = do 
     alunos <- leAlunos
-    if (disciplinaEstaFechada alunos head) then
-        printStr ""
-    else
-        printStr (show(head))
+    printStr (show(head))
+    printStr "\n"
     imprimeDisciplinasProfessor tail
 
 disciplinaEstaFechada :: [Aluno] -> Int -> Bool

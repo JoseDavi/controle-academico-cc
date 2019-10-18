@@ -209,7 +209,7 @@ controlador_professor option = do
             printStr "Professor não alocado para nenhuma disciplina"
          else do
             printStr "Disciplinas disponiveis.\n"
-            printStr "Pressione 0 para sair"
+            printStr "Pressione 0 para sair\n"
             imprimeDisciplinasProfessor disciplinas
             printStr prompt
             disciplina <- readLn :: IO Int
@@ -236,7 +236,7 @@ controlador_professor option = do
             printStr "Professor não alocado para nenhuma disciplina"
          else do
             printStr "Disciplinas disponiveis.\n"
-            printStr "Pressione 0 para sair"
+            printStr "Pressione 0 para sair\n"
             imprimeDisciplinasProfessor disciplinas
             printStr prompt
             disciplina <- readLn :: IO Int
@@ -262,7 +262,7 @@ controlador_professor option = do
             printStr "Professor não alocado para nenhuma disciplina"
          else do
             printStr "Disciplinas disponiveis.\n"
-            printStr "Pressione 0 para sair"
+            printStr "Pressione 0 para sair\n"
             imprimeDisciplinasProfessor disciplinas
             printStr prompt
             disciplina <- readLn :: IO Int
