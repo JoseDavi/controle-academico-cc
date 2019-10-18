@@ -89,8 +89,28 @@ disciplinasEmProfessor lista id
 imprimeDisciplinasProfessor :: [Int] -> IO()
 imprimeDisciplinasProfessor [] = printStr "\n"
 imprimeDisciplinasProfessor (head:tail) = do 
-    printStr (show(head) ++ "\n")
+    alunos <- leAlunos
+    if (disciplinaEstaFechada alunos head) then
+        printStr ""
+    else
+        printStr (show(head))
     imprimeDisciplinasProfessor tail
+
+disciplinaEstaFechada :: [Aluno] -> Int -> Bool
+disciplinaEstaFechada alunos@(a:an) idDisc
+    | alunos == [] = False
+    | otherwise = if alunoTemDisciplina (disciplinas a) idDisc then 
+                    alunoTemDisciplinaFechada (disciplinas a) idDisc && disciplinaEstaFechada an idDisc
+                  else True
+
+alunoTemDisciplinaFechada :: [MetaDisciplina] -> Int -> Bool
+alunoTemDisciplinaFechada [] _ = False 
+alunoTemDisciplinaFechada (d:ds) idDisc = 
+    (estado d == "fechada" && idMetaDisciplina d == idDisc) || (alunoTemDisciplinaFechada ds idDisc)
+
+alunoTemDisciplina :: [MetaDisciplina] -> Int -> Bool
+alunoTemDisciplina [] _ = False
+alunoTemDisciplina (d:ds) idDisc = (idMetaDisciplina d == idDisc) || alunoTemDisciplina ds idDisc
 
 contains :: [MetaDisciplina] -> Int -> Bool
 contains lista id = do
