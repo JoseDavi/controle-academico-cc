@@ -136,9 +136,15 @@ leUsuario matr = do
 salvaUsuario :: Usuario -> IO()
 salvaUsuario usuario = do
     usuarios <- leUsuarios
-    B.writeFile "resources/usuarios_temp.json" (encode (usuarios ++ [usuario]))
-    removeFile "resources/usuarios.json"
-    renameFile "resources/usuarios_temp.json" "resources/usuarios.json"
+    let usuarioQUERY = [u | u <- usuarios, 
+                           matricula u == matricula usuario]
+    if(usuarioQUERY == []) then do
+        B.writeFile "resources/usuarios_temp.json" (encode (usuarios ++ [usuario]))
+        removeFile "resources/usuarios.json"
+        renameFile "resources/usuarios_temp.json" "resources/usuarios.json"
+    else do
+        printStr "Usuário com esta matrícula já cadastrado."
+
 
 leAlunos :: IO ([Aluno])
 leAlunos = do
@@ -167,9 +173,16 @@ salvaAlunos alunos = do
 salvaAluno :: Aluno -> IO()
 salvaAluno novoAluno = do
     alunos <- leAlunos
-    B.writeFile "resources/alunos_temp.json" (encode (alunos ++ [novoAluno]))
-    removeFile "resources/alunos.json"
-    renameFile "resources/alunos_temp.json" "resources/alunos.json"
+    let alunoQUERY = [a | a <- alunos, 
+                            matriculaAluno a == matriculaAluno novoAluno]
+    if(alunoQUERY == []) then do
+        B.writeFile "resources/alunos_temp.json" (encode (alunos ++ [novoAluno]))
+        removeFile "resources/alunos.json"
+        renameFile "resources/alunos_temp.json" "resources/alunos.json"
+    else do
+        printStr "Usuário com esta matrícula já cadastrado."
+
+
 
 atualizaAluno :: Aluno -> IO()
 atualizaAluno aluno = do
